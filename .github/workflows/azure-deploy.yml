@@ -38,30 +38,21 @@ jobs:
           set -euxo pipefail
           
           rm -rf deploy && mkdir -p deploy
-          cp package.json deploy/package.json
-          [ -f package-lock.json ] && cp package-lock.json deploy/package-lock.json || true
-          cp -R .next deploy/.next
+          
+          # Copy standalone build files
+          cp -R .next/standalone/* deploy/
+          cp -R .next/static deploy/.next/static
           [ -d public ] && cp -R public deploy/public || true
-          [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
           
-          cd deploy
-          if [ -f package-lock.json ]; then
-            npm ci
-          else
-            npm install
-          fi
-          
-          # Sanity check: Verify Next.js binary exists
-          if [ ! -f "node_modules/next/dist/bin/next" ]; then
-            echo "ERROR: Next.js binary not found at node_modules/next/dist/bin/next"
+          # Verify standalone server.js exists
+          if [ ! -f "deploy/server.js" ]; then
+            echo "ERROR: Standalone server.js not found"
             exit 1
           fi
-          echo "✅ Next.js binary verified at node_modules/next/dist/bin/next"
-          
-          cd ..
+          echo "✅ Standalone server.js verified"
           
           echo "Deploy package created successfully"
-          ls -la
+          ls -la deploy/
 
       - name: Create artifact
         shell: bash
