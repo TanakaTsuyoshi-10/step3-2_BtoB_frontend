@@ -24,88 +24,32 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build and stage (Mode A/B auto)
+      - name: Build Next.js application
+        run: npm run build
+
+      - name: Create deployment package
         shell: bash
         run: |
           set -euxo pipefail
-
-          # Build
-          npx next telemetry disable || true
-          npm run build
-
-          echo "=== check .next/standalone ==="
-          ls -la .next || true
-          ls -la .next/standalone || true
-
-          # Detect standalone entry
-          entry=""
-          for cand in \
-            ".next/standalone/server.js" \
-            ".next/standalone/server.mjs" \
-            ".next/standalone/server/index.js" \
-            ".next/standalone/server/server.js"; do
-            if [ -f "$cand" ]; then entry="$cand"; break; fi
-          done
-          echo "ENTRY_FOUND=${entry:-"(none)"}"
-
-          # Prepare deploy dir
+          
+          # Create deploy directory
           rm -rf deploy && mkdir -p deploy
-
-          if [ -n "$entry" ]; then
-            echo "== Mode A: standalone =="
-            # Copy standalone tree
-            cp -R .next/standalone/* deploy/
-
-            # Copy Next runtime bits under deploy/.next
-            mkdir -p deploy/.next
-            [ -f ".next/BUILD_ID" ] && cp ".next/BUILD_ID" "deploy/.next/BUILD_ID"
-            mkdir -p deploy/.next/static
-            [ -d ".next/static" ] && cp -R ".next/static/"* "deploy/.next/static/" || true
-            [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
-            [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
-
-            # public
-            [ -d public ] && cp -R public deploy/public || true
-
-            # NO heredoc: generate package.json via Node
-            node -e "const fs=require('fs');const pkg={name:'next-standalone-app',private:true,version:'0.0.1',scripts:{start:'PORT=8080 HOSTNAME=0.0.0.0 node server.js'},engines:{node:'>=20 <21'}};fs.writeFileSync('deploy/package.json',JSON.stringify(pkg,null,2));"
-
-            echo MODE=A > deploy/DEPLOY_MODE.txt
-
-          else
-            echo "== Mode B: next start fallback =="
-            # Create production node_modules
-            npm ci --omit=dev
-
-            # Copy runtime
-            cp -R .next deploy/.next
-            [ -d public ] && cp -R public deploy/public || true
-            [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
-            cp -R node_modules deploy/node_modules
-
-            # NO heredoc / NO jq: rewrite start script by Node
-            node -e "const fs=require('fs');const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));pkg.scripts=pkg.scripts||{};pkg.scripts.start='next start -p 8080 -H 0.0.0.0';fs.writeFileSync('deploy/package.json',JSON.stringify(pkg,null,2));"
-
-            echo MODE=B > deploy/DEPLOY_MODE.txt
-          fi
-
-          echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
-
-      - name: Sanity check
-        shell: bash
-        run: |
-          set -euxo pipefail
-          ls -la deploy | sed -n '1,200p'
-          [ -f deploy/package.json ] || (echo "NG: package.json missing"; exit 1)
-          if [ -f deploy/server.js ]; then
-            [ -f deploy/.next/BUILD_ID ] || (echo "NG: .next/BUILD_ID missing (Mode A)"; exit 1)
-          else
-            [ -d deploy/.next ] || (echo "NG: .next missing (Mode B)"; exit 1)
-            [ -d deploy/node_modules ] || (echo "NG: node_modules missing (Mode B)"; exit 1)
-          fi
+          
+          # Copy built application
+          cp package.json deploy/package.json
+          cp -R .next deploy/.next
+          [ -d public ] && cp -R public deploy/public || true
+          [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
+          
+          # Install production dependencies
+          cd deploy
+          npm ci --omit=dev
+          
+          echo "Deploy package created successfully"
+          ls -la
 
       - name: Create artifact
         shell: bash
@@ -113,28 +57,18 @@ jobs:
           set -euxo pipefail
           (cd deploy && zip -qr ../artifact.zip .)
           ls -lh artifact.zip
-          unzip -l artifact.zip | sed -n '1,200p'
-          [ $(stat -c%s artifact.zip) -ge 10240 ] || (echo "artifact.zip too small"; exit 1)
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: artifact.zip
-          retention-days: 7
-
-      - name: Deploy to Azure Web App (ZIP)
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: artifact.zip
 
-      - name: Health check (best-effort)
+      - name: Health check
         if: always()
         shell: bash
         run: |
-          set -euxo pipefail
           sleep 30
           APP_URL="https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
           code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
