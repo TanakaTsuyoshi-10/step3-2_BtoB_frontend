@@ -2,7 +2,7 @@ name: Build and deploy Node.js app to Azure Web App
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 concurrency:
@@ -26,66 +26,78 @@ jobs:
         run: npm ci
 
       - name: Build (Next.js standalone)
+        shell: bash
         run: |
+          set -euo pipefail
+
           npx next telemetry disable || true
           npm run build
 
-          # 配布用フォルダ
+          # 出力物
           rm -rf deploy && mkdir -p deploy
 
-          # standalone（server.js 等）
+          # standalone 本体 (server.js, node_modules, next config 等)
           cp -R .next/standalone/* deploy/
 
-          # 静的資産
-          mkdir -p deploy/.next/static
-          cp -R .next/static deploy/.next/static
-
-          # --- 必須: BUILD_ID を同梱 ---
+          # --- .next 配下を用意 ---
           mkdir -p deploy/.next
+
+          # 1) BUILD_ID は必須
           cp .next/BUILD_ID deploy/.next/BUILD_ID
 
-          # 任意: マニフェスト類（存在するものだけ）
+          # 2) static は「中身」をコピー（OS差異で二重 static 防止）
+          mkdir -p deploy/.next/static
+          if [ -d ".next/static" ]; then
+            cp -R .next/static/* deploy/.next/static/ || true
+          fi
+
+          # 3) 任意のマニフェスト類（存在すれば）
           for f in app-build-manifest.json app-path-routes-manifest.json \
                    build-manifest.json images-manifest.json prerender-manifest.json \
                    routes-manifest.json; do
             [ -f ".next/$f" ] && cp ".next/$f" "deploy/.next/$f"
           done
 
-          # （任意だが安全策）runtime が参照することがあるファイルも同梱
+          # 4) （任意だが安全策）required-server-files.json / trace
           [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
           [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
 
           # public があれば同梱
           if [ -d public ]; then cp -R public deploy/public; fi
 
-          # 実行用の最小 package.json（npm start -> node server.js）
+          # 実行用 package.json（App Service は zip 展開後 npm start する）
           cat > deploy/package.json << 'EOF'
           {
             "name": "next-standalone-app",
             "private": true,
             "version": "0.0.1",
             "scripts": {
-              "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
+              "start": "PORT=${PORT:-8080} HOSTNAME=0.0.0.0 node server.js"
             },
             "engines": { "node": ">=20 <21" }
           }
           EOF
 
-          # メタ情報
           echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
 
       - name: Sanity check deploy bundle
+        shell: bash
         run: |
-          echo "== List deploy tree ==" && ls -la deploy | sed -n '1,200p'
-          echo "== Must-have files check =="
-          [ -f deploy/server.js ] && echo "OK: server.js found" || (echo "NG: server.js missing" && exit 1)
-          [ -f deploy/package.json ] && echo "OK: package.json found" || (echo "NG: package.json missing" && exit 1)
-          [ -f deploy/.next/BUILD_ID ] && echo "OK: .next/BUILD_ID found" || (echo "NG: .next/BUILD_ID missing" && exit 1)
-          [ -d deploy/.next/static ] && echo "OK: .next/static found" || (echo "NG: .next/static missing" && exit 1)
-          echo "== runtime package.json ==" && cat deploy/package.json
+          set -euo pipefail
+          echo "== deploy tree (depth 2) =="
+          find deploy -maxdepth 2 -print | sort
+          echo "== must-have files =="
+          [ -f deploy/server.js ] || (echo "NG: server.js missing" && exit 1)
+          [ -f deploy/package.json ] || (echo "NG: package.json missing" && exit 1)
+          [ -f deploy/.next/BUILD_ID ] || (echo "NG: .next/BUILD_ID missing" && exit 1)
+          echo "== package.json =="
+          cat deploy/package.json
 
       - name: Archive artifact
         run: (cd deploy && zip -qr ../artifact.zip .)
+
+      - name: List files in artifact.zip (preview)
+        run: unzip -l artifact.zip | sed -n '1,250p'
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -103,7 +115,6 @@ jobs:
           name: node-app
           path: .
 
-      # 管理操作とデプロイの衝突を避ける
       - name: Cooldown before deploy
         run: sleep 20
 
@@ -118,7 +129,7 @@ jobs:
         if: always()
         run: |
           echo "Waiting for app to start..."
-          sleep 45
+          sleep 60
           APP_URL="https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net"
           code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
           echo "HTTP $code"
