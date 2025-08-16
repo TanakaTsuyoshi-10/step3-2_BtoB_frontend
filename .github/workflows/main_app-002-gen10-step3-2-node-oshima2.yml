@@ -12,6 +12,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # 本番値は Azure App Service のアプリ設定で上書きされます
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'http://localhost:8000' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -22,70 +25,103 @@ jobs:
           cache: npm
           cache-dependency-path: package-lock.json
 
-      - name: Install
+      - name: Install (full)
         run: npm ci
 
-      - name: Build (Next.js standalone)
+      - name: Build
         shell: bash
         run: |
           set -euxo pipefail
           npx next telemetry disable || true
           npm run build
 
-          echo "=== ls .next/standalone (pre-copy) ==="
-          ls -la .next/standalone | sed -n '1,200p' || true
+          echo "=== check .next/standalone ==="
+          ls -la .next || true
+          ls -la .next/standalone || true
+          # 代表的な server エントリ候補を探索
+          entry=""
+          for cand in \
+            ".next/standalone/server.js" \
+            ".next/standalone/server.mjs" \
+            ".next/standalone/server/index.js" \
+            ".next/standalone/server/server.js"; do
+            if [ -f "$cand" ]; then entry="$cand"; break; fi
+          done
+          echo "ENTRY_FOUND=${entry:-"(none)"}"
 
-          # server.js が無ければ即失敗（standalone 出力不全）
-          [ -f ".next/standalone/server.js" ] || { 
-            echo "FATAL: .next/standalone/server.js not found"; 
-            echo "Tip: next.config.js に { output: 'standalone' } が必要です"; 
-            exit 1; 
-          }
-
-          # 配布用フォルダ
           rm -rf deploy && mkdir -p deploy
 
-          # フラット配置：standalone の中身を deploy/ に展開（= deploy/server.js ができる）
-          cp -R .next/standalone/* deploy/
+          if [ -n "$entry" ]; then
+            echo "== Mode A: standalone deploy =="
+            # standalone 本体を deploy 直下へ（= deploy/server.js など）
+            cp -R .next/standalone/* deploy/
 
-          # BUILD_ID と static は兄弟階層に置く
-          mkdir -p deploy/.next/static
-          cp .next/BUILD_ID deploy/.next/BUILD_ID
-          cp -R .next/static/* deploy/.next/static/ || true
+            # BUILD_ID / static / 追加ファイル
+            mkdir -p deploy/.next
+            [ -f ".next/BUILD_ID" ] && cp ".next/BUILD_ID" "deploy/.next/BUILD_ID"
+            mkdir -p deploy/.next/static
+            [ -d ".next/static" ] && cp -R ".next/static/"* "deploy/.next/static/" || true
+            [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
+            [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
 
-          # 任意: ランタイムが参照しうる追加ファイル（存在すれば）
-          [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
-          [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
+            # public
+            [ -d public ] && cp -R public deploy/public || true
 
-          # public があれば
-          if [ -d public ]; then cp -R public deploy/public; fi
+            # 実行用 package.json（node server.js）
+            cat > deploy/package.json << 'EOF'
+            {
+              "name": "next-standalone-app",
+              "private": true,
+              "version": "0.0.1",
+              "scripts": {
+                "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
+              },
+              "engines": { "node": ">=20 <21" }
+            }
+            EOF
 
-          # 実行用の最小 package.json（npm start -> node server.js）
-          cat > deploy/package.json << 'EOF'
-          {
-            "name": "next-standalone-app",
-            "private": true,
-            "version": "0.0.1",
-            "scripts": {
-              "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
-            },
-            "engines": { "node": ">=20 <21" }
-          }
-          EOF
+            echo MODE=A > deploy/DEPLOY_MODE.txt
+          else
+            echo "== Mode B: next start deploy (fallback) =="
+            # dev 依存を除外した本番 node_modules を作る
+            npm ci --omit=dev
+
+            # 必要ファイルを deploy へ
+            mkdir -p deploy
+            cp package.json deploy/package.json
+            # 本番起動は next start
+            jq '.scripts.start="next start -p 8080 -H 0.0.0.0"' package.json > deploy/package.json.tmp && mv deploy/package.json.tmp deploy/package.json
+
+            # ランタイムに必要な .next 一式
+            cp -R .next deploy/.next
+            # public / next.config.js など（config 参照する場合がある）
+            [ -d public ] && cp -R public deploy/public || true
+            [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
+
+            # 本番 node_modules
+            cp -R node_modules deploy/node_modules
+
+            echo MODE=B > deploy/DEPLOY_MODE.txt
+          fi
 
           echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
 
-      - name: Sanity check deploy bundle (must-have files)
+      - name: Sanity check (must-have)
         shell: bash
         run: |
           set -euxo pipefail
           ls -la deploy | sed -n '1,200p'
-          [ -f deploy/server.js ] || (echo "NG: deploy/server.js missing"; exit 1)
-          [ -f deploy/package.json ] || (echo "NG: deploy/package.json missing"; exit 1)
-          [ -f deploy/.next/BUILD_ID ] || (echo "NG: deploy/.next/BUILD_ID missing"; exit 1)
-          # standalone の中に static/public を入れていないことを確認（誤配置防止）
-          ! find deploy -path '*/.next/standalone/.next/static*' | grep . || (echo "NG: static が standalone 内にあります"; exit 1)
-          ! find deploy -path '*/.next/standalone/public*' | grep . || (echo "NG: public が standalone 内にあります"; exit 1)
+          mode=$(cat deploy/DEPLOY_MODE.txt | cut -d= -f2)
+          echo "Mode=$mode"
+          if [ "$mode" = "A" ]; then
+            [ -f deploy/server.js ] || (echo "NG: deploy/server.js missing (Mode A)"; exit 1)
+            [ -f deploy/.next/BUILD_ID ] || (echo "NG: deploy/.next/BUILD_ID missing (Mode A)"; exit 1)
+          else
+            [ -d deploy/.next ] || (echo "NG: deploy/.next missing (Mode B)"; exit 1)
+            [ -d deploy/node_modules ] || (echo "NG: deploy/node_modules missing (Mode B)"; exit 1)
+            grep -q '"start": "next start' deploy/package.json || (echo "NG: start script not next start (Mode B)"; exit 1)
+          fi
+          cat deploy/DEPLOY_MODE.txt
 
       - name: Archive artifact
         shell: bash
@@ -94,12 +130,16 @@ jobs:
           (cd deploy && zip -qr ../artifact.zip .)
           ls -lh artifact.zip
           unzip -l artifact.zip | sed -n '1,200p'
-          # 中身検証
-          unzip -l artifact.zip | grep -E '(^|/)server\.js$'
-          unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
-          unzip -l artifact.zip | grep -E '(^|/)package\.json$'
-          unzip -l artifact.zip | grep -E '(^|/)\.next/static/' || true
-          unzip -l artifact.zip | grep -E '(^|/)public/' || true
+          mode=$(unzip -p artifact.zip DEPLOY_MODE.txt | cut -d= -f2)
+          echo "Mode=$mode"
+          if [ "$mode" = "A" ]; then
+            unzip -l artifact.zip | grep -E '(^|/)server\.js$'
+            unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
+          else
+            unzip -l artifact.zip | grep -E '(^|/)\.next/$|(^|/)\.next/.+' >/dev/null
+            unzip -l artifact.zip | grep -E '(^|/)node_modules/$|(^|/)node_modules/.+' >/dev/null
+            unzip -p artifact.zip package.json | grep -q '"start": "next start -p 8080 -H 0.0.0.0"'
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -124,11 +164,18 @@ jobs:
           set -euxo pipefail
           ls -lh artifact.zip
           unzip -l artifact.zip | sed -n '1,200p'
-          unzip -l artifact.zip | grep -E '(^|/)server\.js$'
-          unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
+          mode=$(unzip -p artifact.zip DEPLOY_MODE.txt | cut -d= -f2)
+          echo "Mode=$mode"
+          if [ "$mode" = "A" ]; then
+            unzip -l artifact.zip | grep -E '(^|/)server\.js$'
+            unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
+          else
+            unzip -l artifact.zip | grep -E '(^|/)\.next/' >/dev/null
+            unzip -l artifact.zip | grep -E '(^|/)node_modules/' >/dev/null
+          fi
 
       - name: Cooldown before deploy
-        run: sleep 10
+        run: sleep 8
 
       - name: Deploy to Azure Web App (ZIP)
         uses: azure/webapps-deploy@v3
