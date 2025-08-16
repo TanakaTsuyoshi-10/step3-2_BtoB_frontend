@@ -46,14 +46,14 @@ jobs:
           mkdir -p deploy/.next
           cp .next/BUILD_ID deploy/.next/BUILD_ID
 
-          # 追加で参照され得るファイル（存在すれば）
+          # （任意だが安全策）runtime が参照することがあるファイルも同梱
           [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
           [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
 
           # public があれば
           if [ -d public ]; then cp -R public deploy/public; fi
 
-          # 実行用の最小 package.json
+          # 実行用の最小 package.json（App Service は npm start を実行）
           cat > deploy/package.json << 'EOF'
           {
             "name": "next-standalone-app",
