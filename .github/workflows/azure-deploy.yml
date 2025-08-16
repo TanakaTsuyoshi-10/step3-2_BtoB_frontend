@@ -36,33 +36,24 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          
+
           rm -rf deploy && mkdir -p deploy
-          
-          # Copy standalone build files
-          cp -R .next/standalone/* deploy/
-          
-          # Create .next/static directory and copy static files
+
+          # standalone 出力を「隠し項目ごと」完全コピー（末尾 /. がポイント）
+          cp -R .next/standalone/. deploy/
+
+          # .next/static は別ツリーなので明示コピー
           mkdir -p deploy/.next/static
-          cp -R .next/static/* deploy/.next/static/
-          
-          # Copy public directory if exists
+          cp -R .next/static/. deploy/.next/static/ || true
+
+          # public があれば同梱
           [ -d public ] && cp -R public deploy/public || true
-          
-          # Verify standalone server.js exists
-          if [ ! -f "deploy/server.js" ]; then
-            echo "ERROR: Standalone server.js not found"
-            exit 1
-          fi
-          echo "✅ Standalone server.js verified"
-          
-          # Verify static files copied
-          if [ ! -d "deploy/.next/static" ]; then
-            echo "ERROR: Static files not found"
-            exit 1
-          fi
-          echo "✅ Static files verified"
-          
+
+          # サニティチェック（落ちるなら即失敗させる）
+          [ -f "deploy/server.js" ] || { echo "ERROR: server.js missing"; exit 1; }
+          [ -f "deploy/.next/BUILD_ID" ] || { echo "ERROR: .next/BUILD_ID missing"; exit 1; }
+          [ -d "deploy/.next/static" ] || { echo "ERROR: .next/static missing"; exit 1; }
+
           echo "Deploy package created successfully"
           ls -la deploy/
           ls -la deploy/.next/
@@ -85,10 +76,12 @@ jobs:
         if: always()
         shell: bash
         run: |
-          for i in 1 2 3; do
-            sleep 60
-            code=$(curl -s -o /dev/null -w "%{http_code}" "https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net" || echo 000)
-            echo "Attempt $i: HTTP $code"
+          APP_URL="https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+          for i in 1 2 3 4 5; do
+            echo "Attempt $i..."
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
+            echo "HTTP $code"
             [ "$code" = "200" ] && exit 0
+            sleep 20
           done
           exit 1
