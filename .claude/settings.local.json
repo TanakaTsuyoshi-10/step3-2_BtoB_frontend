@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "/Users/tanakatsuyoshi/Desktop/アプリ開発/step3-2_BtoB_frontend"
+    ]
+  }
+}
