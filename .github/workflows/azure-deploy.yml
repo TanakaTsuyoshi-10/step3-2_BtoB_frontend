@@ -40,13 +40,18 @@ jobs:
           
           # Copy built application
           cp package.json deploy/package.json
+          [ -f package-lock.json ] && cp package-lock.json deploy/package-lock.json || true
           cp -R .next deploy/.next
           [ -d public ] && cp -R public deploy/public || true
           [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
           
           # Install production dependencies
           cd deploy
-          npm ci --omit=dev
+          if [ -f package-lock.json ]; then
+            npm ci --omit=dev
+          else
+            npm install --omit=dev
+          fi
           
           echo "Deploy package created successfully"
           ls -la
