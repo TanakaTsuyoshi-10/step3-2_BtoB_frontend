@@ -46,9 +46,9 @@ jobs:
           
           cd deploy
           if [ -f package-lock.json ]; then
-            npm ci --omit=dev
+            npm ci
           else
-            npm install --omit=dev
+            npm install
           fi
           cd ..
           
