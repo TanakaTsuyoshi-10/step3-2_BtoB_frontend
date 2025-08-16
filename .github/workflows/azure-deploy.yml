@@ -41,7 +41,12 @@ jobs:
           
           # Copy standalone build files
           cp -R .next/standalone/* deploy/
-          cp -R .next/static deploy/.next/static
+          
+          # Create .next/static directory and copy static files
+          mkdir -p deploy/.next/static
+          cp -R .next/static/* deploy/.next/static/
+          
+          # Copy public directory if exists
           [ -d public ] && cp -R public deploy/public || true
           
           # Verify standalone server.js exists
@@ -51,8 +56,16 @@ jobs:
           fi
           echo "✅ Standalone server.js verified"
           
+          # Verify static files copied
+          if [ ! -d "deploy/.next/static" ]; then
+            echo "ERROR: Static files not found"
+            exit 1
+          fi
+          echo "✅ Static files verified"
+          
           echo "Deploy package created successfully"
           ls -la deploy/
+          ls -la deploy/.next/
 
       - name: Create artifact
         shell: bash
