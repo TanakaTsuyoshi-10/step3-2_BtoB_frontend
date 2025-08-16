@@ -30,7 +30,17 @@ jobs:
       - name: Build Next.js application
         env:
           NODE_ENV: production
-        run: npm run build
+        run: |
+          npm run build
+          
+          echo "---- Project routes (app) ----"
+          find src/app -maxdepth 3 -name 'page.*' -print 2>/dev/null || true
+          echo "---- Project routes (pages) ----"
+          find pages -maxdepth 2 -name '*.tsx' -print 2>/dev/null || true
+          echo "---- Built routes from .next/server/app ----"
+          ls -R .next/server/app 2>/dev/null || true
+          echo "---- Built routes from .next/server/pages ----"
+          ls -R .next/server/pages 2>/dev/null || true
 
       - name: Create deployment package
         shell: bash
