@@ -32,40 +32,47 @@ jobs:
           npx next telemetry disable || true
           npm run build
 
+          echo "=== ls .next/standalone (pre-copy) ==="
+          ls -la .next/standalone | sed -n '1,200p' || true
+
+          # server.js が無ければ即失敗（standalone 出力不全）
+          [ -f ".next/standalone/server.js" ] || { 
+            echo "FATAL: .next/standalone/server.js not found"; 
+            echo "Tip: next.config.js に { output: 'standalone' } が必要です"; 
+            exit 1; 
+          }
+
           # 配布用フォルダ
-          rm -rf deploy && mkdir -p deploy/.next
+          rm -rf deploy && mkdir -p deploy
 
-          # ★ 公式レイアウト：standalone フォルダごとコピー
-          #   （この中に server.js と最小限の .next が既に入っている）
-          cp -R .next/standalone deploy/.next/standalone
+          # フラット配置：standalone の中身を deploy/ に展開（= deploy/server.js ができる）
+          cp -R .next/standalone/* deploy/
 
-          # ★ 静的資産は standalone の .next/static 配下へ
-          mkdir -p deploy/.next/standalone/.next/static
-          cp -R .next/static/* deploy/.next/standalone/.next/static/
+          # BUILD_ID と static は兄弟階層に置く
+          mkdir -p deploy/.next/static
+          cp .next/BUILD_ID deploy/.next/BUILD_ID
+          cp -R .next/static/* deploy/.next/static/ || true
 
-          # ★ public があれば standalone 内へ
-          if [ -d public ]; then
-            cp -R public deploy/.next/standalone/public
-          fi
+          # 任意: ランタイムが参照しうる追加ファイル（存在すれば）
+          [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
+          [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
 
-          # 任意の追補（存在する場合のみ）
-          [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/standalone/.next/required-server-files.json"
-          [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/standalone/.next/trace"
+          # public があれば
+          if [ -d public ]; then cp -R public deploy/public; fi
 
-          # 実行用の最小 package.json（App Service は npm start を実行）
+          # 実行用の最小 package.json（npm start -> node server.js）
           cat > deploy/package.json << 'EOF'
           {
             "name": "next-standalone-app",
             "private": true,
             "version": "0.0.1",
             "scripts": {
-              "start": "PORT=8080 HOSTNAME=0.0.0.0 node .next/standalone/server.js"
+              "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
             },
             "engines": { "node": ">=20 <21" }
           }
           EOF
 
-          # メタ
           echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
 
       - name: Sanity check deploy bundle (must-have files)
@@ -73,10 +80,12 @@ jobs:
         run: |
           set -euxo pipefail
           ls -la deploy | sed -n '1,200p'
-          # 必須ファイルチェック
-          [ -f deploy/.next/standalone/server.js ] || (echo "NG: server.js missing"; exit 1)
-          [ -f deploy/package.json ] || (echo "NG: package.json missing"; exit 1)
-          [ -f deploy/.next/standalone/.next/BUILD_ID ] || (echo "NG: BUILD_ID missing"; exit 1)
+          [ -f deploy/server.js ] || (echo "NG: deploy/server.js missing"; exit 1)
+          [ -f deploy/package.json ] || (echo "NG: deploy/package.json missing"; exit 1)
+          [ -f deploy/.next/BUILD_ID ] || (echo "NG: deploy/.next/BUILD_ID missing"; exit 1)
+          # standalone の中に static/public を入れていないことを確認（誤配置防止）
+          ! find deploy -path '*/.next/standalone/.next/static*' | grep . || (echo "NG: static が standalone 内にあります"; exit 1)
+          ! find deploy -path '*/.next/standalone/public*' | grep . || (echo "NG: public が standalone 内にあります"; exit 1)
 
       - name: Archive artifact
         shell: bash
@@ -85,8 +94,12 @@ jobs:
           (cd deploy && zip -qr ../artifact.zip .)
           ls -lh artifact.zip
           unzip -l artifact.zip | sed -n '1,200p'
-          # 空や極端に小さい zip を弾く（10KB未満なら異常とみなす）
-          [ $(stat -c%s artifact.zip) -ge 10240 ] || (echo "artifact.zip too small"; exit 1)
+          # 中身検証
+          unzip -l artifact.zip | grep -E '(^|/)server\.js$'
+          unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
+          unzip -l artifact.zip | grep -E '(^|/)package\.json$'
+          unzip -l artifact.zip | grep -E '(^|/)\.next/static/' || true
+          unzip -l artifact.zip | grep -E '(^|/)public/' || true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -111,11 +124,8 @@ jobs:
           set -euxo pipefail
           ls -lh artifact.zip
           unzip -l artifact.zip | sed -n '1,200p'
-          [ $(stat -c%s artifact.zip) -ge 10240 ] || (echo "artifact.zip too small"; exit 1)
-          # ここで server.js/BUILD_ID を確実に検出
-          unzip -l artifact.zip | grep -E '(^|/)\.next/standalone/server\.js$'
-          unzip -l artifact.zip | grep -E '(^|/)\.next/standalone/\.next/BUILD_ID$'
-          unzip -l artifact.zip | grep -E '(^|/)package\.json$'
+          unzip -l artifact.zip | grep -E '(^|/)server\.js$'
+          unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
 
       - name: Cooldown before deploy
         run: sleep 10
