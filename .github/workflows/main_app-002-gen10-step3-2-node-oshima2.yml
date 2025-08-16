@@ -19,44 +19,58 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          cache: npm
+          cache-dependency-path: package-lock.json
 
       - name: Install
         run: npm ci
 
       - name: Build (Next.js standalone)
         run: |
-          # Next.js 14 で standalone 出力
           npx next telemetry disable || true
           npm run build
-          # 配布用フォルダ作成
+
+          # 配布用フォルダ
           rm -rf deploy && mkdir -p deploy
-          # standalone + static + public を配置
+          # standalone の本体を配置（server.js 等）
           cp -R .next/standalone/* deploy/
+          # 静的資産
           mkdir -p deploy/.next/static
           cp -R .next/static deploy/.next/static
+          # public があれば同梱
           if [ -d public ]; then cp -R public deploy/public; fi
-          # 健康チェック用の簡易README
+
+          # 実行用の最小 package.json（npm start -> node server.js）
+          cat > deploy/package.json << 'EOF'
+          { "name":"next-standalone-app","private":true,"version":"0.0.1",
+            "scripts":{"start":"node server.js"},
+            "engines":{"node":">=20 <21"} }
+          EOF
+
+          # メタ情報
           echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
 
       - name: Create startup script
         run: |
-          # App Service で Node を直接起動するための start コマンドを用意
           cat > deploy/startup.sh << 'EOF'
           #!/usr/bin/env bash
           set -e
-          export PORT=${PORT:-3000}
-          # Next.js standalone のエントリ
+          export PORT=${PORT:-8080}
           node server.js
           EOF
           chmod +x deploy/startup.sh
 
-      - name: Archive artifact
+      - name: Sanity check deploy bundle
         run: |
-          cd deploy
-          zip -qr ../artifact.zip .
-          cd -
+          echo "== List deploy tree =="
+          ls -la deploy | sed -n '1,200p'
+          echo "== Must-have files check =="
+          [ -f deploy/server.js ] && echo "OK: server.js found" || (echo "NG: server.js missing" && exit 1)
+          [ -f deploy/package.json ] && echo "OK: package.json found" || (echo "NG: package.json missing" && exit 1)
+
+      - name: Archive artifact
+        run: (cd deploy && zip -qr ../artifact.zip .)
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -73,7 +87,6 @@ jobs:
           name: node-app
           path: .
 
-      # クールダウン：管理操作とデプロイの衝突を避ける
       - name: Cooldown before deploy
         run: sleep 20
 
@@ -84,44 +97,10 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_97ED8F92C96E4A49A32EBE459DDE3312 }}
           package: artifact.zip
 
-      # デプロイ後の診断情報収集
-      - name: Collect diagnostic logs
+      - name: Health check (best-effort)
         if: always()
         run: |
-          echo "=== Deployment Diagnostics ===" > deployment-logs.txt
-          echo "Timestamp: $(date -u)" >> deployment-logs.txt
-          echo "Node Version Used: 20.x" >> deployment-logs.txt
-          echo "Deployment Method: ZIP Package (Standalone)" >> deployment-logs.txt
-          echo "Package Size: $(ls -lh artifact.zip)" >> deployment-logs.txt
-          echo "" >> deployment-logs.txt
-          echo "=== Environment Check ===" >> deployment-logs.txt
-          echo "WEBSITE_NODE_DEFAULT_VERSION should be: ~20" >> deployment-logs.txt
-          echo "SCM_DO_BUILD_DURING_DEPLOYMENT should be: false" >> deployment-logs.txt
-          echo "WEBSITE_RUN_FROM_PACKAGE should be: 1" >> deployment-logs.txt
-          echo "" >> deployment-logs.txt
-
-      - name: Upload diagnostic logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-diagnostics
-          path: deployment-logs.txt
-
-      # 健康チェック（失敗時でも継続）
-      - name: Health check
-        if: always()
-        run: |
-          echo "Waiting for app to start..."
           sleep 30
           APP_URL="https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net"
-          echo "Testing: $APP_URL"
-          
-          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo "000")
-          echo "Health check response: $RESPONSE"
-          
-          if [ "$RESPONSE" = "200" ]; then
-            echo "✅ App is healthy and responding"
-          else
-            echo "⚠️ App health check failed with status: $RESPONSE"
-            echo "Check Azure Portal logs for details"
-          fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
+          echo "HTTP $code"
