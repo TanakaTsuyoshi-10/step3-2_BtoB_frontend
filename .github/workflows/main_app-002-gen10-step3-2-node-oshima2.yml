@@ -32,11 +32,25 @@ jobs:
 
           # 配布用フォルダ
           rm -rf deploy && mkdir -p deploy
+
           # standalone の本体を配置（server.js など）
           cp -R .next/standalone/* deploy/
+
           # 静的資産
           mkdir -p deploy/.next/static
           cp -R .next/static deploy/.next/static
+
+          # --- 必須: BUILD_ID を同梱 ---
+          mkdir -p deploy/.next
+          cp .next/BUILD_ID deploy/.next/BUILD_ID
+
+          # 任意: マニフェスト類（存在するものだけ）
+          for f in app-build-manifest.json app-path-routes-manifest.json \
+                   build-manifest.json images-manifest.json prerender-manifest.json \
+                   routes-manifest.json; do
+            [ -f ".next/$f" ] && cp ".next/$f" "deploy/.next/$f"
+          done
+
           # public があれば同梱
           if [ -d public ]; then cp -R public deploy/public; fi
 
@@ -62,6 +76,7 @@ jobs:
           echo "== Must-have files check =="
           [ -f deploy/server.js ] && echo "OK: server.js found" || (echo "NG: server.js missing" && exit 1)
           [ -f deploy/package.json ] && echo "OK: package.json found" || (echo "NG: package.json missing" && exit 1)
+          [ -f deploy/.next/BUILD_ID ] && echo "OK: .next/BUILD_ID found" || (echo "NG: .next/BUILD_ID missing" && exit 1)
           echo "== runtime package.json ==" && cat deploy/package.json
 
       - name: Archive artifact
