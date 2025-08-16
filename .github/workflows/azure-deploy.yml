@@ -1,0 +1,311 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: energy-management-app
+  AZURE_WEBAPP_PACKAGE_PATH: './deploy'
+  NODE_VERSION: '20'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build and prepare deployment
+      env:
+        NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'http://localhost:8000' }}
+      run: |
+        set -euxo pipefail
+        
+        # Disable telemetry to avoid prompts
+        npx next telemetry disable || true
+        
+        # Build the application
+        npm run build
+        
+        echo "=== Checking build output ==="
+        ls -la .next || true
+        ls -la .next/standalone || true
+        
+        # Find server entry point for standalone mode
+        entry=""
+        for cand in \
+          ".next/standalone/server.js" \
+          ".next/standalone/server.mjs" \
+          ".next/standalone/server/index.js" \
+          ".next/standalone/server/server.js"; do
+          if [ -f "$cand" ]; then 
+            entry="$cand"
+            echo "Found standalone entry: $entry"
+            break
+          fi
+        done
+        echo "ENTRY_FOUND=${entry:-"(none)"}"
+        
+        # Clean and create deploy directory
+        rm -rf deploy && mkdir -p deploy
+        
+        if [ -n "$entry" ]; then
+          echo "== Mode A: standalone deploy =="
+          
+          # Copy standalone application files
+          echo "Copying standalone files..."
+          cp -R .next/standalone/* deploy/
+          
+          # Copy additional Next.js build artifacts
+          echo "Copying Next.js build artifacts..."
+          mkdir -p deploy/.next
+          
+          if [ -f ".next/BUILD_ID" ]; then
+            cp ".next/BUILD_ID" "deploy/.next/BUILD_ID"
+            echo "✓ BUILD_ID copied"
+          fi
+          
+          if [ -d ".next/static" ]; then
+            mkdir -p deploy/.next/static
+            cp -R ".next/static/"* "deploy/.next/static/" || true
+            echo "✓ Static files copied"
+          fi
+          
+          if [ -f ".next/required-server-files.json" ]; then
+            cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
+            echo "✓ Required server files manifest copied"
+          fi
+          
+          if [ -f ".next/trace" ]; then
+            cp ".next/trace" "deploy/.next/trace"
+            echo "✓ Trace file copied"
+          fi
+          
+          # Copy public directory if exists
+          if [ -d "public" ]; then
+            cp -R public deploy/public
+            echo "✓ Public directory copied"
+          fi
+          
+          # Create production package.json using Node.js (no heredoc)
+          echo "Creating package.json for standalone mode..."
+          node -e "
+            const pkg = {
+              name: 'next-standalone-app',
+              private: true,
+              version: '0.0.1',
+              scripts: { 
+                start: 'PORT=8080 HOSTNAME=0.0.0.0 node server.js'
+              },
+              engines: { 
+                node: '>=20 <21'
+              }
+            };
+            const fs = require('fs');
+            fs.writeFileSync('deploy/package.json', JSON.stringify(pkg, null, 2));
+            console.log('✓ package.json created for standalone mode');
+          "
+          
+          echo "MODE=A" > deploy/DEPLOY_MODE.txt
+          
+        else
+          echo "== Mode B: next start deploy (fallback) =="
+          echo "Standalone mode not available, using next start"
+          
+          # Install production dependencies only
+          echo "Installing production dependencies..."
+          npm ci --omit=dev
+          
+          # Copy and modify package.json for next start
+          echo "Modifying package.json for next start..."
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.scripts = pkg.scripts || {};
+            pkg.scripts.start = 'next start -p 8080 -H 0.0.0.0';
+            fs.writeFileSync('deploy/package.json', JSON.stringify(pkg, null, 2));
+            console.log('✓ package.json modified for next start');
+          "
+          
+          # Copy runtime files
+          echo "Copying runtime files..."
+          cp -R .next deploy/.next
+          echo "✓ .next directory copied"
+          
+          if [ -d "public" ]; then
+            cp -R public deploy/public
+            echo "✓ Public directory copied"
+          fi
+          
+          if [ -f "next.config.js" ]; then
+            cp next.config.js deploy/next.config.js
+            echo "✓ Next.js config copied"
+          fi
+          
+          # Copy production node_modules
+          echo "Copying production node_modules..."
+          cp -R node_modules deploy/node_modules
+          echo "✓ Node modules copied"
+          
+          echo "MODE=B" > deploy/DEPLOY_MODE.txt
+        fi
+        
+        # Add deployment metadata
+        echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
+        
+        # Verify critical deployment files
+        echo "=== Deployment verification ==="
+        ls -la deploy/
+        echo ""
+        echo "Package.json contents:"
+        cat deploy/package.json
+        echo ""
+        
+        # Check for essential files
+        if [ -f deploy/server.js ]; then
+          echo "✓ server.js found (standalone mode)"
+        elif [ -f deploy/.next/server/app/page.js ] || [ -f deploy/.next/standalone/server.js ]; then
+          echo "✓ Next.js server files found"
+        else
+          echo "⚠ No obvious server entry point found"
+        fi
+        
+        if [ -f deploy/.next/BUILD_ID ]; then
+          echo "✓ BUILD_ID found: $(cat deploy/.next/BUILD_ID)"
+        else
+          echo "⚠ BUILD_ID missing"
+        fi
+        
+        if [ -f deploy/package.json ]; then
+          echo "✓ package.json found"
+        else
+          echo "✗ package.json missing - deployment will fail"
+          exit 1
+        fi
+
+    - name: Create deployment artifact
+      run: |
+        cd deploy
+        
+        # Create deployment zip
+        echo "Creating deployment zip..."
+        zip -r ../deployment.zip . -x "*.git*" "*.DS_Store*" "*.env*"
+        cd ..
+        
+        # Verify zip contents and structure
+        echo "=== Zip verification ==="
+        echo "Zip file size: $(ls -lh deployment.zip | awk '{print $5}')"
+        echo ""
+        echo "Top-level contents:"
+        unzip -l deployment.zip | head -20
+        echo ""
+        echo "Critical files check:"
+        
+        # Check for essential files in zip
+        if unzip -l deployment.zip | grep -q "package.json"; then
+          echo "✓ package.json in zip"
+        else
+          echo "✗ package.json missing from zip"
+          exit 1
+        fi
+        
+        if unzip -l deployment.zip | grep -q "server.js\|\.next/"; then
+          echo "✓ Server files in zip"
+        else
+          echo "✗ No server files found in zip"
+          exit 1
+        fi
+        
+        echo ""
+        unzip -l deployment.zip | tail -3
+
+    - name: Deploy to Azure App Service
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: './deployment.zip'
+
+    - name: Post-deployment verification
+      run: |
+        echo "=== Post-deployment verification ==="
+        
+        # Wait for deployment to stabilize
+        echo "Waiting for deployment to complete..."
+        sleep 45
+        
+        # Health check with retries
+        app_url="https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
+        max_attempts=12
+        attempt=1
+        success=false
+        
+        echo "Starting health checks for: $app_url"
+        
+        while [ $attempt -le $max_attempts ] && [ "$success" = false ]; do
+          echo "Health check attempt $attempt/$max_attempts"
+          
+          # Check if the app responds with any HTTP status
+          if response=$(curl -s -w "%{http_code}" -o /dev/null --max-time 30 "$app_url" 2>/dev/null); then
+            echo "HTTP Status: $response"
+            
+            if [ "$response" = "200" ] || [ "$response" = "301" ] || [ "$response" = "302" ]; then
+              echo "✓ App is responding successfully"
+              success=true
+            elif [ "$response" = "500" ] || [ "$response" = "502" ] || [ "$response" = "503" ]; then
+              echo "⚠ App returned server error: $response"
+            else
+              echo "ℹ App returned: $response"
+            fi
+          else
+            echo "✗ No response from app"
+          fi
+          
+          if [ "$success" = false ]; then
+            echo "Waiting 15 seconds before next attempt..."
+            sleep 15
+            attempt=$((attempt + 1))
+          fi
+        done
+        
+        if [ "$success" = true ]; then
+          echo ""
+          echo "🎉 Deployment successful! App is accessible at: $app_url"
+          
+          # Additional endpoint checks
+          echo ""
+          echo "Testing additional endpoints:"
+          for endpoint in "/api/health" "/login" "/dashboard"; do
+            if response=$(curl -s -w "%{http_code}" -o /dev/null --max-time 10 "${app_url}${endpoint}" 2>/dev/null); then
+              echo "  $endpoint: HTTP $response"
+            else
+              echo "  $endpoint: No response"
+            fi
+          done
+          
+        else
+          echo ""
+          echo "❌ Health check failed after $max_attempts attempts"
+          echo "App may still be starting up. Check Azure Portal for detailed logs."
+          echo "App URL: $app_url"
+          exit 1
+        fi
+
+    - name: Cleanup
+      if: always()
+      run: |
+        # Clean up temporary files
+        rm -f deployment.zip
+        echo "Cleanup completed"
