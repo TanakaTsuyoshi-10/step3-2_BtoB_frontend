@@ -50,6 +50,14 @@ jobs:
           else
             npm install
           fi
+          
+          # Sanity check: Verify Next.js binary exists
+          if [ ! -f "node_modules/next/dist/bin/next" ]; then
+            echo "ERROR: Next.js binary not found at node_modules/next/dist/bin/next"
+            exit 1
+          fi
+          echo "✅ Next.js binary verified at node_modules/next/dist/bin/next"
+          
           cd ..
           
           echo "Deploy package created successfully"
