@@ -1,49 +1,126 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - app-002-gen10-step3-2-node-oshima2
+name: Build and deploy Node.js app to Azure Web App
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
+      - name: Use Node.js 20 LTS
+        uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '20.x'
+          cache: 'npm'
 
-      - name: Upload artifact for deployment job
+      - name: Install
+        run: npm ci
+
+      - name: Build (Next.js standalone)
+        run: |
+          # Next.js 14 で standalone 出力
+          npx next telemetry disable || true
+          npm run build
+          # 配布用フォルダ作成
+          rm -rf deploy && mkdir -p deploy
+          # standalone + static + public を配置
+          cp -R .next/standalone/* deploy/
+          mkdir -p deploy/.next/static
+          cp -R .next/static deploy/.next/static
+          if [ -d public ]; then cp -R public deploy/public; fi
+          # 健康チェック用の簡易README
+          echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
+
+      - name: Create startup script
+        run: |
+          # App Service で Node を直接起動するための start コマンドを用意
+          cat > deploy/startup.sh << 'EOF'
+          #!/usr/bin/env bash
+          set -e
+          export PORT=${PORT:-3000}
+          # Next.js standalone のエントリ
+          node server.js
+          EOF
+          chmod +x deploy/startup.sh
+
+      - name: Archive artifact
+        run: |
+          cd deploy
+          zip -qr ../artifact.zip .
+          cd -
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: node-app
-          path: .
+          path: artifact.zip
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    
     steps:
-      - name: Download artifact from build job
+      - name: Download artifact
         uses: actions/download-artifact@v4
         with:
           name: node-app
-      
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
+          path: .
+
+      # クールダウン：管理操作とデプロイの衝突を避ける
+      - name: Cooldown before deploy
+        run: sleep 20
+
+      - name: Deploy to Azure Web App (ZIP)
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'app-002-gen10-step3-2-node-oshima2'
-          slot-name: 'Production'
-          package: .
+          app-name: app-002-gen10-step3-2-node-oshima2
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_97ED8F92C96E4A49A32EBE459DDE3312 }}
+          package: artifact.zip
+
+      # デプロイ後の診断情報収集
+      - name: Collect diagnostic logs
+        if: always()
+        run: |
+          echo "=== Deployment Diagnostics ===" > deployment-logs.txt
+          echo "Timestamp: $(date -u)" >> deployment-logs.txt
+          echo "Node Version Used: 20.x" >> deployment-logs.txt
+          echo "Deployment Method: ZIP Package (Standalone)" >> deployment-logs.txt
+          echo "Package Size: $(ls -lh artifact.zip)" >> deployment-logs.txt
+          echo "" >> deployment-logs.txt
+          echo "=== Environment Check ===" >> deployment-logs.txt
+          echo "WEBSITE_NODE_DEFAULT_VERSION should be: ~20" >> deployment-logs.txt
+          echo "SCM_DO_BUILD_DURING_DEPLOYMENT should be: false" >> deployment-logs.txt
+          echo "WEBSITE_RUN_FROM_PACKAGE should be: 1" >> deployment-logs.txt
+          echo "" >> deployment-logs.txt
+
+      - name: Upload diagnostic logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-diagnostics
+          path: deployment-logs.txt
+
+      # 健康チェック（失敗時でも継続）
+      - name: Health check
+        if: always()
+        run: |
+          echo "Waiting for app to start..."
+          sleep 30
+          APP_URL="https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net"
+          echo "Testing: $APP_URL"
+          
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo "000")
+          echo "Health check response: $RESPONSE"
+          
+          if [ "$RESPONSE" = "200" ]; then
+            echo "✅ App is healthy and responding"
+          else
+            echo "⚠️ App health check failed with status: $RESPONSE"
+            echo "Check Azure Portal logs for details"
+          fi
