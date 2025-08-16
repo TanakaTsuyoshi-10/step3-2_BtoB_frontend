@@ -32,7 +32,7 @@ jobs:
 
           # 配布用フォルダ
           rm -rf deploy && mkdir -p deploy
-          # standalone の本体を配置（server.js 等）
+          # standalone の本体を配置（server.js など）
           cp -R .next/standalone/* deploy/
           # 静的資産
           mkdir -p deploy/.next/static
@@ -42,31 +42,27 @@ jobs:
 
           # 実行用の最小 package.json（npm start -> node server.js）
           cat > deploy/package.json << 'EOF'
-          { "name":"next-standalone-app","private":true,"version":"0.0.1",
-            "scripts":{"start":"node server.js"},
-            "engines":{"node":">=20 <21"} }
+          {
+            "name": "next-standalone-app",
+            "private": true,
+            "version": "0.0.1",
+            "scripts": {
+              "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
+            },
+            "engines": { "node": ">=20 <21" }
+          }
           EOF
 
           # メタ情報
           echo "deployed $(date -u)" > deploy/DEPLOYED_AT.txt
 
-      - name: Create startup script
-        run: |
-          cat > deploy/startup.sh << 'EOF'
-          #!/usr/bin/env bash
-          set -e
-          export PORT=${PORT:-8080}
-          node server.js
-          EOF
-          chmod +x deploy/startup.sh
-
       - name: Sanity check deploy bundle
         run: |
-          echo "== List deploy tree =="
-          ls -la deploy | sed -n '1,200p'
+          echo "== List deploy tree ==" && ls -la deploy | sed -n '1,200p'
           echo "== Must-have files check =="
           [ -f deploy/server.js ] && echo "OK: server.js found" || (echo "NG: server.js missing" && exit 1)
           [ -f deploy/package.json ] && echo "OK: package.json found" || (echo "NG: package.json missing" && exit 1)
+          echo "== runtime package.json ==" && cat deploy/package.json
 
       - name: Archive artifact
         run: (cd deploy && zip -qr ../artifact.zip .)
@@ -100,7 +96,8 @@ jobs:
       - name: Health check (best-effort)
         if: always()
         run: |
-          sleep 30
+          echo "Waiting for app to start..."
+          sleep 45
           APP_URL="https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net"
           code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
           echo "HTTP $code"
