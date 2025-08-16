@@ -40,8 +40,8 @@ next-env.d.ts
 .yarn/install-state.gz
 .pnp.*
 
-# Package managers
-package-lock.json
+# Package managers (keep package-lock.json for CI)
+# package-lock.json  # Keep this for CI cache
 yarn.lock
 pnpm-lock.yaml
 
@@ -124,3 +124,6 @@ coverage/
 # Temporary folders
 tmp/
 temp/
+
+# Prevent nested duplicate folders
+/step3-2_BtoB_frontend/
