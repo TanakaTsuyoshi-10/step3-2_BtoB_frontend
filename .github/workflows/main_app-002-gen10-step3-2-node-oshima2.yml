@@ -33,25 +33,24 @@ jobs:
           npm run build
 
           # 配布用フォルダ
-          rm -rf deploy && mkdir -p deploy
+          rm -rf deploy && mkdir -p deploy/.next
 
-          # standalone の本体（server.js など）
-          cp -R .next/standalone/* deploy/
+          # ★ 公式レイアウト：standalone フォルダごとコピー
+          #   （この中に server.js と最小限の .next が既に入っている）
+          cp -R .next/standalone deploy/.next/standalone
 
-          # 静的資産
-          mkdir -p deploy/.next/static
-          cp -R .next/static deploy/.next/static
+          # ★ 静的資産は standalone の .next/static 配下へ
+          mkdir -p deploy/.next/standalone/.next/static
+          cp -R .next/static/* deploy/.next/standalone/.next/static/
 
-          # 必須: BUILD_ID
-          mkdir -p deploy/.next
-          cp .next/BUILD_ID deploy/.next/BUILD_ID
+          # ★ public があれば standalone 内へ
+          if [ -d public ]; then
+            cp -R public deploy/.next/standalone/public
+          fi
 
-          # （任意だが安全策）runtime が参照することがあるファイルも同梱
-          [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/required-server-files.json"
-          [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/trace"
-
-          # public があれば
-          if [ -d public ]; then cp -R public deploy/public; fi
+          # 任意の追補（存在する場合のみ）
+          [ -f ".next/required-server-files.json" ] && cp ".next/required-server-files.json" "deploy/.next/standalone/.next/required-server-files.json"
+          [ -f ".next/trace" ] && cp ".next/trace" "deploy/.next/standalone/.next/trace"
 
           # 実行用の最小 package.json（App Service は npm start を実行）
           cat > deploy/package.json << 'EOF'
@@ -60,7 +59,7 @@ jobs:
             "private": true,
             "version": "0.0.1",
             "scripts": {
-              "start": "PORT=8080 HOSTNAME=0.0.0.0 node server.js"
+              "start": "PORT=8080 HOSTNAME=0.0.0.0 node .next/standalone/server.js"
             },
             "engines": { "node": ">=20 <21" }
           }
@@ -74,9 +73,10 @@ jobs:
         run: |
           set -euxo pipefail
           ls -la deploy | sed -n '1,200p'
-          [ -f deploy/server.js ] || (echo "NG: deploy/server.js missing"; exit 1)
-          [ -f deploy/package.json ] || (echo "NG: deploy/package.json missing"; exit 1)
-          [ -f deploy/.next/BUILD_ID ] || (echo "NG: deploy/.next/BUILD_ID missing"; exit 1)
+          # 必須ファイルチェック
+          [ -f deploy/.next/standalone/server.js ] || (echo "NG: server.js missing"; exit 1)
+          [ -f deploy/package.json ] || (echo "NG: package.json missing"; exit 1)
+          [ -f deploy/.next/standalone/.next/BUILD_ID ] || (echo "NG: BUILD_ID missing"; exit 1)
 
       - name: Archive artifact
         shell: bash
@@ -84,7 +84,7 @@ jobs:
           set -euxo pipefail
           (cd deploy && zip -qr ../artifact.zip .)
           ls -lh artifact.zip
-          unzip -l artifact.zip | sed -n '1,120p'
+          unzip -l artifact.zip | sed -n '1,200p'
           # 空や極端に小さい zip を弾く（10KB未満なら異常とみなす）
           [ $(stat -c%s artifact.zip) -ge 10240 ] || (echo "artifact.zip too small"; exit 1)
 
@@ -110,10 +110,11 @@ jobs:
         run: |
           set -euxo pipefail
           ls -lh artifact.zip
-          unzip -l artifact.zip | sed -n '1,120p'
+          unzip -l artifact.zip | sed -n '1,200p'
           [ $(stat -c%s artifact.zip) -ge 10240 ] || (echo "artifact.zip too small"; exit 1)
-          unzip -l artifact.zip | grep -E '(^|/)server\.js$'
-          unzip -l artifact.zip | grep -E '(^|/)\.next/BUILD_ID$'
+          # ここで server.js/BUILD_ID を確実に検出
+          unzip -l artifact.zip | grep -E '(^|/)\.next/standalone/server\.js$'
+          unzip -l artifact.zip | grep -E '(^|/)\.next/standalone/\.next/BUILD_ID$'
           unzip -l artifact.zip | grep -E '(^|/)package\.json$'
 
       - name: Cooldown before deploy
