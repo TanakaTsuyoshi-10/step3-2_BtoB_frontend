@@ -45,12 +45,12 @@ jobs:
           [ -d public ] && cp -R public deploy/public || true
           [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
           
-          # Install production dependencies
+          # Install all dependencies (including dev deps for Next.js runtime)
           cd deploy
           if [ -f package-lock.json ]; then
-            npm ci --omit=dev
+            npm ci
           else
-            npm install --omit=dev
+            npm install
           fi
           
           echo "Deploy package created successfully"
