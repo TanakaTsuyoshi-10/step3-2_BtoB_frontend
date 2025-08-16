@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net' }}
+      NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT != '' && secrets.NEXT_PUBLIC_API_ENDPOINT || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,6 +28,8 @@ jobs:
         run: npm ci
 
       - name: Build Next.js application
+        env:
+          NODE_ENV: production
         run: npm run build
 
       - name: Create deployment package
@@ -35,23 +37,20 @@ jobs:
         run: |
           set -euxo pipefail
           
-          # Create deploy directory
           rm -rf deploy && mkdir -p deploy
-          
-          # Copy built application
           cp package.json deploy/package.json
           [ -f package-lock.json ] && cp package-lock.json deploy/package-lock.json || true
           cp -R .next deploy/.next
           [ -d public ] && cp -R public deploy/public || true
           [ -f next.config.js ] && cp next.config.js deploy/next.config.js || true
           
-          # Install all dependencies (including dev deps for Next.js runtime)
           cd deploy
           if [ -f package-lock.json ]; then
-            npm ci
+            npm ci --omit=dev
           else
-            npm install
+            npm install --omit=dev
           fi
+          cd ..
           
           echo "Deploy package created successfully"
           ls -la
@@ -74,7 +73,10 @@ jobs:
         if: always()
         shell: bash
         run: |
-          sleep 30
-          APP_URL="https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net"
-          code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" || echo 000)
-          echo "HTTP $code"
+          for i in 1 2 3; do
+            sleep 60
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net" || echo 000)
+            echo "Attempt $i: HTTP $code"
+            [ "$code" = "200" ] && exit 0
+          done
+          exit 1
