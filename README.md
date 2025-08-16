@@ -22,6 +22,12 @@ React-based frontend application built with Next.js, providing an intuitive dash
 - **React Hook Form**: Form handling and validation
 - **Lucide React**: Modern icon library
 
+## Deployment Status
+
+🚀 **Azure App Service Deployment**: Automated via GitHub Actions  
+📦 **Build Mode**: Standalone (Mode A) with fallback to next start (Mode B)  
+🔄 **Last Deploy**: Active deployment pipeline configured
+
 ## Quick Start
 
 ### Prerequisites
