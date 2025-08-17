@@ -1,10 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// DEBUG: remove after fix
-// eslint-disable-next-line no-console
-console.log('NEXT_PUBLIC_API_BASE =', process.env.NEXT_PUBLIC_API_BASE);
-
 const API_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
 
 export const api = axios.create({
@@ -13,10 +9,6 @@ export const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
-
-// DEBUG: remove after fix
-// eslint-disable-next-line no-console
-console.log('axios baseURL =', api.defaults.baseURL);
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
