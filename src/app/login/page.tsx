@@ -35,32 +35,28 @@ const LoginPage: React.FC = () => {
       const tokenResponse = await authAPI.login(formData);
       setAuthToken(tokenResponse.access_token);
       
-      try {
-        const userResponse = await authAPI.getCurrentUser();
-        setCurrentUser(userResponse);
-        router.push('/dashboard');
-      } catch (userErr: any) {
-        // If getCurrentUser fails, clear the token and show error
-        setAuthToken('');
-        const userErrorMessage = userErr.response?.data?.detail || 'Failed to get user information';
-        setError(`Login successful, but ${userErrorMessage}. Please try again.`);
-        console.error('Get user error:', userErr);
-      }
+      const userResponse = await authAPI.me(tokenResponse.access_token);
+      setCurrentUser(userResponse);
+      router.push('/dashboard');
     } catch (err: any) {
-      let errorMessage = 'Login failed. Please try again.';
-      
-      if (err.response?.data?.detail) {
-        errorMessage = err.response.data.detail;
-      } else if (err.response?.status >= 500) {
-        errorMessage = 'Server error. Please try again later.';
-      } else if (err.code === 'NETWORK_ERROR' || !err.response) {
-        errorMessage = 'Network error. Please check your connection and try again.';
-      } else if (err.message) {
-        errorMessage = err.message;
+      // Axios ネットワーク/サーバー/バリデーションの切り分け
+      const isAxios = !!err?.isAxiosError;
+      if (isAxios) {
+        const status = err?.response?.status;
+        const data = err?.response?.data;
+        const url = err?.config?.baseURL ? (err?.config?.baseURL + (err?.config?.url || '')) : (err?.config?.url || '');
+        console.error('[LOGIN FAILED]', { status, data, url, err });
+        if (!err?.response) {
+          setError('Network error. Please check your connection and try again.');
+        } else if (status === 401) {
+          setError('Incorrect email or password.');
+        } else {
+          setError(data?.detail || 'Login failed. Please try again.');
+        }
+      } else {
+        console.error('[LOGIN FAILED:UNKNOWN]', err);
+        setError('Unexpected error occurred.');
       }
-      
-      setError(errorMessage);
-      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }

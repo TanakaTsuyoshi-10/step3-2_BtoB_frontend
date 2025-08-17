@@ -1,17 +1,24 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1';
 
-export const api = axios.create({
-  baseURL: `${API_URL}/api/v1`,
+const instance = axios.create({
+  baseURL: API_BASE,
+  timeout: 15000,
   headers: {
-    'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
 
+// デバッグ(一回だけ)
+if (typeof window !== 'undefined' && !(window as any).__API_BASE_LOGGED__) {
+  console.log('[API] baseURL =', API_BASE);
+  (window as any).__API_BASE_LOGGED__ = true;
+}
+
 // Request interceptor to add auth token
-api.interceptors.request.use(
+instance.interceptors.request.use(
   (config) => {
     const token = Cookies.get('access_token');
     if (token) {
@@ -25,7 +32,7 @@ api.interceptors.request.use(
 );
 
 // Response interceptor to handle auth errors
-api.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
@@ -38,4 +45,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export default instance;

@@ -1,45 +1,19 @@
-import api from './axios';
-import {
-  User,
-  Device,
-  EnergyRecord,
-  Token,
-  LoginFormData,
-  RegisterFormData,
-  DeviceFormData,
-  EnergyRecordFormData,
-  DailySummary,
-} from '@/types';
+import axios from './axios';
 
-// Auth API
 export const authAPI = {
-  login: async (data: LoginFormData): Promise<Token> => {
-    const formData = new URLSearchParams();
-    formData.set('username', data.username);
-    formData.set('password', data.password);
-    
-    const response = await api.post('/login/access-token', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-    return response.data;
+  async login({ username, password }: { username: string; password: string }) {
+    const body = new URLSearchParams();
+    body.set('username', username);
+    body.set('password', password);
+    return axios.post('/login/access-token', body, {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then(r => r.data);
   },
-
-  register: async (data: RegisterFormData): Promise<User> => {
-    const response = await api.post('/users/', data);
-    return response.data;
-  },
-
-  testToken: async (): Promise<User> => {
-    const response = await api.post('/login/test-token');
-    return response.data;
-  },
-
-  getCurrentUser: async (): Promise<User> => {
-    const response = await api.get('/users/me');
-    return response.data;
-  },
+  async me(token: string) {
+    return axios.get('/login/test-token', {
+      headers: { Authorization: `Bearer ${token}` },
+    }).then(r => r.data);
+  }
 };
 
 // Users API
