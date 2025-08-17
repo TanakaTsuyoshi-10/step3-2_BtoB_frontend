@@ -17,7 +17,7 @@ export const authAPI = {
     return axios.post('/users/', userData).then(r => r.data);
   },
   async me(token: string) {
-    return axios.get('/login/test-token', {
+    return axios.get('/users/me', {
       headers: { Authorization: `Bearer ${token}` },
     }).then(r => r.data);
   },
