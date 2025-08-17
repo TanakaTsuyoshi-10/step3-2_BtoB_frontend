@@ -1,4 +1,8 @@
 import axios from './axios';
+import { User, Device, EnergyRecord, DeviceFormData, EnergyRecordFormData, DailySummary } from '@/types';
+
+// Use the same axios instance for all APIs
+const api = axios;
 
 export const authAPI = {
   async login({ username, password }: { username: string; password: string }) {
@@ -9,10 +13,16 @@ export const authAPI = {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(r => r.data);
   },
+  async register(userData: { email: string; password: string; full_name?: string }) {
+    return axios.post('/users/', userData).then(r => r.data);
+  },
   async me(token: string) {
     return axios.get('/login/test-token', {
       headers: { Authorization: `Bearer ${token}` },
     }).then(r => r.data);
+  },
+  async getCurrentUser() {
+    return axios.get('/users/me').then(r => r.data);
   }
 };
 
