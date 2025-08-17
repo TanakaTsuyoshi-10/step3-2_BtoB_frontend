@@ -14,9 +14,9 @@ import {
 // Auth API
 export const authAPI = {
   login: async (data: LoginFormData): Promise<Token> => {
-    const formData = new FormData();
-    formData.append('username', data.username);
-    formData.append('password', data.password);
+    const formData = new URLSearchParams();
+    formData.set('username', data.username);
+    formData.set('password', data.password);
     
     const response = await api.post('/login/access-token', formData, {
       headers: {

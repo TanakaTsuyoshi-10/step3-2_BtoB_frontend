@@ -40,7 +40,9 @@ const LoginPage: React.FC = () => {
       
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Login failed. Please try again.');
+      const errorMessage = err.response?.data?.detail || err.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      console.error('Login error:', err);
     } finally {
       setIsLoading(false);
     }
