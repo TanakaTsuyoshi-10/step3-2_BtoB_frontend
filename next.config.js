@@ -10,10 +10,10 @@ const nextConfig = {
     ],
   },
   env: {
-    NEXT_PUBLIC_API_ENDPOINT: process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:8000',
+    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000',
   },
   async rewrites() {
-    const target = process.env.NEXT_PUBLIC_API_ENDPOINT || 'http://localhost:8000';
+    const target = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
     if (!target) return [];
     return [
       { source: '/api/:path*', destination: `${target.replace(/\/+$/, '')}/:path*` },

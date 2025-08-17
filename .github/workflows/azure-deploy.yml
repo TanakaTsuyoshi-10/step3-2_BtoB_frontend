@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      NEXT_PUBLIC_API_ENDPOINT: ${{ secrets.NEXT_PUBLIC_API_ENDPOINT != '' && secrets.NEXT_PUBLIC_API_ENDPOINT || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net' }}
+      NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE != '' && secrets.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
