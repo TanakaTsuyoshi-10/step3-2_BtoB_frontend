@@ -2,7 +2,11 @@ import Cookies from 'js-cookie';
 import { User } from '@/types';
 
 export const setAuthToken = (token: string) => {
-  Cookies.set('access_token', token, { expires: 7 }); // 7 days
+  if (token) {
+    Cookies.set('access_token', token, { expires: 7 }); // 7 days
+  } else {
+    Cookies.remove('access_token');
+  }
 };
 
 export const getAuthToken = (): string | undefined => {

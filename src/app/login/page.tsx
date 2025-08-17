@@ -35,12 +35,30 @@ const LoginPage: React.FC = () => {
       const tokenResponse = await authAPI.login(formData);
       setAuthToken(tokenResponse.access_token);
       
-      const userResponse = await authAPI.getCurrentUser();
-      setCurrentUser(userResponse);
-      
-      router.push('/dashboard');
+      try {
+        const userResponse = await authAPI.getCurrentUser();
+        setCurrentUser(userResponse);
+        router.push('/dashboard');
+      } catch (userErr: any) {
+        // If getCurrentUser fails, clear the token and show error
+        setAuthToken('');
+        const userErrorMessage = userErr.response?.data?.detail || 'Failed to get user information';
+        setError(`Login successful, but ${userErrorMessage}. Please try again.`);
+        console.error('Get user error:', userErr);
+      }
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.message || 'Login failed. Please try again.';
+      let errorMessage = 'Login failed. Please try again.';
+      
+      if (err.response?.data?.detail) {
+        errorMessage = err.response.data.detail;
+      } else if (err.response?.status >= 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (err.code === 'NETWORK_ERROR' || !err.response) {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
       setError(errorMessage);
       console.error('Login error:', err);
     } finally {
