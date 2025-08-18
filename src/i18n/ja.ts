@@ -119,9 +119,9 @@ export const ja = {
   
   admin: {
     title: "管理コンソール",
-    pointsRules: "ポイントルール",
+    pointsRulesLabel: "ポイントルール",
     rewardsManagement: "景品管理",
-    reports: "レポート",
+    reportsLabel: "レポート",
     users: "ユーザー管理",
     
     pointsRules: {
