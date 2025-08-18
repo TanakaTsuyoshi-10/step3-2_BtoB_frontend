@@ -45,17 +45,21 @@ const LoginPage: React.FC = () => {
         const status = err?.response?.status;
         const data = err?.response?.data;
         const url = err?.config?.baseURL ? (err?.config?.baseURL + (err?.config?.url || '')) : (err?.config?.url || '');
-        console.error('[LOGIN FAILED]', { status, data, url, err });
+        console.error('[ログイン失敗]', { status, data, url, err });
         if (!err?.response) {
-          setError('Network error. Please check your connection and try again.');
+          setError('ネットワークエラーが発生しました。接続状況を確認してから再度お試しください。');
         } else if (status === 401) {
-          setError('Incorrect email or password.');
+          setError('メールアドレスまたはパスワードが正しくありません。');
+        } else if (status === 400) {
+          setError(data?.detail || 'アカウントが無効になっています。');
+        } else if (status >= 500) {
+          setError('サーバーエラーが発生しました。しばらく時間をおいてから再度お試しください。');
         } else {
-          setError(data?.detail || 'Login failed. Please try again.');
+          setError(data?.detail || 'ログインに失敗しました。再度お試しください。');
         }
       } else {
-        console.error('[LOGIN FAILED:UNKNOWN]', err);
-        setError('Unexpected error occurred.');
+        console.error('[ログイン失敗:不明]', err);
+        setError('予期しないエラーが発生しました。');
       }
     } finally {
       setIsLoading(false);
@@ -70,8 +74,8 @@ const LoginPage: React.FC = () => {
             <div className="flex items-center justify-center mb-4">
               <Zap className="w-12 h-12 text-primary-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Energy Manager</h1>
-            <p className="text-gray-600 mt-2">Sign in to your account</p>
+            <h1 className="text-2xl font-bold text-gray-900">エネルギーマネージャー</h1>
+            <p className="text-gray-600 mt-2">アカウントにログイン</p>
           </div>
 
           {error && (
@@ -83,7 +87,7 @@ const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Email
+                メールアドレス
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -95,14 +99,14 @@ const LoginPage: React.FC = () => {
                   value={formData.username}
                   onChange={handleInputChange}
                   className="input-field pl-10"
-                  placeholder="Enter your email"
+                  placeholder="メールアドレスを入力"
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Password
+                パスワード
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -114,7 +118,7 @@ const LoginPage: React.FC = () => {
                   value={formData.password}
                   onChange={handleInputChange}
                   className="input-field pl-10 pr-10"
-                  placeholder="Enter your password"
+                  placeholder="パスワードを入力"
                 />
                 <button
                   type="button"
@@ -131,15 +135,15 @@ const LoginPage: React.FC = () => {
               disabled={isLoading}
               className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? 'ログイン中...' : 'ログイン'}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don&apos;t have an account?{' '}
+              アカウントをお持ちでない方は{' '}
               <Link href="/register" className="font-medium text-primary-600 hover:text-primary-500">
-                Sign up
+                新規登録
               </Link>
             </p>
           </div>
