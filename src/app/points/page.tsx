@@ -290,33 +290,37 @@ const PointsPage: React.FC = () => {
 
         {/* クイックアクション */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/rewards')}>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Coins className="w-6 h-6 text-green-600" />
+          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/rewards')}>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Coins className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">景品を見る</h3>
+                    <p className="text-sm text-gray-600">ポイントで景品と交換</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">景品を見る</h3>
-                  <p className="text-sm text-gray-600">ポイントで景品と交換</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
           
-          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/ranking')}>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-blue-600" />
+          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/ranking')}>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <TrendingUp className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900">ランキングを見る</h3>
+                    <p className="text-sm text-gray-600">順位を確認してポイントを獲得</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">ランキングを見る</h3>
-                  <p className="text-sm text-gray-600">順位を確認してポイントを獲得</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </Layout>
