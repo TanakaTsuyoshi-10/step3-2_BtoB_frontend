@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// BtoBtoC Energy Management System - Production Build Configuration
 const nextConfig = {
   output: 'standalone',
   images: {
