@@ -2,18 +2,29 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { LogOut, User, Settings, Zap } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
+import { LogOut, User, Settings, Zap, LayoutDashboard, Trophy, Coins, Package, Gift, FileText, Cog } from 'lucide-react';
 import { logout, getCurrentUser } from '@/lib/auth';
 
 const Navbar: React.FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const user = getCurrentUser();
 
   const handleLogout = () => {
     logout();
     router.push('/login');
   };
+
+  const navigationItems = [
+    { name: 'ダッシュボード', href: '/dashboard', icon: LayoutDashboard },
+    { name: '社内ランキング', href: '/ranking', icon: Trophy },
+    { name: 'ポイント管理', href: '/points', icon: Coins },
+    { name: '交換状況', href: '/rewards', icon: Package },
+    { name: '商品管理', href: '/admin', icon: Gift },
+    { name: 'レポート作成', href: '/reports', icon: FileText },
+    { name: '設定', href: '/settings', icon: Cog },
+  ];
 
   return (
     <nav className="bg-white border-b border-gray-200 px-6 py-4">
@@ -26,31 +37,26 @@ const Navbar: React.FC = () => {
             </span>
           </Link>
           
-          <div className="hidden md:flex space-x-6">
-            <Link
-              href="/dashboard"
-              className="text-gray-700 hover:text-primary-600 font-medium"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/devices"
-              className="text-gray-700 hover:text-primary-600 font-medium"
-            >
-              Devices
-            </Link>
-            <Link
-              href="/energy-records"
-              className="text-gray-700 hover:text-primary-600 font-medium"
-            >
-              Energy Records
-            </Link>
-            <Link
-              href="/reports"
-              className="text-gray-700 hover:text-primary-600 font-medium"
-            >
-              Reports
-            </Link>
+          <div className="hidden md:flex space-x-1">
+            {navigationItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md font-medium transition-colors ${
+                    isActive
+                      ? 'text-primary-600 bg-primary-50 border-b-2 border-primary-600'
+                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span>{item.name}</span>
+                </Link>
+              );
+            })}
           </div>
         </div>
 
