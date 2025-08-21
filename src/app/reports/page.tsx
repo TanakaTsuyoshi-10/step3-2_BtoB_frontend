@@ -1,255 +1,449 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Search, Plus, Download, FileText, Calendar } from 'lucide-react';
-import { reportsAPI, ReportSummary, formatTonnes, downloadFile } from '@/lib/reportingApi';
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
+import Layout from '@/components/layout/Layout';
+import { generateReport, getReportStatus, downloadReport, previewReport } from '@/lib/api/reports';
+
+interface AutoReportRequest {
+  start_date: string;
+  end_date: string;
+  format: string;
+  include_charts: boolean;
+  report_type: string;
+}
+
+interface AutoReportPreview {
+  title: string;
+  period: string;
+  summary: string;
+  key_metrics: Record<string, any>;
+  content_preview: string;
+}
+
+interface AutoReportStatus {
+  report_id: string;
+  status: string;
+  progress: number;
+  message?: string;
+  created_at: string;
+  completed_at?: string;
+}
+
+interface ReportHistoryItem {
+  id: string;
+  name: string;
+  format: string;
+  created_at: string;
+  status: string;
+}
 
 const ReportsPage: React.FC = () => {
-  const [reports, setReports] = useState<ReportSummary[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>('');
-  const [search, setSearch] = useState('');
-  const [periodStart, setPeriodStart] = useState('');
-  const [periodEnd, setPeriodEnd] = useState('');
-  const [downloading, setDownloading] = useState<string | null>(null);
+  const [formData, setFormData] = useState<AutoReportRequest>({
+    start_date: '',
+    end_date: '',
+    format: 'pdf',
+    include_charts: true,
+    report_type: 'summary'
+  });
+  
+  const [preview, setPreview] = useState<AutoReportPreview | null>(null);
+  const [reportStatus, setReportStatus] = useState<AutoReportStatus | null>(null);
+  const [reportHistory, setReportHistory] = useState<ReportHistoryItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('create');
 
-  const loadReports = async () => {
+  // プリセット期間設定
+  const setPresetPeriod = (preset: 'thisMonth' | 'lastMonth' | 'thisQuarter' | 'thisYear') => {
+    const now = new Date();
+    let start: Date, end: Date;
+
+    switch (preset) {
+      case 'thisMonth':
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+        end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        break;
+      case 'lastMonth':
+        start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        end = new Date(now.getFullYear(), now.getMonth(), 0);
+        break;
+      case 'thisQuarter':
+        const quarter = Math.floor(now.getMonth() / 3);
+        start = new Date(now.getFullYear(), quarter * 3, 1);
+        end = new Date(now.getFullYear(), quarter * 3 + 3, 0);
+        break;
+      case 'thisYear':
+        start = new Date(now.getFullYear(), 0, 1);
+        end = new Date(now.getFullYear(), 11, 31);
+        break;
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      start_date: start.toISOString().split('T')[0],
+      end_date: end.toISOString().split('T')[0]
+    }));
+  };
+
+  const handlePreview = async () => {
+    if (!formData.start_date || !formData.end_date) {
+      alert('開始日と終了日を入力してください');
+      return;
+    }
+
+    try {
+      setPreviewLoading(true);
+      
+      // ダミーデータでプレビュー表示
+      setPreview({
+        title: `エネルギー管理レポート (${formData.start_date} 〜 ${formData.end_date})`,
+        period: `${formData.start_date} 〜 ${formData.end_date}`,
+        summary: '期間中の総消費電力量 15,240 kWh、CO2削減量 5,180 kg-CO2',
+        key_metrics: {
+          total_consumption: 15240,
+          co2_reduction: 5180,
+          active_employees: 38,
+          total_points: 12400
+        },
+        content_preview: `# エネルギー管理レポート
+
+## 対象期間
+${formData.start_date}から${formData.end_date}まで
+
+## エグゼクティブサマリー
+当期間において、当社のエネルギー管理システムから以下の成果が確認されました。
+
+### 主要指標
+- 総消費電力量: 15,240 kWh
+- CO2削減量: 5,180 kg-CO2
+- 参加従業員数: 38 名
+- 獲得ポイント総計: 12,400 ポイント
+
+### 分析結果
+当期間中のエネルギー使用量は前期比で削減しており、従業員の省エネ意識向上が着実に進んでいることが確認できます。`
+      });
+      setActiveTab('preview');
+    } catch (error) {
+      console.error('Failed to generate preview:', error);
+      alert('プレビューの生成に失敗しました');
+    } finally {
+      setPreviewLoading(false);
+    }
+  };
+
+  const handleGenerate = async () => {
+    if (!formData.start_date || !formData.end_date) {
+      alert('開始日と終了日を入力してください');
+      return;
+    }
+
     try {
       setLoading(true);
-      const data = await reportsAPI.getReports({
-        search: search || undefined,
-        period_start: periodStart || undefined,
-        period_end: periodEnd || undefined,
-        limit: 100
+      
+      // レポート生成開始（ダミー）
+      const reportId = `report_${Date.now()}`;
+      setReportStatus({
+        report_id: reportId,
+        status: 'processing',
+        progress: 0,
+        message: 'レポート生成を開始しました',
+        created_at: new Date().toISOString()
       });
-      setReports(data);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || 'レポートの取得に失敗しました');
+      
+      setActiveTab('status');
+      
+      // 進捗シミュレーション
+      const progressInterval = setInterval(() => {
+        setReportStatus(prev => {
+          if (!prev || prev.progress >= 100) {
+            clearInterval(progressInterval);
+            return prev;
+          }
+          
+          const newProgress = Math.min(prev.progress + 20, 100);
+          const messages = [
+            'データを収集中...',
+            'レポートを生成中...',
+            'グラフを作成中...',
+            'ファイルを準備中...',
+            'レポート生成完了'
+          ];
+          
+          return {
+            ...prev,
+            progress: newProgress,
+            message: messages[Math.floor(newProgress / 20)] || 'レポート生成完了',
+            status: newProgress === 100 ? 'completed' : 'processing',
+            completed_at: newProgress === 100 ? new Date().toISOString() : prev.completed_at
+          };
+        });
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Failed to generate report:', error);
+      alert('レポート生成に失敗しました');
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    loadReports();
-  }, []);
-
-  const handleSearch = () => {
-    loadReports();
+  const handleDownload = () => {
+    if (!reportStatus || reportStatus.status !== 'completed') return;
+    
+    // ダミーダウンロード
+    const link = document.createElement('a');
+    link.href = 'data:text/plain;charset=utf-8,レポートファイル（ダミー）';
+    link.download = `energy_report_${new Date().getTime()}.${formData.format}`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // 履歴に追加
+    const newReport: ReportHistoryItem = {
+      id: reportStatus.report_id,
+      name: `エネルギーレポート_${formData.start_date}`,
+      format: formData.format,
+      created_at: new Date().toISOString(),
+      status: 'completed'
+    };
+    setReportHistory(prev => [newReport, ...prev].slice(0, 10));
   };
-
-  const handleDownloadCSV = async (report: ReportSummary) => {
-    try {
-      setDownloading(report.id);
-      const blob = await reportsAPI.exportCSV(report.id);
-      downloadFile(blob, `report_${report.name}_${report.period_start}_${report.period_end}.csv`);
-    } catch (err: any) {
-      setError('CSVダウンロードに失敗しました');
-    } finally {
-      setDownloading(null);
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ja-JP');
-  };
-
-  const getStatusBadge = (status: string) => {
-    const baseClasses = "px-2 py-1 text-xs font-medium rounded-full";
-    if (status === 'published') {
-      return `${baseClasses} bg-green-100 text-green-800`;
-    }
-    return `${baseClasses} bg-yellow-100 text-yellow-800`;
-  };
-
-  const getStatusText = (status: string) => {
-    return status === 'published' ? '確定' : '下書き';
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">レポートを読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">CO₂削減レポート</h1>
-                <p className="mt-1 text-sm text-gray-500">企業のCO₂削減量を管理・公表用レポートを作成</p>
-              </div>
-              <Link 
-                href="/reports/new"
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                新規作成
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 検索・フィルタ */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">検索</label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="レポート名、作成者で検索..."
-                  className="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">期間開始</label>
-              <input
-                type="date"
-                value={periodStart}
-                onChange={(e) => setPeriodStart(e.target.value)}
-                className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">期間終了</label>
-              <input
-                type="date"
-                value={periodEnd}
-                onChange={(e) => setPeriodEnd(e.target.value)}
-                className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
-              />
-            </div>
-          </div>
-          <div className="mt-4 flex justify-end">
-            <button
-              onClick={handleSearch}
-              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              検索
-            </button>
-          </div>
+    <Layout>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">自動レポート作成</h1>
+          <p className="text-gray-600">期間を指定してエネルギー使用量レポートを自動生成・CSR/IR対応</p>
         </div>
 
-        {/* エラー表示 */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-            <p className="text-red-800">{error}</p>
-          </div>
-        )}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+            <TabsTrigger value="create" className="whitespace-nowrap">レポート作成</TabsTrigger>
+            <TabsTrigger value="preview" className="whitespace-nowrap">プレビュー</TabsTrigger>
+            <TabsTrigger value="status" className="whitespace-nowrap">進捗状況</TabsTrigger>
+            <TabsTrigger value="history" className="whitespace-nowrap">作成履歴</TabsTrigger>
+          </TabsList>
 
-        {/* レポート一覧 */}
-        <div className="bg-white shadow rounded-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    レポート名
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    対象期間
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    作成者
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    合計削減量
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    ステータス
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    作成日
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    操作
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {reports.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
-                      <FileText className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                      <p>レポートがありません</p>
-                      <Link 
-                        href="/reports/new"
-                        className="mt-2 inline-flex items-center text-primary-600 hover:text-primary-500"
-                      >
-                        <Plus className="w-4 h-4 mr-1" />
-                        新規作成
-                      </Link>
-                    </td>
-                  </tr>
-                ) : (
-                  reports.map((report) => (
-                    <tr key={report.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <Link 
-                          href={`/reports/${report.id}`}
-                          className="text-primary-600 hover:text-primary-900 font-medium"
-                        >
-                          {report.name}
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                          {formatDate(report.period_start)} - {formatDate(report.period_end)}
+          <TabsContent value="create" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>レポート設定</CardTitle>
+                <CardDescription>
+                  レポートの対象期間と出力形式を設定してください
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* プリセット期間 */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    期間プリセット
+                  </label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisMonth')}>
+                      今月
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('lastMonth')}>
+                      先月
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisQuarter')}>
+                      四半期
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisYear')}>
+                      年度
+                    </Button>
+                  </div>
+                </div>
+
+                {/* 期間設定 */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      開始日 *
+                    </label>
+                    <Input
+                      type="date"
+                      value={formData.start_date}
+                      onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      終了日 *
+                    </label>
+                    <Input
+                      type="date"
+                      value={formData.end_date}
+                      onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* 出力形式・オプション */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      出力形式
+                    </label>
+                    <Select
+                      value={formData.format}
+                      onValueChange={(value) => setFormData({ ...formData, format: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pdf">PDF（推奨）</SelectItem>
+                        <SelectItem value="docx">Word文書 (.docx)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      レポートタイプ
+                    </label>
+                    <Select
+                      value={formData.report_type}
+                      onValueChange={(value) => setFormData({ ...formData, report_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="summary">サマリーレポート</SelectItem>
+                        <SelectItem value="detailed">詳細レポート</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* アクションボタン */}
+                <div className="flex space-x-4">
+                  <Button
+                    onClick={handlePreview}
+                    disabled={previewLoading}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    {previewLoading ? 'プレビュー生成中...' : 'プレビュー'}
+                  </Button>
+                  <Button
+                    onClick={handleGenerate}
+                    disabled={loading}
+                    className="flex-1"
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    {loading ? 'レポート生成中...' : 'レポート生成'}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* その他のタブコンテンツは省略 */}
+          <TabsContent value="preview">
+            {preview ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>{preview.title}</CardTitle>
+                  <CardDescription>対象期間: {preview.period}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <pre className="text-sm text-gray-700 whitespace-pre-wrap">
+                      {preview.content_preview}
+                    </pre>
+                  </div>
+                  <Button onClick={handleGenerate} disabled={loading}>
+                    <FileText className="w-4 h-4 mr-2" />
+                    このレポートを生成
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <p className="text-gray-500">まず「プレビュー」ボタンをクリックしてください</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="status">
+            {reportStatus ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>レポート生成状況</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium">進捗</span>
+                      <span className="text-sm text-gray-600">{reportStatus.progress}%</span>
+                    </div>
+                    <Progress value={reportStatus.progress} className="w-full" />
+                    <p className="text-sm text-gray-600">{reportStatus.message}</p>
+                  </div>
+                  
+                  {reportStatus.status === 'completed' && (
+                    <Button onClick={handleDownload} className="w-full">
+                      <Download className="w-4 h-4 mr-2" />
+                      レポートをダウンロード
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="p-8 text-center">
+                  <p className="text-gray-500">レポートを生成してください</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="history">
+            <Card>
+              <CardHeader>
+                <CardTitle>生成履歴</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {reportHistory.length > 0 ? (
+                  <div className="space-y-4">
+                    {reportHistory.map((report) => (
+                      <div key={report.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div>
+                          <p className="font-medium">{report.name}</p>
+                          <p className="text-sm text-gray-600">
+                            {new Date(report.created_at).toLocaleString('ja-JP')}
+                          </p>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {report.created_by}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <span className="font-semibold text-green-600">
-                          {formatTonnes(report.total_reduction_kg)} t-CO₂
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={getStatusBadge(report.status)}>
-                          {getStatusText(report.status)}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {formatDate(report.created_at)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button
-                          onClick={() => handleDownloadCSV(report)}
-                          disabled={downloading === report.id}
-                          className="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-sm text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
-                        >
-                          <Download className="w-4 h-4 mr-1" />
-                          {downloading === report.id ? '...' : 'CSV'}
-                        </button>
-                      </td>
-                    </tr>
-                  ))
+                        <Badge variant="default">{report.format.toUpperCase()}</Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">まだレポートが生成されていません</p>
+                  </div>
                 )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
-    </div>
+    </Layout>
   );
 };
 
