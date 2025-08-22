@@ -1,20 +1,19 @@
 import path from 'path';
 
 export default {
-  experimental: {
-    // ルート誤推定防止（複数 lockfile による警告回避）
-    outputFileTracingRoot: process.cwd(),
-  },
+  // Next.js 15 では top-level に置く
+  outputFileTracingRoot: process.cwd(),
+
   webpack: (config) => {
     // @ を mobile/ のルートに固定
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
-      '@': path.resolve(process.cwd(), 'mobile'),
+      '@': path.resolve(process.cwd(), '.'),
     };
-    // modules に mobile 直下を追加（補助的）
+    // 参照パスを安定化
     config.resolve.modules = Array.from(new Set([
       ...(config.resolve.modules || []),
-      path.resolve(process.cwd(), 'mobile'),
+      path.resolve(process.cwd(), '.'),
     ]));
     return config;
   },

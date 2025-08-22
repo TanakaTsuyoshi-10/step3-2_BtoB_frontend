@@ -2,7 +2,6 @@
   "version": 1,
   "config": {
     "env": {},
-    "webpack": null,
     "eslint": {
       "ignoreDuringBuilds": false
     },
@@ -15,7 +14,7 @@
     "cleanDistDir": true,
     "assetPrefix": "",
     "cacheMaxMemorySize": 52428800,
-    "configOrigin": "next.config.js",
+    "configOrigin": "next.config.mjs",
     "useFileSystemPublicRoutes": true,
     "generateEtags": true,
     "pageExtensions": [
@@ -98,7 +97,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend",
+    "outputFileTracingRoot": "/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend/mobile",
     "experimental": {
       "useSkewCookie": false,
       "cacheLife": {
@@ -285,13 +284,13 @@
     },
     "htmlLimitedBots": "[\\w-]+-Google|Google-[\\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight",
     "bundlePagesRouterDependencies": false,
-    "configFileName": "next.config.js",
+    "configFileName": "next.config.mjs",
     "turbopack": {
-      "root": "/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend"
+      "root": "/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend/mobile"
     }
   },
   "appDir": "/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend/mobile",
-  "relativeAppDir": "mobile",
+  "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
     ".next/server/pages-manifest.json",
