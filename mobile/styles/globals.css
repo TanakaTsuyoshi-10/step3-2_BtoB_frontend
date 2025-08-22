@@ -1,0 +1,49 @@
+
+/* === Readability over imagery === */
+.readable-over-bg {
+  position: relative;
+  isolation: isolate;
+}
+.readable-over-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.55) 0%,
+    rgba(0,0,0,0.35) 35%,
+    rgba(0,0,0,0.2) 60%,
+    rgba(0,0,0,0.0) 100%
+  );
+}
+.text-on-img {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+
+/* Safe min font sizes for mobile */
+@media (max-width: 480px) {
+  .kpi-title { font-size: 0.95rem; line-height: 1.2; }
+  .kpi-value { font-size: 1.35rem; font-weight: 700; }
+}
+
+/* Card tone on imagery */
+.card-surface {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Touch friendly spacing */
+.touch-pad { padding: 0.875rem 1rem; }
+
+/* Hide overly vivid bg under nav */
+.nav-blur {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(120%) blur(8px);
+  -webkit-backdrop-filter: saturate(120%) blur(8px);
+}
+
+/* Utility to force single-line tabs */
+.nowrap { white-space: nowrap; }
