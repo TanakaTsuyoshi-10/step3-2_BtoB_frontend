@@ -34,8 +34,11 @@
     ]
   },
   "include": [
-    "./",
-    ".next/types/**/*.ts"
+    "app",
+    "components",
+    "lib",
+    "styles",
+    "next-env.d.ts"
   ],
   "exclude": [
     "node_modules"

@@ -1,0 +1,96 @@
+.
+├── AZURE_APP_SERVICE_CONFIG.md
+├── AZURE_CONFIGURATION_SCRIPT.md
+├── DEPLOYMENT_TROUBLESHOOTING.md
+├── frontend_structure.txt
+├── jsconfig.json
+├── mobile
+│   ├── __pycache__
+│   │   └── app.cpython-310.pyc
+│   ├── app
+│   │   ├── dashboard
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components
+│   │   └── ui
+│   ├── jsconfig.json
+│   ├── lib
+│   │   ├── api.js
+│   │   └── utils.ts
+│   ├── next-env.d.ts
+│   ├── next.config.js
+│   ├── next.config.mjs
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── README.md
+│   ├── src
+│   │   └── app
+│   ├── styles
+│   │   └── globals.css
+│   ├── tailwind.config.js
+│   ├── tsconfig.json
+│   └── User_backend
+│       ├── config
+│       ├── database-schema.sql
+│       ├── middleware
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── README.md
+│       ├── routes
+│       ├── server.js
+│       └── utils
+├── next-env.d.ts
+├── next.config.js
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.js
+├── README.md
+├── server.js
+├── src
+│   ├── app
+│   │   ├── admin
+│   │   ├── dashboard
+│   │   ├── devices
+│   │   ├── energy-records
+│   │   ├── globals.css
+│   │   ├── incentives
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   ├── mobile
+│   │   ├── page 2.tsx
+│   │   ├── page.tsx
+│   │   ├── points
+│   │   ├── ranking
+│   │   ├── register
+│   │   ├── reports
+│   │   └── rewards
+│   ├── components
+│   │   ├── charts
+│   │   ├── dashboard
+│   │   ├── incentives
+│   │   ├── layout
+│   │   ├── mobile
+│   │   ├── points
+│   │   └── ui
+│   ├── i18n
+│   │   └── ja.ts
+│   ├── lib
+│   │   ├── api
+│   │   ├── api.ts
+│   │   ├── auth.ts
+│   │   ├── axios.ts
+│   │   ├── constants.ts
+│   │   ├── reportingApi.ts
+│   │   └── utils.ts
+│   └── types
+│       └── index.ts
+├── staticwebapp.config.json
+├── staticwebapp.config.json.backup
+├── tailwind.config.js
+├── test-prod-auth.js
+├── tsconfig.json
+└── tsconfig.tsbuildinfo
+
+42 directories, 52 files

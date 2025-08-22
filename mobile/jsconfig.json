@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./*"],
+      "@mobile/*": ["./*"]
     }
-  }
+  },
+  "exclude": ["node_modules", ".next", "dist"]
 }
