@@ -3,8 +3,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LogOut, User, Settings, Zap, LayoutDashboard, Trophy, Gift, FileText, Cog } from 'lucide-react';
+import { LogOut, User, Settings, Zap, LayoutDashboard, Trophy, Gift, FileText, Cog, ExternalLink } from 'lucide-react';
 import { logout, getCurrentUser } from '@/lib/auth';
+import { MOBILE_PUBLIC_URL } from '@/lib/constants';
 
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -72,6 +73,15 @@ const Navbar: React.FC = () => {
           </div>
           
           <div className="flex space-x-2">
+            <a
+              href={MOBILE_PUBLIC_URL}
+              target="_blank"
+              rel="noopener"
+              className="p-2 text-gray-600 hover:text-primary-600 rounded-lg hover:bg-gray-100"
+              title="アプリ利用者サイト"
+            >
+              <ExternalLink className="w-5 h-5" />
+            </a>
             <Link
               href="/settings"
               className="p-2 text-gray-600 hover:text-primary-600 rounded-lg hover:bg-gray-100"
