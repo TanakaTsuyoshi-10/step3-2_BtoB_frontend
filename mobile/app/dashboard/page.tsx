@@ -1,4 +1,4 @@
-import { Card, Section, Title } from "@mobile/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 export default async function MobileDashboard() {
   // 既存 API を利用（環境変数は既存 NEXT_PUBLIC_API_BASE を流用）
@@ -7,11 +7,28 @@ export default async function MobileDashboard() {
   const kpi = await kpiRes.json().catch(() => ({}));
 
   return (
-    <div className="px-4 py-5 space-y-4">
-      <div className="grid grid-cols-2 gap-3">
-        <Card><Section><Title>電気使用量</Title><div className="text-2xl font-bold text-gray-900">{kpi?.power_total ?? "-"} kWh</div></Section></Card>
-        <Card><Section><Title>ガス使用量</Title><div className="text-2xl font-bold text-gray-900">{kpi?.gas_total ?? "-"} m³</div></Section></Card>
-        <Card className="col-span-2"><Section><Title>CO₂削減量</Title><div className="text-2xl font-bold text-gray-900">{kpi?.co2_saved ?? "-"} kg</div></Section></Card>
+    <div className="min-h-dvh bg-gray-50 text-gray-900">
+      <div className="max-w-md mx-auto p-4 space-y-4">
+        <div className="grid grid-cols-2 gap-3">
+        <Card>
+          <CardContent>
+            <CardTitle className="text-sm font-medium text-gray-600 mb-2">電気使用量</CardTitle>
+            <div className="text-2xl font-bold text-gray-900">{kpi?.power_total ?? "-"} kWh</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <CardTitle className="text-sm font-medium text-gray-600 mb-2">ガス使用量</CardTitle>
+            <div className="text-2xl font-bold text-gray-900">{kpi?.gas_total ?? "-"} m³</div>
+          </CardContent>
+        </Card>
+        <Card className="col-span-2">
+          <CardContent>
+            <CardTitle className="text-sm font-medium text-gray-600 mb-2">CO₂削減量</CardTitle>
+            <div className="text-2xl font-bold text-gray-900">{kpi?.co2_saved ?? "-"} kg</div>
+          </CardContent>
+        </Card>
+        </div>
       </div>
     </div>
   );

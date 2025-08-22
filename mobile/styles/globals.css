@@ -1,4 +1,17 @@
 
+/* 可読性優先・ライト固定 */
+:root {
+  color-scheme: light;
+}
+html, body {
+  background-color: #f8fafc; /* bg-gray-50 */
+  color: #0f172a;            /* slate-900 に近い */
+}
+.card {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
 /* === Readability over imagery === */
 .readable-over-bg {
   position: relative;
