@@ -1,0 +1,193 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Icon } from '@iconify/react';
+
+export default function MobileNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <div className="navbar bg-corporate shadow-lg px-4 fixed top-0 left-0 right-0 z-50">
+        <div className="navbar-start">
+          <Link href="/mobile" className="text-lg sm:text-xl font-bold text-white">
+            Tech0 by scope3
+          </Link>
+        </div>
+        
+        {/* Desktop Navigation */}
+        <div className="navbar-center hidden lg:flex">
+          <div className="tabs tabs-boxed">
+            <Link 
+              href="/mobile/dashboard" 
+              className={`tab ${pathname === '/mobile/dashboard' ? 'tab-active' : ''}`}
+            >
+              ダッシュボード
+            </Link>
+            <Link 
+              href="/mobile/points" 
+              className={`tab ${pathname === '/mobile/points' ? 'tab-active' : ''}`}
+            >
+              ポイント
+            </Link>
+            <Link 
+              href="/mobile/ranking" 
+              className={`tab ${pathname === '/mobile/ranking' ? 'tab-active' : ''}`}
+            >
+              ランキング
+            </Link>
+            <Link 
+              href="/mobile/upload" 
+              className={`tab ${pathname === '/mobile/upload' ? 'tab-active' : ''}`}
+            >
+              アップロード
+            </Link>
+            <Link 
+              href="/mobile/ai-analysis" 
+              className={`tab ${pathname === '/mobile/ai-analysis' ? 'tab-active' : ''}`}
+            >
+              AI分析
+            </Link>
+          </div>
+        </div>
+
+        <div className="navbar-end">
+          {/* Mobile hamburger button */}
+          <button 
+            className="btn btn-ghost lg:hidden"
+            onClick={toggleMenu}
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth="2" 
+                d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} 
+              />
+            </svg>
+          </button>
+
+          {/* Desktop user menu */}
+          <div className="dropdown dropdown-end hidden lg:flex">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full bg-white flex items-center justify-center">
+                <span className="text-primary font-bold">田</span>
+              </div>
+            </div>
+            <ul 
+              tabIndex={0} 
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li><a>プロフィール</a></li>
+              <li><a>設定</a></li>
+              <li><a>ログアウト</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {isOpen && (
+        <div className="lg:hidden bg-corporate shadow-lg border-t border-white/20 fixed top-16 left-0 right-0 z-40">
+          <div className="px-4 py-2 space-y-1">
+            <Link 
+              href="/mobile/dashboard" 
+              className={`block px-3 py-2 text-base font-medium rounded-md ${
+                pathname === '/mobile/dashboard' 
+                  ? 'text-white bg-white/20 font-semibold' 
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={closeMenu}
+            >
+              <Icon icon="carbon:dashboard" className="inline mr-2" />ダッシュボード
+            </Link>
+            <Link 
+              href="/mobile/points" 
+              className={`block px-3 py-2 text-base font-medium rounded-md ${
+                pathname === '/mobile/points' 
+                  ? 'text-white bg-white/20 font-semibold' 
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={closeMenu}
+            >
+              <Icon icon="ion:trophy" className="inline mr-2" />ポイント
+            </Link>
+            <Link 
+              href="/mobile/ranking" 
+              className={`block px-3 py-2 text-base font-medium rounded-md ${
+                pathname === '/mobile/ranking' 
+                  ? 'text-white bg-white/20 font-semibold' 
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={closeMenu}
+            >
+              <Icon icon="ion:stats-chart" className="inline mr-2" />ランキング
+            </Link>
+            <Link 
+              href="/mobile/upload" 
+              className={`block px-3 py-2 text-base font-medium rounded-md ${
+                pathname === '/mobile/upload' 
+                  ? 'text-white bg-white/20 font-semibold' 
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={closeMenu}
+            >
+              <Icon icon="carbon:upload" className="inline mr-2" />アップロード
+            </Link>
+            <Link 
+              href="/mobile/ai-analysis" 
+              className={`block px-3 py-2 text-base font-medium rounded-md ${
+                pathname === '/mobile/ai-analysis' 
+                  ? 'text-white bg-white/20 font-semibold' 
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+              }`}
+              onClick={closeMenu}
+            >
+              <Icon icon="carbon:watson-machine-learning" className="inline mr-2" />AI分析
+            </Link>
+            
+            <div className="border-t pt-2 mt-2">
+              <div className="flex items-center px-3 py-2">
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3">
+                  <span className="text-primary font-bold text-sm">田</span>
+                </div>
+                <span className="text-sm font-medium text-white">田中 太郎</span>
+              </div>
+              <Link 
+                href="/mobile/profile" 
+                className="block px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md"
+                onClick={closeMenu}
+              >
+                プロフィール
+              </Link>
+              <Link 
+                href="/mobile/settings" 
+                className="block px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 rounded-md"
+                onClick={closeMenu}
+              >
+                設定
+              </Link>
+              <button 
+                className="block w-full text-left px-3 py-2 text-sm text-red-300 hover:bg-red-500/20 rounded-md"
+                onClick={closeMenu}
+              >
+                ログアウト
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}

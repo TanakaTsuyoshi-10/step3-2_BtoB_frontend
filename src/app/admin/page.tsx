@@ -119,7 +119,7 @@ const AdminPage: React.FC = () => {
         {/* 管理機能カード */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* ポイントルール管理 */}
-          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => alert('ポイントルール管理機能は実装中です')}>
+          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/points')}>
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
@@ -127,14 +127,14 @@ const AdminPage: React.FC = () => {
                     <Coins className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">ポイントルール</h3>
-                    <p className="text-sm text-gray-600">CO₂削減ポイントの付与ルール設定</p>
+                    <h3 className="font-semibold text-gray-900">ポイント管理</h3>
+                    <p className="text-sm text-gray-600">CO₂削減ポイントの付与ルールと取引履歴</p>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">アクティブルール</span>
-                    <span className="font-medium">2件</span>
+                    <span className="font-medium">3件</span>
                   </div>
                 </div>
               </CardContent>
@@ -142,7 +142,7 @@ const AdminPage: React.FC = () => {
           </div>
 
           {/* 景品管理 */}
-          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => alert('景品管理機能は実装中です')}>
+          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/products')}>
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
@@ -150,13 +150,13 @@ const AdminPage: React.FC = () => {
                     <Gift className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">景品管理</h3>
-                    <p className="text-sm text-gray-600">交換可能な景品の追加・編集</p>
+                    <h3 className="font-semibold text-gray-900">商品管理</h3>
+                    <p className="text-sm text-gray-600">交換可能な景品の追加・編集・人気度分析</p>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">登録景品数</span>
+                    <span className="text-gray-600">登録商品数</span>
                     <span className="font-medium">15件</span>
                   </div>
                 </div>
@@ -164,23 +164,23 @@ const AdminPage: React.FC = () => {
             </Card>
           </div>
 
-          {/* ユーザー管理 */}
-          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => alert('ユーザー管理機能は実装中です')}>
+          {/* レポート生成 */}
+          <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/reports')}>
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-purple-600" />
+                    <FileText className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">ユーザー管理</h3>
-                    <p className="text-sm text-gray-600">従業員アカウントの管理</p>
+                    <h3 className="font-semibold text-gray-900">レポート生成</h3>
+                    <p className="text-sm text-gray-600">CSRレポートと各種実績レポートの生成</p>
                   </div>
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-200">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">登録ユーザー数</span>
-                    <span className="font-medium">1,247名</span>
+                    <span className="text-gray-600">今月生成数</span>
+                    <span className="font-medium">12件</span>
                   </div>
                 </div>
               </CardContent>
@@ -252,11 +252,11 @@ const AdminPage: React.FC = () => {
                 </button>
                 
                 <button
-                  onClick={() => alert('PDF出力機能は実装中です')}
+                  onClick={() => router.push('/admin/reports')}
                   className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>PDFでエクスポート</span>
+                  <span>レポート生成へ</span>
                 </button>
               </div>
             </div>
