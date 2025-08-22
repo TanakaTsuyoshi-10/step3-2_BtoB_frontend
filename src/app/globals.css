@@ -4,28 +4,17 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* Force light theme - no dark mode */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --foreground-rgb: 17, 24, 39; /* gray-900 */
+  --background-start-rgb: 249, 250, 251; /* gray-50 */
+  --background-end-rgb: 249, 250, 251; /* gray-50 */
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: rgb(var(--background-start-rgb));
+  min-height: 100vh;
 }
 
 @layer base {
@@ -36,7 +25,27 @@ body {
 
 @layer components {
   .card {
-    @apply bg-white rounded-lg shadow-md border border-gray-200;
+    @apply bg-white rounded-2xl shadow-md border border-gray-200 p-4;
+  }
+  
+  .mobile-container {
+    @apply max-w-md mx-auto px-4;
+  }
+  
+  .responsive-text {
+    @apply text-gray-900 font-medium;
+  }
+  
+  .kpi-card {
+    @apply bg-white shadow-md rounded-2xl p-4 text-center;
+  }
+  
+  .kpi-title {
+    @apply text-sm font-medium text-gray-600 mb-2;
+  }
+  
+  .kpi-value {
+    @apply text-2xl font-bold text-gray-900;
   }
   
   .no-scrollbar {
@@ -58,5 +67,15 @@ body {
   
   .input-field {
     @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+  }
+}
+
+/* Responsive improvements */
+@layer utilities {
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
