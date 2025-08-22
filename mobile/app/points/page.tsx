@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Coins, Gift, History, CheckCircle, AlertCircle } from 'lucide-react';
-import { getProducts, redeemProduct, getPointsBalance, getPointsHistory } from '@/lib/api';
+import { getProducts, redeemProduct, getPointsBalance, getPointsHistory } from '@/lib/api/index';
 
 interface Product {
   id: number;
@@ -54,9 +54,9 @@ export default function PointsExchangePage() {
         getPointsHistory(10)
       ]);
       
-      setProducts(productsData);
-      setBalance(balanceData);
-      setHistory(historyData.history || []);
+      setProducts(productsData as Product[]);
+      setBalance(balanceData as PointsBalance);
+      setHistory((historyData as any).history || []);
     } catch (error) {
       console.error('Failed to load data:', error);
       setMessage({ type: 'error', text: 'データの読み込みに失敗しました' });
@@ -73,7 +73,7 @@ export default function PointsExchangePage() {
 
     try {
       setRedeeming(productId);
-      const result = await redeemProduct(productId);
+      const result = await redeemProduct(productId) as { new_balance: number };
       
       setMessage({ 
         type: 'success', 
