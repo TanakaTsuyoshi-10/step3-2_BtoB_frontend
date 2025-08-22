@@ -9,18 +9,18 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Switch } from '@/components/ui/switch';
 import { Plus, Edit, Eye, EyeOff, Package, Search, AlertTriangle } from 'lucide-react';
 import ProductEditor from './ProductEditor';
-import { getProducts, toggleProduct } from '@/lib/api/incentives';
+import { incentivesAPI } from '@/lib/api';
 
 interface Product {
   id: number;
-  name: string;
+  title: string;
   description: string;
   category: string;
   points_required: number;
   stock: number;
   active: boolean;
   created_at: string;
-  redemption_count: number;
+  image_url?: string;
 }
 
 const CATEGORIES = [
@@ -47,56 +47,8 @@ const ProductList: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      
-      // APIが実装されるまではダミーデータを使用
-      const dummyProducts: Product[] = [
-        {
-          id: 1,
-          name: 'Amazonギフト券 1,000円分',
-          description: 'Amazon.co.jpで使用できるギフト券です',
-          category: 'ギフトカード',
-          points_required: 1000,
-          stock: 50,
-          active: true,
-          created_at: '2024-01-15T10:00:00Z',
-          redemption_count: 45
-        },
-        {
-          id: 2,
-          name: 'スターバックス ドリンクチケット',
-          description: 'スターバックスで使えるドリンクチケット',
-          category: '食品・飲料',
-          points_required: 500,
-          stock: 30,
-          active: true,
-          created_at: '2024-01-10T14:30:00Z',
-          redemption_count: 38
-        },
-        {
-          id: 3,
-          name: 'QUOカード 500円分',
-          description: '全国のQUOカード加盟店で利用可能',
-          category: 'ギフトカード',
-          points_required: 500,
-          stock: 0,
-          active: false,
-          created_at: '2024-01-05T09:15:00Z',
-          redemption_count: 32
-        },
-        {
-          id: 4,
-          name: 'ワイヤレスマウス',
-          description: '高性能ワイヤレスマウス',
-          category: '電子機器',
-          points_required: 800,
-          stock: 15,
-          active: true,
-          created_at: '2024-01-01T16:45:00Z',
-          redemption_count: 24
-        }
-      ];
-
-      setProducts(dummyProducts);
+      const data = await incentivesAPI.getRewards();
+      setProducts(data);
     } catch (error) {
       console.error('Failed to fetch products:', error);
     } finally {
@@ -106,7 +58,7 @@ const ProductList: React.FC = () => {
 
   const handleToggleActive = async (productId: number, active: boolean) => {
     try {
-      await toggleProduct(productId, active);
+      await incentivesAPI.toggleRewardStatus(productId, active);
       setProducts(products.map(p => p.id === productId ? { ...p, active } : p));
     } catch (error) {
       console.error('Failed to toggle product status:', error);
@@ -120,7 +72,7 @@ const ProductList: React.FC = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          product.category.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     
@@ -211,9 +163,9 @@ const ProductList: React.FC = () => {
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-blue-600">
-              {products.reduce((sum, p) => sum + p.redemption_count, 0)}
+              {products.reduce((sum, p) => sum + p.stock, 0)}
             </div>
-            <div className="text-sm text-gray-600">総交換回数</div>
+            <div className="text-sm text-gray-600">総在庫数</div>
           </CardContent>
         </Card>
       </div>
@@ -226,7 +178,7 @@ const ProductList: React.FC = () => {
               <div className="flex items-start justify-between">
                 <div className="flex-1 min-w-0">
                   <CardTitle className="text-lg truncate pr-2">
-                    {product.name}
+                    {product.title}
                   </CardTitle>
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge variant="secondary" className="whitespace-nowrap">
@@ -284,9 +236,9 @@ const ProductList: React.FC = () => {
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">交換実績</span>
-                  <span className="font-bold text-purple-600">
-                    {product.redemption_count}回
+                  <span className="text-sm text-gray-600">作成日</span>
+                  <span className="font-bold text-purple-600 text-xs">
+                    {new Date(product.created_at).toLocaleDateString('ja-JP')}
                   </span>
                 </div>
               </div>

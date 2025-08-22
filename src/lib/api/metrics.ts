@@ -14,6 +14,8 @@ export interface KPIResponse {
   electricity_total_kwh: number;
   gas_total_m3: number;
   co2_reduction_total_kg: number;
+  total_redemptions: number;
+  total_points_spent: number;
 }
 
 export interface MonthlyUsageItem {

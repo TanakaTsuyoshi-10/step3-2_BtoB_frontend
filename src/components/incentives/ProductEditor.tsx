@@ -6,11 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { createProduct, updateProduct } from '@/lib/api/incentives';
+import { incentivesAPI } from '@/lib/api';
 
 interface Product {
   id?: number;
-  name: string;
+  title: string;
   description: string;
   category: string;
   points_required: number;
@@ -34,7 +34,7 @@ const CATEGORIES = [
 
 const ProductEditor: React.FC<ProductEditorProps> = ({ product, onSave }) => {
   const [formData, setFormData] = useState<Product>({
-    name: '',
+    title: '',
     description: '',
     category: '',
     points_required: 0,
@@ -53,8 +53,8 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ product, onSave }) => {
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = '商品名は必須です';
+    if (!formData.title.trim()) {
+      newErrors.title = '商品名は必須です';
     }
     
     if (!formData.category) {
@@ -80,9 +80,9 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ product, onSave }) => {
       setLoading(true);
       
       if (product?.id) {
-        await updateProduct(product.id, formData);
+        await incentivesAPI.updateReward(product.id, formData);
       } else {
-        await createProduct(formData);
+        await incentivesAPI.createReward(formData);
       }
       
       onSave();
@@ -101,13 +101,13 @@ const ProductEditor: React.FC<ProductEditorProps> = ({ product, onSave }) => {
             商品名 *
           </label>
           <Input
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
             placeholder="商品の名前を入力"
-            className={errors.name ? 'border-red-500' : ''}
+            className={errors.title ? 'border-red-500' : ''}
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+          {errors.title && (
+            <p className="text-red-500 text-sm mt-1">{errors.title}</p>
           )}
         </div>
 

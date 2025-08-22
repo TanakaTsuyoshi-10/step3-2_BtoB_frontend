@@ -7,6 +7,8 @@ import {
   Zap, 
   Gauge, 
   Leaf,
+  Gift,
+  Coins,
 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import KPICard from '@/components/dashboard/KPICard';
@@ -88,6 +90,8 @@ const DashboardPage: React.FC = () => {
           electricity_total_kwh: 0,
           gas_total_m3: 0,
           co2_reduction_total_kg: 0,
+          total_redemptions: 0,
+          total_points_spent: 0,
         });
         setMonthlyUsageData({
           company_id: 1,
@@ -188,7 +192,7 @@ const DashboardPage: React.FC = () => {
         )}
 
         {/* KPI Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
           <KPICard
             title="アクティブユーザー"
             value={kpiData?.active_users || 0}
@@ -212,6 +216,18 @@ const DashboardPage: React.FC = () => {
             value={kpiData?.co2_reduction_total_kg || 0}
             unit="kg"
             icon={<Leaf className="text-green-600" />}
+          />
+          <KPICard
+            title="商品交換回数"
+            value={kpiData?.total_redemptions || 0}
+            unit="回"
+            icon={<Gift className="text-purple-600" />}
+          />
+          <KPICard
+            title="消費ポイント合計"
+            value={kpiData?.total_points_spent || 0}
+            unit="pt"
+            icon={<Coins className="text-indigo-600" />}
           />
         </div>
 

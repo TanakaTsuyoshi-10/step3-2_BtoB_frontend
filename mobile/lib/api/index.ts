@@ -42,6 +42,25 @@ export async function fetchYoyUsage() {
   return request('/api/v1/metrics/yoy-usage');
 }
 
+/* ======== Mobile Products & Rewards ======== */
+export async function getProducts() {
+  return request('/api/v1/mobile/products');
+}
+
+export async function redeemProduct(productId: number) {
+  return request(`/api/v1/mobile/redeem?product_id=${productId}`, {
+    method: 'POST',
+  });
+}
+
+export async function getPointsBalance() {
+  return request('/api/v1/mobile/points/balance');
+}
+
+export async function getPointsHistory(limit: number = 20) {
+  return request(`/api/v1/mobile/points/history?limit=${limit}`);
+}
+
 export default {
   login,
   register,
@@ -49,4 +68,8 @@ export default {
   fetchMonthlyUsage,
   fetchCo2Trend,
   fetchYoyUsage,
+  getProducts,
+  redeemProduct,
+  getPointsBalance,
+  getPointsHistory,
 };

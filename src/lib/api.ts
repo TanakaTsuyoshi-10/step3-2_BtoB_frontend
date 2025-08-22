@@ -107,3 +107,82 @@ export const energyRecordsAPI = {
     return response.data;
   },
 };
+
+// Rewards API (Admin)
+export const rewardsAPI = {
+  getAll: async (): Promise<any[]> => {
+    const response = await api.get('/rewards/');
+    return response.data;
+  },
+
+  create: async (data: {
+    title: string;
+    description?: string;
+    category: string;
+    points_required: number;
+    stock: number;
+    active?: boolean;
+    image_url?: string;
+  }): Promise<any> => {
+    const response = await api.post('/rewards/', data);
+    return response.data;
+  },
+
+  update: async (id: number, data: Partial<{
+    title: string;
+    description: string;
+    category: string;
+    points_required: number;
+    stock: number;
+    active: boolean;
+    image_url: string;
+  }>): Promise<any> => {
+    const response = await api.put(`/rewards/${id}`, data);
+    return response.data;
+  },
+
+  getPopularity: async (): Promise<any[]> => {
+    const response = await api.get('/rewards/admin/popularity');
+    return response.data;
+  },
+
+  getRedemptions: async (): Promise<any[]> => {
+    const response = await api.get('/rewards/my-redemptions');
+    return response.data;
+  }
+};
+
+// Incentives API (Admin)
+export const incentivesAPI = {
+  getRewards: async (): Promise<any[]> => {
+    const response = await api.get('/incentives/rewards');
+    return response.data;
+  },
+
+  createReward: async (data: {
+    title: string;
+    description?: string;
+    category: string;
+    points_required: number;
+    stock: number;
+    active?: boolean;
+  }): Promise<any> => {
+    const response = await api.post('/incentives/rewards', data);
+    return response.data;
+  },
+
+  updateReward: async (id: number, data: any): Promise<any> => {
+    const response = await api.put(`/incentives/rewards/${id}`, data);
+    return response.data;
+  },
+
+  toggleRewardStatus: async (id: number, active: boolean): Promise<any> => {
+    const response = await api.patch(`/incentives/rewards/${id}/publish?active=${active}`);
+    return response.data;
+  },
+
+  getRedemptionSummary: async (): Promise<any> => {
+    const response = await api.get('/incentives/redemptions/summary');
+    return response.data;
+  }
+};

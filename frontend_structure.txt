@@ -8,38 +8,37 @@
 │   ├── __pycache__
 │   │   └── app.cpython-310.pyc
 │   ├── app
+│   │   ├── ai-analysis
+│   │   ├── components
 │   │   ├── dashboard
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.jsx
 │   │   ├── layout.tsx
-│   │   └── page.tsx
+│   │   ├── login
+│   │   ├── page.jsx
+│   │   ├── page.tsx
+│   │   ├── points
+│   │   ├── ranking
+│   │   ├── register
+│   │   └── upload
 │   ├── components
 │   │   └── ui
 │   ├── jsconfig.json
 │   ├── lib
+│   │   ├── api
 │   │   ├── api.js
 │   │   └── utils.ts
 │   ├── next-env.d.ts
-│   ├── next.config.js
 │   ├── next.config.mjs
 │   ├── package-lock.json
 │   ├── package.json
 │   ├── postcss.config.js
 │   ├── README.md
-│   ├── src
-│   │   └── app
 │   ├── styles
 │   │   └── globals.css
 │   ├── tailwind.config.js
-│   ├── tsconfig.json
-│   └── User_backend
-│       ├── config
-│       ├── database-schema.sql
-│       ├── middleware
-│       ├── package-lock.json
-│       ├── package.json
-│       ├── README.md
-│       ├── routes
-│       ├── server.js
-│       └── utils
+│   └── tsconfig.json
 ├── next-env.d.ts
 ├── next.config.js
 ├── next.config.mjs
@@ -93,4 +92,4 @@
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-42 directories, 52 files
+43 directories, 50 files
