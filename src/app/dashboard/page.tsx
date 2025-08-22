@@ -13,7 +13,7 @@ import KPICard from '@/components/dashboard/KPICard';
 import MonthlyUsageChart from '@/components/charts/MonthlyUsageChart';
 import Co2TrendChart from '@/components/charts/Co2TrendChart';
 import YoyUsageChart from '@/components/charts/YoyUsageChart';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated } from '@/lib/auth';
 import { authAPI } from '@/lib/api';
 import { metricsAPI, KPIResponse, MonthlyUsageResponse, Co2TrendResponse, YoyUsageResponse } from '@/lib/api/metrics';

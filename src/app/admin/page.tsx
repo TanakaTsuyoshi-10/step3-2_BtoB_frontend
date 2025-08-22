@@ -13,7 +13,7 @@ import {
   Download,
 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated, getCurrentUser } from '@/lib/auth';
 import ja from '@/i18n/ja';
 

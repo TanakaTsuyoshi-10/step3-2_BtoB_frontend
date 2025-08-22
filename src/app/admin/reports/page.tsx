@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { FileText, Download, Calendar, Filter, BarChart, Users, Coins, Package } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } from 'docx';
 
 // Dynamically import pdfMake only on client side

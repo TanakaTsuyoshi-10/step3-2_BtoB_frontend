@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Package, Plus, Edit, Trash2, Eye, EyeOff, TrendingUp, Users } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Product {
   id: number;

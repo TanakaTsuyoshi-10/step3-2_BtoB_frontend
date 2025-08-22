@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Coins, Users, Award, Plus, Edit, Trash2, FileText } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import ja from '@/i18n/ja';
 
 interface PointRule {
