@@ -15,7 +15,7 @@ const loadPdfMake = async () => {
     return pdfMake;
   }
   return null;
-};
+}
 
 interface ReportConfig {
   type: 'csr' | 'points' | 'products' | 'users';

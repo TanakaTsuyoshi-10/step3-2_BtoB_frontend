@@ -25,7 +25,7 @@ interface RankingEntry {
   points_earned: number;
 }
 
-const RankingPage: React.FC = () => {
+export default function Page() {
   const router = useRouter();
   const [rankings, setRankings] = useState<div[]>([]);
   const [period, setPeriod] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
@@ -82,7 +82,7 @@ const RankingPage: React.FC = () => {
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     fetchRankings();
   }, [router, period, selectedDepartment]);
@@ -98,7 +98,7 @@ const RankingPage: React.FC = () => {
       default:
         return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
     }
-  };
+  }
 
   const getRankBackgroundColor = (rank: number) => {
     switch (rank) {
@@ -111,7 +111,7 @@ const RankingPage: React.FC = () => {
       default:
         return 'bg-white border-gray-200';
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -228,6 +228,5 @@ const RankingPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default RankingPage;

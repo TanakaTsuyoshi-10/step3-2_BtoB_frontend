@@ -14,6 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "3.10.0",
     "@iconify/react": "6.0.0",
+    "@iconify/types": "2.0.0",
     "@types/js-cookie": "3.0.6",
     "@types/node": "20.19.11",
     "@types/pdfmake": "0.2.9",
@@ -22,6 +23,7 @@
     "autoprefixer": "10.4.21",
     "axios": "1.7.9",
     "clsx": "2.1.1",
+    "daisyui": "4.12.14",
     "date-fns": "2.30.0",
     "dequal": "2.0.3",
     "docx": "8.5.0",
@@ -44,7 +46,9 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "3.0.6",
     "@types/node": "20.19.11",
+    "@types/pdfmake": "0.2.9",
     "@types/react": "18.3.24",
     "@types/react-dom": "18.3.7",
     "daisyui": "4.12.14",

@@ -17,7 +17,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { useKpi, useMonthlyUsage, useCo2Trend } from '@/hooks/useKpi';
 import ja from '@/i18n/ja';
 
-const DashboardPage: React.FC = () => {
+export default function Page() {
   const { kpi, isLoading: kpiLoading } = useKpi();
   const { monthlyUsage, isLoading: monthlyLoading } = useMonthlyUsage();
   const { co2Trend, isLoading: co2Loading } = useCo2Trend();
@@ -155,6 +155,5 @@ const DashboardPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default DashboardPage;

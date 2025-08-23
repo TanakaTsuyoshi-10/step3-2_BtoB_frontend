@@ -37,7 +37,7 @@ interface RedemptionHistory {
   created_at: string;
 }
 
-const RewardsPage: React.FC = () => {
+export default function Page() {
   const router = useRouter();
   const [rewards, setRewards] = useState<div[]>([]);
   const [redemptions, setRedemptions] = useState<div[]>([]);
@@ -159,7 +159,7 @@ const RewardsPage: React.FC = () => {
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     fetchRewardsData();
   }, [router, selectedCategory, searchQuery]);
@@ -189,7 +189,7 @@ const RewardsPage: React.FC = () => {
         alert('交換に失敗しました');
       }
     }
-  };
+  }
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
@@ -204,7 +204,7 @@ const RewardsPage: React.FC = () => {
       default:
         return <div className="w-5 h-5" />;
     }
-  };
+  }
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
@@ -212,7 +212,7 @@ const RewardsPage: React.FC = () => {
       approved: { text: '承認', color: 'bg-green-100 text-green-800' },
       rejected: { text: '却下', color: 'bg-red-100 text-red-800' },
       shipped: { text: '発送済', color: 'bg-blue-100 text-blue-800' },
-    };
+    }
 
     const statusInfo = statusMap[status as keyof typeof statusMap] || statusMap.pending;
     
@@ -221,7 +221,7 @@ const RewardsPage: React.FC = () => {
         {statusInfo.text}
       </span>
     );
-  };
+  }
 
   if (isLoading) {
     return (
@@ -394,6 +394,5 @@ const RewardsPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
-export default RewardsPage;
