@@ -64,10 +64,10 @@ export default function Ranking() {
   ]
 
   const getRankBadge = (rank: number): string => {
-    if (rank === 1) return 'badge-warning'
-    if (rank === 2) return 'badge-neutral'
-    if (rank === 3) return 'badge-accent'
-    return 'badge-ghost'
+    if (rank === 1) return 'bg-yellow-100 text-yellow-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium'
+    if (rank === 2) return 'bg-gray-100 text-gray-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium'
+    if (rank === 3) return 'bg-orange-100 text-orange-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium'
+    return 'bg-gray-50 text-gray-600 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium'
   }
 
   const getRankIcon = (rank: number): JSX.Element | string => {
@@ -78,7 +78,7 @@ export default function Ranking() {
   }
 
   return (
-    <div className="min-h-screen bg-custom pt-16">
+    <div className="min-h-screen bg-white pt-16">
       <MobileNav />
 
       <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -86,7 +86,7 @@ export default function Ranking() {
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">企業内削減率ランキング</h1>
           <div className="flex gap-4">
             <select 
-              className="select select-bordered"
+              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value)}
             >
@@ -97,9 +97,9 @@ export default function Ranking() {
           </div>
         </div>
 
-        <div className="tabs tabs-lifted mb-6 sm:mb-8 overflow-x-auto whitespace-nowrap">
+        <div className="flex bg-gray-200 rounded-lg p-1 mb-6 sm:mb-8 overflow-x-auto whitespace-nowrap">
           <button 
-            className={`tab tab-sm sm:tab-lg flex-shrink-0 ${activeTab === 'individual' ? 'tab-active' : ''}`}
+            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'individual' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
             onClick={() => setActiveTab('individual')}
           >
             <Icon icon="carbon:user" className="inline mr-1 sm:mr-2" /> 
@@ -107,7 +107,7 @@ export default function Ranking() {
             <span className="sm:hidden">個人</span>
           </button>
           <button 
-            className={`tab tab-sm sm:tab-lg flex-shrink-0 ${activeTab === 'department' ? 'tab-active' : ''}`}
+            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'department' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
             onClick={() => setActiveTab('department')}
           >
             <Icon icon="carbon:building" className="inline mr-1 sm:mr-2" /> 
@@ -115,7 +115,7 @@ export default function Ranking() {
             <span className="sm:hidden">部門</span>
           </button>
           <button 
-            className={`tab tab-sm sm:tab-lg flex-shrink-0 ${activeTab === 'achievements' ? 'tab-active' : ''}`}
+            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'achievements' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
             onClick={() => setActiveTab('achievements')}
           >
             <Icon icon="ion:trophy" className="inline mr-1 sm:mr-2" /> 
@@ -127,9 +127,9 @@ export default function Ranking() {
         {activeTab === 'individual' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="lg:col-span-2">
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h2 className="card-title text-2xl mb-6"><Icon icon="carbon:user" className="inline mr-2" /> 個人削減率ランキング</h2>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h2 className="text-2xl font-bold mb-6"><Icon icon="carbon:user" className="inline mr-2" /> 個人削減率ランキング</h2>
                   
                   {individualRanking.slice(0, 3).map((person, index) => (
                     <div key={person.rank} className={`p-4 rounded-lg mb-4 ${
@@ -140,7 +140,7 @@ export default function Ranking() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div>{getRankIcon(person.rank)}</div>
-                          <div className="avatar">
+                          <div className="rounded-full">
                             <div className="w-12 h-12 rounded-full bg-corporate-100 flex items-center justify-center">
                               <span className="text-corporate font-bold text-lg">{person.avatar}</span>
                             </div>
@@ -158,16 +158,16 @@ export default function Ranking() {
                     </div>
                   ))}
 
-                  <div className="divider">その他の順位</div>
+                  <div className="border-t border-gray-300 my-4 text-center relative"><span className="bg-white px-4 text-gray-500 relative">その他の順位</span></div>
 
                   <div className="space-y-2">
                     {individualRanking.slice(3).map((person) => (
                       <div key={person.rank} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-4">
-                          <div className={`badge ${getRankBadge(person.rank)} badge-lg`}>
+                          <div className={`${getRankBadge(person.rank)}`}>
                             {person.rank}位
                           </div>
-                          <div className="avatar">
+                          <div className="rounded-full">
                             <div className="w-10 h-10 rounded-full bg-corporate-100 flex items-center justify-center">
                               <span className="text-corporate font-bold">{person.avatar}</span>
                             </div>
@@ -189,19 +189,19 @@ export default function Ranking() {
             </div>
 
             <div className="space-y-6">
-              <div className="card bg-corporate text-white shadow-xl">
-                <div className="card-body text-center">
+              <div className="rounded-lg bg-corporate text-white shadow-lg">
+                <div className="p-6 text-center">
                   <Icon icon="ion:trophy" className="text-4xl mb-2" />
-                  <h3 className="card-title justify-center text-white">あなたの順位</h3>
+                  <h3 className="text-lg font-bold justify-center text-white">あなたの順位</h3>
                   <div className="text-3xl font-bold">1位</div>
                   <div className="text-lg opacity-90">削減率: 15.2%</div>
                   <div className="text-sm opacity-80">1,250ポイント獲得</div>
                 </div>
               </div>
 
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h3 className="card-title"><Icon icon="ion:stats-chart" className="inline mr-2" /> 部門別統計</h3>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold"><Icon icon="ion:stats-chart" className="inline mr-2" /> 部門別統計</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span>営業部平均</span>
@@ -219,9 +219,9 @@ export default function Ranking() {
                 </div>
               </div>
 
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h3 className="card-title"><Icon icon="ion:flag" className="inline mr-2" /> 今月の目標</h3>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold"><Icon icon="ion:flag" className="inline mr-2" /> 今月の目標</h3>
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between text-sm mb-1">
@@ -240,7 +240,7 @@ export default function Ranking() {
                         <span>1,500pt獲得</span>
                         <span>83%</span>
                       </div>
-                      <progress className="progress progress-primary w-full" value={83} max={100}></progress>
+                      <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-primary-600 h-2 rounded-full" style={{width: '83%'}}></div></div>
                     </div>
                   </div>
                 </div>
@@ -250,16 +250,16 @@ export default function Ranking() {
         )}
 
         {activeTab === 'department' && (
-          <div className="card bg-white shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title text-2xl mb-6"><Icon icon="carbon:building" className="inline mr-2" /> 部門別削減率ランキング</h2>
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6"><Icon icon="carbon:building" className="inline mr-2" /> 部門別削減率ランキング</h2>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {departmentRanking.map((dept, index) => (
-                  <div key={dept.rank} className={`card shadow-lg ${
+                  <div key={dept.rank} className={`rounded-lg bg-white shadow-lg ${
                     index < 3 ? 'ring-2 ring-yellow-300' : ''
                   }`}>
-                    <div className="card-body">
+                    <div className="p-6">
                       <div className="flex items-center justify-between mb-3">
                         <div>{getRankIcon(dept.rank)}</div>
                         <div className={`badge badge-lg ${dept.color}`}>
@@ -267,16 +267,16 @@ export default function Ranking() {
                         </div>
                       </div>
                       
-                      <h3 className="card-title text-lg">{dept.name}</h3>
+                      <h3 className="text-lg font-bold">{dept.name}</h3>
                       
-                      <div className="stats stats-vertical shadow-sm bg-gray-50">
-                        <div className="stat py-2">
-                          <div className="stat-title text-xs">削減率</div>
-                          <div className="stat-value text-2xl text-green-600">{dept.reduction}%</div>
+                      <div className="grid gap-4 shadow-sm bg-gray-50 p-4 rounded-lg">
+                        <div className="py-2">
+                          <div className="text-xs text-gray-600">削減率</div>
+                          <div className="text-2xl font-bold text-green-600">{dept.reduction}%</div>
                         </div>
-                        <div className="stat py-2">
-                          <div className="stat-title text-xs">総ポイント</div>
-                          <div className="stat-value text-lg text-corporate">{dept.totalPoints.toLocaleString()}</div>
+                        <div className="py-2">
+                          <div className="text-xs text-gray-600">総ポイント</div>
+                          <div className="text-lg font-bold text-corporate">{dept.totalPoints.toLocaleString()}</div>
                         </div>
                       </div>
                     </div>
@@ -289,9 +289,9 @@ export default function Ranking() {
 
         {activeTab === 'achievements' && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title text-2xl mb-6"><Icon icon="ion:trophy" className="inline mr-2" /> 最新の実績表彰</h2>
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-6"><Icon icon="ion:trophy" className="inline mr-2" /> 最新の実績表彰</h2>
                 
                 <div className="space-y-4">
                   {achievements.map((achievement) => (
@@ -303,7 +303,7 @@ export default function Ranking() {
                         <div className="text-sm text-corporate font-medium">受賞者: {achievement.winner}</div>
                       </div>
                       <div className="text-right">
-                        <div className="badge badge-primary">{achievement.date}</div>
+                        <div className="bg-primary-100 text-primary-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">{achievement.date}</div>
                       </div>
                     </div>
                   ))}
@@ -312,18 +312,18 @@ export default function Ranking() {
             </div>
 
             <div className="space-y-6">
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h3 className="card-title"><Icon icon="ion:trending-up" className="inline mr-2" /> 月次成長率</h3>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold"><Icon icon="ion:trending-up" className="inline mr-2" /> 月次成長率</h3>
                   <div className="h-32 flex items-center justify-center bg-gray-50 rounded-lg">
                     <p className="text-gray-500">成長率グラフ（Chart.js等で実装予定）</p>
                   </div>
                 </div>
               </div>
 
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h3 className="card-title"><Icon icon="ion:medal" className="inline mr-2" /> 獲得バッジ</h3>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold"><Icon icon="ion:medal" className="inline mr-2" /> 獲得バッジ</h3>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="text-center p-3 bg-yellow-50 rounded-lg">
                       <Icon icon="ion:trophy" className="text-3xl mb-1 text-yellow-500" />

@@ -5,9 +5,6 @@ import { Icon } from '@iconify/react'
 import MobileNav from '@/components/mobile/MobileNav'
 import { useProducts } from '@/hooks/useProducts'
 import { usePoints } from '@/hooks/usePoints'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import type { Product } from '@/types/product'
 
 export default function Points() {
@@ -50,7 +47,7 @@ export default function Points() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 pt-16">
+      <div className="min-h-screen bg-white pt-16">
         <MobileNav />
         <div className="container mx-auto px-4 py-4 sm:py-8">
           <div className="animate-pulse space-y-4">
@@ -75,28 +72,28 @@ export default function Points() {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 sm:mb-8">Tech0ポイントシステム</h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="card bg-corporate text-white shadow-xl">
-            <div className="card-body text-center">
+          <div className="rounded-lg bg-corporate text-white shadow-lg">
+            <div className="p-6 text-center">
               <Icon icon="ion:trophy" className="text-5xl mb-4" />
-              <h2 className="card-title justify-center text-white text-2xl">現在のポイント</h2>
+              <h2 className="text-2xl font-bold justify-center text-white">現在のポイント</h2>
               <div className="text-4xl font-bold mb-2">{balance?.current_balance?.toLocaleString() || 0}</div>
               <p className="opacity-90">Tech0 Points</p>
             </div>
           </div>
 
-          <div className="card bg-white shadow-xl">
-            <div className="card-body text-center">
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6 text-center">
               <Icon icon="carbon:chart-line-smooth" className="text-4xl mb-4 text-green-600" />
-              <h2 className="card-title justify-center">獲得ポイント</h2>
+              <h2 className="text-xl font-bold justify-center">獲得ポイント</h2>
               <div className="text-3xl font-bold text-green-600">{totalEarned.toLocaleString()}</div>
               <p className="text-gray-600">累計獲得</p>
             </div>
           </div>
 
-          <div className="card bg-white shadow-xl">
-            <div className="card-body text-center">
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6 text-center">
               <Icon icon="carbon:gift" className="text-4xl mb-4 text-orange-600" />
-              <h2 className="card-title justify-center">使用ポイント</h2>
+              <h2 className="text-xl font-bold justify-center">使用ポイント</h2>
               <div className="text-3xl font-bold text-orange-600">{totalSpent.toLocaleString()}</div>
               <p className="text-gray-600">累計使用</p>
             </div>
@@ -104,15 +101,15 @@ export default function Points() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-          <div className="card bg-white shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title text-2xl mb-6"><Icon icon="carbon:gift" className="inline mr-2" /> ポイント交換</h2>
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6"><Icon icon="carbon:gift" className="inline mr-2" /> ポイント交換</h2>
               
-              <div className="tabs tabs-boxed mb-6">
+              <div className="flex bg-gray-200 rounded-lg p-1 mb-6">
                 {categories.map(category => (
                   <button
                     key={category.id}
-                    className={`tab ${selectedCategory === category.id ? 'tab-active' : ''}`}
+                    className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 ${selectedCategory === category.id ? 'bg-white text-primary-600 shadow-sm' : ''}`}
                     onClick={() => setSelectedCategory(category.id)}
                   >
                     {category.name}
@@ -122,8 +119,8 @@ export default function Points() {
 
               <div className="space-y-4">
                 {filteredProducts.map(product => (
-                  <Card key={product.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
+                  <div key={product.id} className="rounded-lg bg-white shadow-lg hover:shadow-md transition-shadow">
+                    <div className="p-6">
                       <div className="flex items-start justify-between space-x-4">
                         <div className="flex-1 min-w-0">
                           <h3 className="font-semibold text-gray-900 truncate">
@@ -134,37 +131,36 @@ export default function Points() {
                           </p>
                           
                           <div className="flex items-center space-x-2 mt-2">
-                            <Badge variant="secondary" className="text-xs">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                               {product.category}
-                            </Badge>
+                            </span>
                             <span className="text-sm font-medium text-blue-600">
                               {product.points_required.toLocaleString()}pt
                             </span>
                             {product.stock <= 5 && (
-                              <Badge variant="destructive" className="text-xs">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
                                 残り{product.stock}個
-                              </Badge>
+                              </span>
                             )}
                           </div>
                         </div>
                         
                         <div className="flex-shrink-0">
-                          <Button
-                            size="sm"
+                          <button
                             onClick={() => handleRedeem(product.id, product.points_required)}
                             disabled={
                               !balance ||
                               balance.current_balance < product.points_required ||
                               product.stock <= 0
                             }
-                            className="whitespace-nowrap"
+                            className="px-4 py-2 rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white disabled:bg-gray-400 whitespace-nowrap"
                           >
                             交換する
-                          </Button>
+                          </button>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
@@ -197,51 +193,51 @@ export default function Points() {
           </div>
         </div>
 
-        <div className="card bg-white shadow-xl mt-8">
-          <div className="card-body">
-            <h2 className="card-title text-2xl mb-6"><Icon icon="carbon:idea" className="inline mr-2" /> ポイント獲得方法</h2>
+        <div className="rounded-lg bg-white shadow-lg mt-8">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-6"><Icon icon="carbon:idea" className="inline mr-2" /> ポイント獲得方法</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="text-center p-4 bg-green-50 rounded-lg">
                 <Icon icon="carbon:temperature" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">温度設定最適化</h3>
                 <p className="text-sm text-gray-600">エアコンの温度を適切に設定</p>
-                <div className="badge badge-success mt-2">10-50pt</div>
+                <div className="bg-green-100 text-green-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">10-50pt</div>
               </div>
 
               <div className="text-center p-4 bg-yellow-50 rounded-lg">
                 <Icon icon="carbon:light" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">LED化推進</h3>
                 <p className="text-sm text-gray-600">照明のLED化を実施</p>
-                <div className="badge badge-warning mt-2">50-100pt</div>
+                <div className="bg-yellow-100 text-yellow-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">50-100pt</div>
               </div>
 
               <div className="text-center p-4 bg-corporate-50 rounded-lg">
                 <Icon icon="carbon:education" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">研修受講</h3>
                 <p className="text-sm text-gray-600">省エネ研修を受講</p>
-                <div className="badge badge-info mt-2">50-100pt</div>
+                <div className="bg-blue-100 text-blue-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">50-100pt</div>
               </div>
 
               <div className="text-center p-4 bg-purple-50 rounded-lg">
                 <Icon icon="ion:flag" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">目標達成</h3>
                 <p className="text-sm text-gray-600">月次削減目標を達成</p>
-                <div className="badge badge-secondary mt-2">100-200pt</div>
+                <div className="bg-gray-100 text-gray-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">100-200pt</div>
               </div>
 
               <div className="text-center p-4 bg-red-50 rounded-lg">
                 <Icon icon="carbon:plug" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">待機電力削減</h3>
                 <p className="text-sm text-gray-600">機器の待機電力を削減</p>
-                <div className="badge badge-error mt-2">20-40pt</div>
+                <div className="bg-red-100 text-red-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">20-40pt</div>
               </div>
 
               <div className="text-center p-4 bg-orange-50 rounded-lg">
                 <Icon icon="carbon:upload" className="text-4xl mb-3" />
                 <h3 className="font-bold mb-2">データアップロード</h3>
                 <p className="text-sm text-gray-600">利用明細をアップロード</p>
-                <div className="badge badge-accent mt-2">10-30pt</div>
+                <div className="bg-orange-100 text-orange-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium mt-2">10-30pt</div>
               </div>
             </div>
           </div>

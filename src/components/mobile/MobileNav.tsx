@@ -19,56 +19,97 @@ export default function MobileNav() {
 
   return (
     <>
-      <div className="navbar bg-corporate shadow-lg px-4 fixed top-0 left-0 right-0 z-50">
-        <div className="navbar-start">
-          <Link href="/mobile" className="text-lg sm:text-xl font-bold text-white">
+      <div className="bg-gradient-to-r from-corporate-600 via-corporate-500 to-blue-600 shadow-xl backdrop-blur-sm px-6 fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16">
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+            <Icon icon="carbon:leaf" className="w-5 h-5 text-white" />
+          </div>
+          <Link href="/mobile" className="text-xl font-bold text-white tracking-tight">
             Carbon Mate
           </Link>
         </div>
         
         {/* Desktop Navigation */}
-        <div className="navbar-center hidden lg:flex">
-          <div className="tabs tabs-boxed">
+        <div className="hidden lg:flex absolute left-1/2 transform -translate-x-1/2">
+          <nav className="flex items-center space-x-1 bg-white/10 backdrop-blur-md rounded-full px-2 py-1 border border-white/20">
             <Link 
               href="/mobile/dashboard" 
-              className={`tab ${pathname === '/mobile/dashboard' ? 'tab-active' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                pathname === '/mobile/dashboard' 
+                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
+              }`}
             >
-              ダッシュボード
+              <Icon icon="carbon:dashboard" className="w-4 h-4" />
+              <span>ダッシュボード</span>
             </Link>
             <Link 
               href="/mobile/points" 
-              className={`tab ${pathname === '/mobile/points' ? 'tab-active' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                pathname === '/mobile/points' 
+                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
+              }`}
             >
-              ポイント
+              <Icon icon="ion:trophy" className="w-4 h-4" />
+              <span>ポイント</span>
             </Link>
             <Link 
               href="/mobile/ranking" 
-              className={`tab ${pathname === '/mobile/ranking' ? 'tab-active' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                pathname === '/mobile/ranking' 
+                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
+              }`}
             >
-              ランキング
+              <Icon icon="ion:stats-chart" className="w-4 h-4" />
+              <span>ランキング</span>
             </Link>
             <Link 
               href="/mobile/upload" 
-              className={`tab ${pathname === '/mobile/upload' ? 'tab-active' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                pathname === '/mobile/upload' 
+                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
+              }`}
             >
-              アップロード
+              <Icon icon="carbon:upload" className="w-4 h-4" />
+              <span>アップロード</span>
             </Link>
             <Link 
               href="/mobile/ai-analysis" 
-              className={`tab ${pathname === '/mobile/ai-analysis' ? 'tab-active' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                pathname === '/mobile/ai-analysis' 
+                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
+              }`}
             >
-              AI分析
+              <Icon icon="carbon:watson-machine-learning" className="w-4 h-4" />
+              <span>AI分析</span>
             </Link>
-          </div>
+          </nav>
         </div>
 
-        <div className="navbar-end">
+        <div className="flex items-center space-x-4">
+          {/* Desktop user menu */}
+          <div className="hidden lg:flex items-center space-x-3">
+            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-md rounded-full px-3 py-1 border border-white/20">
+              <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                <span className="text-white font-bold text-sm">田</span>
+              </div>
+              <span className="text-white/90 text-sm font-medium">田中 太郎</span>
+            </div>
+            <button className="p-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300">
+              <Icon icon="carbon:settings" className="w-5 h-5 text-white" />
+            </button>
+          </div>
+
           {/* Mobile hamburger button */}
           <button 
-            className="btn btn-ghost lg:hidden"
+            className="lg:hidden p-2 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition-all duration-300"
             onClick={toggleMenu}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
@@ -77,30 +118,13 @@ export default function MobileNav() {
               />
             </svg>
           </button>
-
-          {/* Desktop user menu */}
-          <div className="dropdown dropdown-end hidden lg:flex">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full bg-white flex items-center justify-center">
-                <span className="text-primary font-bold">田</span>
-              </div>
-            </div>
-            <ul 
-              tabIndex={0} 
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-            >
-              <li><a>プロフィール</a></li>
-              <li><a>設定</a></li>
-              <li><a>ログアウト</a></li>
-            </ul>
-          </div>
         </div>
       </div>
 
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-corporate shadow-lg border-t border-white/20 fixed top-16 left-0 right-0 z-40">
-          <div className="px-4 py-2 space-y-1">
+        <div className="lg:hidden bg-gradient-to-b from-corporate-600 to-corporate-700 shadow-2xl backdrop-blur-md border-t border-white/20 fixed top-16 left-0 right-0 z-40">
+          <div className="px-4 py-4 space-y-2">
             <Link 
               href="/mobile/dashboard" 
               className={`block px-3 py-2 text-base font-medium rounded-md ${

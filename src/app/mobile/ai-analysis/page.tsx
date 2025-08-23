@@ -152,10 +152,10 @@ export default function AIAnalysis() {
 
   const getDifficultyColor = (difficulty: string): string => {
     switch (difficulty) {
-      case 'easy': return 'badge-success'
-      case 'medium': return 'badge-warning'
-      case 'hard': return 'badge-error'
-      default: return 'badge-neutral'
+      case 'easy': return 'bg-green-100 text-green-800'
+      case 'medium': return 'bg-yellow-100 text-yellow-800'
+      case 'hard': return 'bg-red-100 text-red-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
   }
 
@@ -173,7 +173,7 @@ export default function AIAnalysis() {
   }
 
   return (
-    <div className="min-h-screen bg-custom pt-16">
+    <div className="min-h-screen bg-white pt-16">
       <MobileNav />
 
       <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -183,20 +183,20 @@ export default function AIAnalysis() {
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
-          <div className="card bg-corporate text-white shadow-xl">
-            <div className="card-body text-center">
+          <div className="rounded-lg bg-corporate text-white shadow-lg">
+            <div className="p-6 text-center">
               <div className="mb-4">
                 <Icon icon="carbon:analytics" className="text-6xl text-white" />
               </div>
-              <h2 className="card-title justify-center text-white text-xl">総合スコア</h2>
+              <h2 className="text-xl font-bold justify-center text-white">総合スコア</h2>
               <div className="text-4xl font-bold">{analysisData.overall.score}</div>
               <p className="opacity-90">エネルギー効率</p>
             </div>
           </div>
 
-          <div className="card bg-white shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title text-lg flex items-center gap-2">
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6">
+              <h3 className="text-lg font-bold flex items-center gap-2">
                 <Icon icon="carbon:trending-up" className="text-xl" />
                 予測削減率
               </h3>
@@ -211,9 +211,9 @@ export default function AIAnalysis() {
             </div>
           </div>
 
-          <div className="card bg-white shadow-xl">
-            <div className="card-body">
-              <h3 className="card-title text-lg flex items-center gap-2">
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6">
+              <h3 className="text-lg font-bold flex items-center gap-2">
                 <Icon icon="carbon:currency-yen" className="text-xl" />
                 予測節約額
               </h3>
@@ -230,9 +230,9 @@ export default function AIAnalysis() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-          <div className="card bg-white shadow-xl">
-            <div className="card-body">
-              <h2 className="card-title text-2xl mb-6 flex items-center gap-3">
+          <div className="rounded-lg bg-white shadow-lg">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
                 <Icon icon="carbon:idea" className="text-2xl text-corporate" />
                 AI改善提案
               </h2>
@@ -253,11 +253,11 @@ export default function AIAnalysis() {
                         </div>
                         <div>
                           <h3 className="font-bold text-lg">{rec.title}</h3>
-                          <div className="badge badge-outline">{rec.category}</div>
+                          <div className="border border-primary-600 text-primary-600 px-2 py-1 rounded text-xs font-medium">{rec.category}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className={`badge ${getImpactColor(rec.impact)} badge-lg`}>
+                        <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(rec.impact)}`}>
                           {rec.impact === 'high' ? '高効果' : rec.impact === 'medium' ? '中効果' : '低効果'}
                         </div>
                         <div className="text-sm text-green-600 font-bold mt-1">+{rec.points}pt</div>
@@ -267,11 +267,11 @@ export default function AIAnalysis() {
                     <p className="text-gray-600 mb-4">{rec.description}</p>
                     
                     <div className="flex items-center justify-between">
-                      <div className={`badge ${getDifficultyColor(rec.difficulty)}`}>
+                      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(rec.difficulty)}`}>
                         {rec.difficulty === 'easy' ? '簡単' : rec.difficulty === 'medium' ? '普通' : '困難'}
                       </div>
                       <button 
-                        className="btn btn-primary btn-sm"
+                        className="px-3 py-1 text-sm rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white"
                         onClick={() => implementRecommendation(rec)}
                       >
                         実行する
@@ -284,9 +284,9 @@ export default function AIAnalysis() {
           </div>
 
           <div className="space-y-6">
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h3 className="card-title text-xl mb-4 flex items-center gap-2">
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Icon icon="carbon:analytics" className="text-xl" />
                   使用パターン分析
                 </h3>
@@ -294,26 +294,26 @@ export default function AIAnalysis() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <span className="font-medium">ピーク使用時間</span>
-                    <span className="badge badge-warning">{analysisData.patterns.peak_usage}</span>
+                    <span className="bg-yellow-100 text-yellow-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">{analysisData.patterns.peak_usage}</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="font-medium">低使用時間</span>
-                    <span className="badge badge-success">{analysisData.patterns.low_usage}</span>
+                    <span className="bg-green-100 text-green-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">{analysisData.patterns.low_usage}</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="font-medium">週間パターン</span>
-                    <span className="badge badge-info">平日多め</span>
+                    <span className="bg-blue-100 text-blue-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">平日多め</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
                     <span className="font-medium">季節傾向</span>
-                    <span className="badge badge-secondary">冬季ピーク</span>
+                    <span className="bg-gray-100 text-gray-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">冬季ピーク</span>
                   </div>
                 </div>
 
-                <div className="divider"></div>
+                <div className="border-t border-gray-300 my-4"></div>
 
                 <div className="text-center">
                   <div className="text-lg font-bold text-gray-800 mb-2">使用効率</div>
@@ -324,9 +324,9 @@ export default function AIAnalysis() {
               </div>
             </div>
 
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h3 className="card-title text-xl mb-4 flex items-center gap-2">
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Icon icon="carbon:flag" className="text-xl" />
                   改善目標
                 </h3>
@@ -337,7 +337,7 @@ export default function AIAnalysis() {
                       <span>月間削減率</span>
                       <span>12.5% / 15%</span>
                     </div>
-                    <progress className="progress progress-success w-full" value="83" max="100"></progress>
+                    <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-green-600 h-2 rounded-full" style={{width: '83%'}}></div></div>
                   </div>
                   
                   <div>
@@ -345,7 +345,7 @@ export default function AIAnalysis() {
                       <span>年間CO2削減</span>
                       <span>280kg / 400kg</span>
                     </div>
-                    <progress className="progress progress-info w-full" value="70" max="100"></progress>
+                    <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-blue-600 h-2 rounded-full" style={{width: '70%'}}></div></div>
                   </div>
                   
                   <div>
@@ -353,7 +353,7 @@ export default function AIAnalysis() {
                       <span>節約額目標</span>
                       <span>¥45,600 / ¥60,000</span>
                     </div>
-                    <progress className="progress progress-warning w-full" value="76" max="100"></progress>
+                    <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-yellow-600 h-2 rounded-full" style={{width: '76%'}}></div></div>
                   </div>
                 </div>
               </div>
@@ -361,9 +361,9 @@ export default function AIAnalysis() {
           </div>
         </div>
 
-        <div className="card bg-white shadow-xl mt-6 sm:mt-8">
-          <div className="card-body">
-            <h2 className="card-title text-2xl mb-6 flex items-center gap-3">
+        <div className="rounded-lg bg-white shadow-lg mt-6 sm:mt-8">
+          <div className="p-6">
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
               <Icon icon="carbon:chat" className="text-2xl text-corporate" />
               AIコメント履歴
             </h2>
@@ -380,7 +380,7 @@ export default function AIAnalysis() {
                       </div>
                     </div>
                     {comment.actionable && (
-                      <div className="badge badge-accent">実行可能</div>
+                      <div className="bg-orange-100 text-orange-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">実行可能</div>
                     )}
                   </div>
                   <p className="text-gray-700 leading-relaxed">{comment.comment}</p>
@@ -389,7 +389,7 @@ export default function AIAnalysis() {
             </div>
 
             <div className="text-center mt-6">
-              <button className="btn btn-outline btn-primary">
+              <button className="border border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-4 py-2 rounded font-medium transition-colors">
                 過去のコメントをもっと見る
               </button>
             </div>

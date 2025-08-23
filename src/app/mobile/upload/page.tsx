@@ -120,7 +120,7 @@ export default function Upload() {
   }
 
   return (
-    <div className="min-h-screen bg-custom pt-16">
+    <div className="min-h-screen bg-white pt-16">
       <MobileNav />
 
       <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -128,9 +128,9 @@ export default function Upload() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <div className="space-y-6">
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h2 className="card-title text-2xl mb-6">
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h2 className="text-2xl font-bold mb-6">
                   <Icon icon="carbon:upload" className="text-2xl mr-2" />
                   ファイルアップロード
                 </h2>
@@ -156,11 +156,11 @@ export default function Upload() {
                     multiple
                     accept=".pdf,.jpg,.jpeg,.png"
                     onChange={handleFileInput}
-                    className="file-input file-input-bordered file-input-primary w-full max-w-xs"
+                    className="w-full max-w-xs px-3 py-2 border border-primary-600 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                   />
                 </div>
 
-                <div className="alert border-2 border-corporate bg-transparent mt-4">
+                <div className="px-4 py-3 rounded border-2 border-corporate bg-transparent mt-4">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6 text-corporate">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
@@ -173,9 +173,9 @@ export default function Upload() {
             </div>
 
             {uploadedFiles.length > 0 && (
-              <div className="card bg-white shadow-xl">
-                <div className="card-body">
-                  <h3 className="card-title">アップロード待ちファイル</h3>
+              <div className="rounded-lg bg-white shadow-lg">
+                <div className="p-6">
+                  <h3 className="text-lg font-bold">アップロード待ちファイル</h3>
                   <div className="space-y-3">
                     {uploadedFiles.map(file => (
                       <div key={file.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
@@ -194,7 +194,7 @@ export default function Upload() {
                         </div>
                         {file.status === 'pending' && (
                           <button 
-                            className="btn btn-ghost btn-sm"
+                            className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-1 text-sm rounded font-medium transition-colors"
                             onClick={() => removeFile(file.id)}
                           >
                             <Icon icon="carbon:close" className="text-red-600" />
@@ -204,9 +204,9 @@ export default function Upload() {
                     ))}
                   </div>
                   
-                  <div className="card-actions justify-end mt-4">
+                  <div className="flex gap-2 pt-4 justify-end mt-4">
                     <button 
-                      className={`btn btn-primary ${processing ? 'loading' : ''}`}
+                      className={`px-4 py-2 rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white ${processing ? 'opacity-50 cursor-not-allowed' : ''}`}
                       onClick={processFiles}
                       disabled={processing || uploadedFiles.every(f => f.status !== 'pending')}
                     >
@@ -219,37 +219,37 @@ export default function Upload() {
           </div>
 
           <div className="space-y-6">
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h3 className="card-title">
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h3 className="text-lg font-bold">
                   <Icon icon="ion:stats-chart" className="text-lg mr-2" />
                   アップロード統計
                 </h3>
-                <div className="stats stats-vertical shadow">
-                  <div className="stat">
-                    <div className="stat-title">今月のアップロード</div>
-                    <div className="stat-value">3</div>
-                    <div className="stat-desc">ファイル</div>
+                <div className="grid gap-4 shadow">
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="text-sm text-gray-600">今月のアップロード</div>
+                    <div className="text-2xl font-bold">3</div>
+                    <div className="text-sm text-gray-500">ファイル</div>
                   </div>
                   
-                  <div className="stat">
-                    <div className="stat-title">獲得ポイント</div>
-                    <div className="stat-value text-green-600">75</div>
-                    <div className="stat-desc">今月合計</div>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="text-sm text-gray-600">獲得ポイント</div>
+                    <div className="text-2xl font-bold text-green-600">75</div>
+                    <div className="text-sm text-gray-500">今月合計</div>
                   </div>
                   
-                  <div className="stat">
-                    <div className="stat-title">処理精度</div>
-                    <div className="stat-value text-corporate">98%</div>
-                    <div className="stat-desc">OCR読み取り精度</div>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <div className="text-sm text-gray-600">処理精度</div>
+                    <div className="text-2xl font-bold text-corporate">98%</div>
+                    <div className="text-sm text-gray-500">OCR読み取り精度</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="card bg-white shadow-xl">
-              <div className="card-body">
-                <h3 className="card-title mb-4">
+            <div className="rounded-lg bg-white shadow-lg">
+              <div className="p-6">
+                <h3 className="text-lg font-bold mb-4">
                   <Icon icon="carbon:light-bulb" className="text-lg mr-2" />
                   アップロードのコツ
                 </h3>
@@ -283,42 +283,42 @@ export default function Upload() {
           </div>
         </div>
 
-        <div className="card bg-white shadow-xl mt-6 sm:mt-8">
-          <div className="card-body">
-            <h3 className="card-title text-2xl mb-6">
+        <div className="rounded-lg bg-white shadow-lg mt-6 sm:mt-8">
+          <div className="p-6">
+            <h3 className="text-2xl font-bold mb-6">
               <Icon icon="carbon:list" className="text-2xl mr-2" />
               アップロード履歴
             </h3>
             
             <div className="overflow-x-auto">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>ファイル名</th>
-                    <th>アップロード日</th>
-                    <th>ステータス</th>
-                    <th>獲得ポイント</th>
-                    <th>アクション</th>
+              <table className="min-w-full border-collapse">
+                <thead className="bg-gray-50">
+                  <tr className="border-b">
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">ファイル名</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">アップロード日</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">ステータス</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">獲得ポイント</th>
+                    <th className="px-4 py-2 text-left font-medium text-gray-700">アクション</th>
                   </tr>
                 </thead>
                 <tbody>
                   {uploadHistory.map(item => (
-                    <tr key={item.id}>
-                      <td>
+                    <tr key={item.id} className="border-b hover:bg-gray-50">
+                      <td className="px-4 py-2">
                         <div className="flex items-center gap-3">
                           <Icon icon="carbon:document" className="text-xl text-corporate" />
                           <div className="font-medium">{item.filename}</div>
                         </div>
                       </td>
-                      <td>{item.uploadDate}</td>
-                      <td>
-                        <div className="badge badge-success">{item.status}</div>
+                      <td className="px-4 py-2">{item.uploadDate}</td>
+                      <td className="px-4 py-2">
+                        <div className="bg-green-100 text-green-800 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium">{item.status}</div>
                       </td>
-                      <td>
+                      <td className="px-4 py-2">
                         <div className="font-bold text-green-600">+{item.points}pt</div>
                       </td>
-                      <td>
-                        <button className="btn btn-ghost btn-sm">詳細</button>
+                      <td className="px-4 py-2">
+                        <button className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-3 py-1 text-sm rounded font-medium transition-colors">詳細</button>
                       </td>
                     </tr>
                   ))}

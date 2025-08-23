@@ -62,9 +62,9 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-custom flex items-center justify-center p-4">
-      <div className="card w-full max-w-md bg-white shadow-2xl">
-        <div className="card-body">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="rounded-lg w-full max-w-md bg-white shadow-2xl">
+        <div className="p-6">
           <div className="text-center mb-6">
             <Link href="/mobile" className="text-2xl font-bold text-primary hover:text-primary/80">
               Carbon Mate
@@ -72,15 +72,15 @@ export default function Login() {
             <p className="text-gray-600 mt-2">企業向けエネルギー管理</p>
           </div>
 
-          <div className="tabs tabs-custom mb-6">
+          <div className="flex bg-gray-200 rounded-lg p-1 mb-6">
             <button 
-              className={`tab tab-sm sm:tab-lg flex-1 ${loginType === 'general' ? 'tab-active' : ''}`}
+              className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base ${loginType === 'general' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
               onClick={() => setLoginType('general')}
             >
               一般ログイン
             </button>
             <button 
-              className={`tab tab-sm sm:tab-lg flex-1 ${loginType === 'tokyogas' ? 'tab-active' : ''}`}
+              className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base ${loginType === 'tokyogas' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
               onClick={() => setLoginType('tokyogas')}
             >
               <span className="hidden sm:inline">東京ガス連携</span>
@@ -89,7 +89,7 @@ export default function Login() {
           </div>
 
           {error && (
-            <div className="alert alert-error mb-4">
+            <div className="px-4 py-3 rounded bg-red-100 border border-red-400 text-red-700 mb-4">
               <span>{error}</span>
             </div>
           )}
@@ -103,30 +103,26 @@ export default function Login() {
                   </p>
                 </div>
                 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">お客さま番号</span>
-                  </label>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">お客さま番号</label>
                   <input 
                     type="text" 
                     name="customerNumber"
                     placeholder="お客さま番号を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
                     value={formData.customerNumber || ''}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード</span>
-                  </label>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
                   <input 
                     type="password" 
                     name="password"
                     placeholder="パスワードを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
                     value={formData.password}
                     onChange={handleInputChange}
                     required 
@@ -135,14 +131,14 @@ export default function Login() {
 
                 <button 
                   type="submit" 
-                  className="btn btn-primary w-full btn-md sm:btn-lg"
+                  className="px-4 py-2 sm:px-6 sm:py-3 sm:text-lg rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white w-full flex justify-center items-center"
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="animate-spin rounded-full border-b-2 h-4 w-4"></span>
                   ) : (
                     <>
-                      <Icon icon="carbon:connect" className="text-lg" />
+                      <Icon icon="carbon:connect" className="text-lg mr-2" />
                       <span className="hidden sm:inline">東京ガスアカウントで</span>ログイン
                     </>
                   )}
@@ -150,30 +146,26 @@ export default function Login() {
               </>
             ) : (
               <>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">メールアドレス</span>
-                  </label>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">メールアドレス</label>
                   <input 
                     type="email" 
                     name="email"
                     placeholder="メールアドレスを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
                     value={formData.email}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード</span>
-                  </label>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">パスワード</label>
                   <input 
                     type="password" 
                     name="password"
                     placeholder="パスワードを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent" 
                     value={formData.password}
                     onChange={handleInputChange}
                     required 
@@ -182,14 +174,14 @@ export default function Login() {
 
                 <button 
                   type="submit" 
-                  className="btn btn-primary w-full btn-md sm:btn-lg"
+                  className="px-4 py-2 sm:px-6 sm:py-3 sm:text-lg rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white w-full flex justify-center items-center"
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="animate-spin rounded-full border-b-2 h-4 w-4"></span>
                   ) : (
                     <>
-                      <Icon icon="carbon:login" className="text-lg" />
+                      <Icon icon="carbon:login" className="text-lg mr-2" />
                       ログイン
                     </>
                   )}
