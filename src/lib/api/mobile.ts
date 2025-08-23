@@ -1,65 +1,24 @@
 // Mobile API configuration - integrated with existing backend
-import axios from 'axios';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000/api/v1';
-
-// Mobile API client with authentication
-const mobileAPI = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor to add auth token
-mobileAPI.interceptors.request.use(
-  (config) => {
-    // Use existing auth system
-    const token = typeof window !== 'undefined' ? 
-      document.cookie.split('; ').find(row => row.startsWith('access_token='))?.split('=')[1] : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Response interceptor for error handling
-mobileAPI.interceptors.response.use(
-  (response) => response.data,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Redirect to login if unauthorized
-      if (typeof window !== 'undefined') {
-        // Use existing auth system
-        document.cookie = 'access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        localStorage.removeItem('current_user');
-        window.location.href = '/mobile/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
+import { api, path } from '../apiClient';
 
 // Authentication API calls (using existing backend endpoints)
 export const authAPI = {
   login: async (credentials: { email: string; password: string }) => {
-    const response = await mobileAPI.post('/login/access-token', {
+    const response = await api.post(path('/login/access-token'), {
       username: credentials.email,
       password: credentials.password,
     });
-    return response;
+    return response.data;
   },
   
   getCurrentUser: async () => {
-    return await mobileAPI.get('/users/me');
+    const response = await api.get(path('/users/me'));
+    return response.data;
   },
   
   updateProfile: async (userData: any) => {
-    return await mobileAPI.put('/users/me', userData);
+    const response = await api.put(path('/users/me'), userData);
+    return response.data;
   },
 };
 
@@ -67,22 +26,22 @@ export const authAPI = {
 export const energyAPI = {
   getMonthlyUsage: async (year: number, month: number) => {
     try {
-      const response = await mobileAPI.get('/metrics/monthly-usage', {
+      const response = await api.get(path('/metrics/monthly-usage'), {
         params: { year }
       });
       
       // Filter for specific month
-      const monthData = response.months?.find((m: any) => m.month === month);
+      const monthData = response.data.months?.find((m: any) => m.month === month);
       return {
         usage: {
           electricity: {
             amount: monthData?.electricity_kwh || 0,
-            cost: (monthData?.electricity_kwh || 0) * 25, // Estimated cost per kWh
+            cost: (monthData?.electricity_kwh || 0) * 25,
             unit: 'kWh'
           },
           gas: {
             amount: monthData?.gas_m3 || 0,
-            cost: (monthData?.gas_m3 || 0) * 100, // Estimated cost per m³
+            cost: (monthData?.gas_m3 || 0) * 100,
             unit: 'm³'
           }
         }
@@ -100,7 +59,8 @@ export const energyAPI = {
   
   getCurrentUsage: async () => {
     try {
-      const kpi = await mobileAPI.get('/metrics/kpi');
+      const response = await api.get(path('/metrics/kpi'));
+      const kpi = response.data;
       return {
         electricity_total: kpi.electricity_total_kwh || 0,
         gas_total: kpi.gas_total_m3 || 0,
@@ -118,8 +78,8 @@ export const energyAPI = {
 
   addUsage: async (usageData: any) => {
     try {
-      // This would need to be implemented as energy record creation
-      return await mobileAPI.post('/energy-records', usageData);
+      const response = await api.post(path('/energy-records'), usageData);
+      return response.data;
     } catch (error) {
       console.error('Failed to add usage data:', error);
       throw error;
@@ -131,11 +91,11 @@ export const energyAPI = {
 export const pointsAPI = {
   getBalance: async () => {
     try {
-      const response = await mobileAPI.get('/admin/points/employees');
+      const response = await api.get(path('/admin/points/employees'));
       const currentUser = await authAPI.getCurrentUser();
       
       // Find current user's points from employees list
-      const userPoints = response.employees?.find((emp: any) => emp.id === currentUser.id);
+      const userPoints = response.data.employees?.find((emp: any) => emp.id === currentUser.id);
       return { balance: userPoints?.points_balance || 0 };
     } catch (error) {
       console.error('Failed to get points balance:', error);
@@ -145,7 +105,8 @@ export const pointsAPI = {
   
   getHistory: async (params: any = {}) => {
     try {
-      return await mobileAPI.get('/admin/points/employees', { params });
+      const response = await api.get(path('/admin/points/employees'), { params });
+      return response.data;
     } catch (error) {
       console.error('Failed to get points history:', error);
       return { employees: [], total: 0 };
@@ -154,9 +115,10 @@ export const pointsAPI = {
   
   getRewards: async () => {
     try {
-      return await mobileAPI.get('/admin/incentives/products', {
+      const response = await api.get(path('/admin/incentives/products'), {
         params: { active: true }
       });
+      return response.data;
     } catch (error) {
       console.error('Failed to get rewards:', error);
       return [];
@@ -165,7 +127,8 @@ export const pointsAPI = {
   
   redeemPoints: async (rewardData: any) => {
     try {
-      return await mobileAPI.post('/admin/incentives/products/redeem', rewardData);
+      const response = await api.post(path('/admin/incentives/products/redeem'), rewardData);
+      return response.data;
     } catch (error) {
       console.error('Failed to redeem points:', error);
       throw error;
@@ -177,10 +140,10 @@ export const pointsAPI = {
 export const rankingAPI = {
   getIndividualRanking: async (params: any = {}) => {
     try {
-      const response = await mobileAPI.get('/admin/points/employees', { 
+      const response = await api.get(path('/admin/points/employees'), { 
         params: { ...params, sort_by: 'points_balance', sort_order: 'desc' }
       });
-      return response.employees || [];
+      return response.data.employees || [];
     } catch (error) {
       console.error('Failed to get individual ranking:', error);
       return [];
@@ -190,11 +153,11 @@ export const rankingAPI = {
   getMyPosition: async () => {
     try {
       const currentUser = await authAPI.getCurrentUser();
-      const allEmployees = await mobileAPI.get('/admin/points/employees', {
+      const response = await api.get(path('/admin/points/employees'), {
         params: { sort_by: 'points_balance', sort_order: 'desc' }
       });
       
-      const employees = allEmployees.employees || [];
+      const employees = response.data.employees || [];
       const myPosition = employees.findIndex((emp: any) => emp.id === currentUser.id) + 1;
       const myData = employees.find((emp: any) => emp.id === currentUser.id);
       
@@ -211,8 +174,8 @@ export const rankingAPI = {
   
   getAchievements: async () => {
     try {
-      // Check CO2 reduction and points for achievements
-      const kpi = await mobileAPI.get('/metrics/kpi');
+      const response = await api.get(path('/metrics/kpi'));
+      const kpi = response.data;
       const currentUser = await authAPI.getCurrentUser();
       
       const achievements = [];
@@ -244,44 +207,6 @@ export const rankingAPI = {
   },
 };
 
-// File upload API calls (if needed)
-export const uploadAPI = {
-  uploadDocument: async (file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      return await mobileAPI.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (error) {
-      console.error('Failed to upload document:', error);
-      throw error;
-    }
-  },
-  
-  // Analysis API for uploaded energy bills
-  analyzeEnergyBill: async (file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const response = await mobileAPI.post('/upload/analyze-bill', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      
-      return response;
-    } catch (error) {
-      console.error('Failed to analyze energy bill:', error);
-      throw error;
-    }
-  },
-};
-
 // Utility functions for auth management (using existing auth system)
 export const setAuthToken = (token: string) => {
   if (typeof window !== 'undefined') {
@@ -307,7 +232,6 @@ export const isAuthenticated = (): boolean => {
   return !!getAuthToken();
 };
 
-// User management functions
 export const setCurrentUser = (user: any) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem('current_user', JSON.stringify(user));

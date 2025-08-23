@@ -1,6 +1,4 @@
-import axios from '@/lib/axios';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+import { api, path } from '../apiClient';
 
 export interface AutoReportRequest {
   start_date: string;
@@ -37,22 +35,22 @@ export interface AutoReportStatus {
 }
 
 export const previewReport = async (request: AutoReportRequest): Promise<AutoReportPreview> => {
-  const response = await axios.post(`${API_BASE}/api/v1/reports/generate/preview`, request);
+  const response = await api.post(path('/reports/generate/preview'), request);
   return response.data;
 };
 
 export const generateReport = async (request: AutoReportRequest): Promise<AutoReportResponse> => {
-  const response = await axios.post(`${API_BASE}/api/v1/reports/generate`, request);
+  const response = await api.post(path('/reports/generate'), request);
   return response.data;
 };
 
 export const getReportStatus = async (reportId: string): Promise<AutoReportStatus> => {
-  const response = await axios.get(`${API_BASE}/api/v1/reports/generate/status/${reportId}`);
+  const response = await api.get(path(`/reports/generate/status/${reportId}`));
   return response.data;
 };
 
 export const downloadReport = async (reportId: string): Promise<Blob> => {
-  const response = await axios.get(`${API_BASE}/api/v1/reports/generate/download/${reportId}`, {
+  const response = await api.get(path(`/reports/generate/download/${reportId}`), {
     responseType: 'blob'
   });
   return response.data;
