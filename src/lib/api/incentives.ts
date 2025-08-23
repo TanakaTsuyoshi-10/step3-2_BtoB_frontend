@@ -1,6 +1,4 @@
-import axios from '@/lib/axios';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+import { api, path } from '../apiClient';
 
 export interface Product {
   id: number;
@@ -51,30 +49,30 @@ export const getProducts = async (params?: {
   if (params?.category) searchParams.append('category', params.category);
   if (params?.active !== undefined) searchParams.append('active', params.active.toString());
   
-  const response = await axios.get(`${API_BASE}/api/v1/admin/incentives/products?${searchParams}`);
+  const response = await api.get(path(`/admin/incentives/products?${searchParams}`));
   return response.data;
 };
 
 export const createProduct = async (product: ProductCreate): Promise<Product> => {
-  const response = await axios.post(`${API_BASE}/api/v1/admin/incentives/products`, product);
+  const response = await api.post(path('/admin/incentives/products'), product);
   return response.data;
 };
 
 export const updateProduct = async (id: number, product: Partial<ProductCreate>): Promise<Product> => {
-  const response = await axios.put(`${API_BASE}/api/v1/admin/incentives/products/${id}`, product);
+  const response = await api.put(path(`/admin/incentives/products/${id}`), product);
   return response.data;
 };
 
 export const toggleProduct = async (id: number, active: boolean): Promise<void> => {
-  await axios.patch(`${API_BASE}/api/v1/admin/incentives/products/${id}/toggle`, { active });
+  await api.patch(path(`/admin/incentives/products/${id}/toggle`), { active });
 };
 
 export const getRedemptionStats = async (period: 'month' | 'quarter' | 'year' = 'month'): Promise<RedemptionStats> => {
-  const response = await axios.get(`${API_BASE}/api/v1/admin/incentives/stats?period=${period}`);
+  const response = await api.get(path(`/admin/incentives/stats?period=${period}`));
   return response.data;
 };
 
 export const getPopularity = async (period: 'month' | 'quarter' | 'year' = 'month'): Promise<PopularityItem[]> => {
-  const response = await axios.get(`${API_BASE}/api/v1/admin/incentives/popularity?period=${period}`);
+  const response = await api.get(path(`/admin/incentives/popularity?period=${period}`));
   return response.data;
 };

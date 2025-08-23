@@ -1,7 +1,4 @@
-import axios from 'axios';
-import { getAuthToken } from '@/lib/auth';
-
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000/api/v1';
+import { api, path } from '../apiClient';
 
 // メトリクス APIレスポンス型定義
 export interface KPIResponse {
@@ -53,26 +50,6 @@ export interface YoyUsageResponse {
   delta: UsageData;
 }
 
-// APIクライアント設定
-const createApiClient = () => {
-  const instance = axios.create({
-    baseURL: API_BASE,
-  });
-
-  // リクエストインターセプターでAuthorizationヘッダーを追加
-  instance.interceptors.request.use((config) => {
-    const token = getAuthToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
-
-  return instance;
-};
-
-const apiClient = createApiClient();
-
 // メトリクスAPIクライアント関数
 export const metricsAPI = {
   /**
@@ -83,7 +60,7 @@ export const metricsAPI = {
     from_date?: string;
     to_date?: string;
   }): Promise<KPIResponse> {
-    const response = await apiClient.get('/metrics/kpi', { params });
+    const response = await api.get(path('/metrics/kpi'), { params });
     return response.data;
   },
 
@@ -94,7 +71,7 @@ export const metricsAPI = {
     company_id?: number;
     year?: number;
   }): Promise<MonthlyUsageResponse> {
-    const response = await apiClient.get('/metrics/monthly-usage', { params });
+    const response = await api.get(path('/metrics/monthly-usage'), { params });
     return response.data;
   },
 
@@ -107,7 +84,7 @@ export const metricsAPI = {
     to_date?: string;
     interval?: 'month' | 'week';
   }): Promise<Co2TrendResponse> {
-    const response = await apiClient.get('/metrics/co2-trend', { params });
+    const response = await api.get(path('/metrics/co2-trend'), { params });
     return response.data;
   },
 
@@ -118,7 +95,7 @@ export const metricsAPI = {
     company_id?: number;
     month?: string;
   }): Promise<YoyUsageResponse> {
-    const response = await apiClient.get('/metrics/yoy-usage', { params });
+    const response = await api.get(path('/metrics/yoy-usage'), { params });
     return response.data;
   },
 };

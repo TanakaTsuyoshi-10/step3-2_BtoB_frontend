@@ -2,8 +2,57 @@
 ├── AZURE_APP_SERVICE_CONFIG.md
 ├── AZURE_CONFIGURATION_SCRIPT.md
 ├── DEPLOYMENT_TROUBLESHOOTING.md
+├── DigiCertGlobalRootCA.crt.pem
 ├── frontend_structure.txt
 ├── jsconfig.json
+├── mobile
+│   ├── __pycache__
+│   │   └── app.cpython-310.pyc
+│   ├── app
+│   │   ├── ai-analysis
+│   │   │   └── page.jsx
+│   │   ├── components
+│   │   │   ├── CarbonIcon.jsx
+│   │   │   └── MobileNav.jsx
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.jsx
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.jsx
+│   │   ├── page.jsx
+│   │   ├── page.tsx
+│   │   ├── points
+│   │   │   ├── page.jsx
+│   │   │   └── page.tsx
+│   │   ├── ranking
+│   │   │   └── page.jsx
+│   │   ├── register
+│   │   │   └── page.jsx
+│   │   └── upload
+│   │       └── page.jsx
+│   ├── components
+│   │   └── ui
+│   │       └── card
+│   │           └── index.tsx
+│   ├── jsconfig.json
+│   ├── lib
+│   │   ├── api
+│   │   │   └── index.ts
+│   │   ├── api.js
+│   │   └── utils.ts
+│   ├── next-env.d.ts
+│   ├── next.config.mjs
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── README.md
+│   ├── styles
+│   │   └── globals.css
+│   ├── tailwind.config.js
+│   └── tsconfig.json
 ├── next-env.d.ts
 ├── next.config.js
 ├── next.config.mjs
@@ -11,6 +60,9 @@
 ├── package.json
 ├── postcss.config.js
 ├── README.md
+├── requirements.txt
+├── seed_db.log
+├── seed_db.py
 ├── server.js
 ├── src
 │   ├── app
@@ -99,28 +151,39 @@
 │   │       ├── tabs.tsx
 │   │       ├── textarea.tsx
 │   │       └── utils.ts
+│   ├── hooks
+│   │   ├── useKpi.ts
+│   │   ├── usePoints.ts
+│   │   └── useProducts.ts
 │   ├── i18n
 │   │   └── ja.ts
 │   ├── lib
 │   │   ├── api
+│   │   │   ├── client.ts
 │   │   │   ├── incentives.ts
 │   │   │   ├── metrics.ts
 │   │   │   ├── mobile.ts
 │   │   │   ├── points.ts
+│   │   │   ├── products.ts
 │   │   │   └── reports.ts
 │   │   ├── api.ts
 │   │   ├── auth.ts
 │   │   ├── axios.ts
 │   │   ├── constants.ts
 │   │   ├── reportingApi.ts
+│   │   ├── swr.ts
 │   │   └── utils.ts
 │   └── types
-│       └── index.ts
+│       ├── index.ts
+│       ├── kpi.ts
+│       ├── points.ts
+│       └── product.ts
 ├── staticwebapp.config.json
 ├── staticwebapp.config.json.backup
 ├── tailwind.config.js
+├── test_connection.py
 ├── test-prod-auth.js
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-40 directories, 84 files
+58 directories, 129 files
