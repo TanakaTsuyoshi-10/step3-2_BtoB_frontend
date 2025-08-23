@@ -4,7 +4,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Tech0 by scope3 - エネルギー管理',
+  title: 'Carbon Mate - エネルギー管理',
   description: '企業向けエネルギー管理アプリ'
 }
 
