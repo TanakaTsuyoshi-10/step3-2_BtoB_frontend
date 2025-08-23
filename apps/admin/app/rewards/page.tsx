@@ -291,8 +291,8 @@ const RewardsPage: React.FC = () => {
                     </select>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* 景品一覧 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -338,8 +338,8 @@ const RewardsPage: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
 
@@ -347,16 +347,16 @@ const RewardsPage: React.FC = () => {
               <div>
                 <div className="p-8 text-center">
                   <p className="text-gray-500">条件に一致する景品がありません</p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
           </>
         ) : (
           /* 交換履歴 */
           <div>
             <div>
-              <div>交換履歴</CardTitle>
-            </CardHeader>
+              <div>交換履歴</div>
+            </div>
             <div>
               <div className="space-y-4">
                 {redemptions.map((redemption) => (
@@ -388,8 +388,8 @@ const RewardsPage: React.FC = () => {
                   </div>
                 )}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
       </div>
     </Layout>

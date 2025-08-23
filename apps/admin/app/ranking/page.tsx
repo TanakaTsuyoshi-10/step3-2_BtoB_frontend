@@ -174,8 +174,8 @@ const RankingPage: React.FC = () => {
                 </select>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* 自分の順位 */}
         {myRank && (
@@ -188,8 +188,8 @@ const RankingPage: React.FC = () => {
                 </div>
                 <span className="text-2xl font-bold text-primary-600">{myRank}位</span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* ランキングリスト */}
@@ -198,8 +198,8 @@ const RankingPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <div className="w-5 h-5" />
               ランキング
-            </CardTitle>
-          </CardHeader>
+            </div>
+          </div>
           <div>
             <div className="space-y-3">
               {rankings.map((entry) => (
@@ -223,8 +223,8 @@ const RankingPage: React.FC = () => {
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </Layout>
   );

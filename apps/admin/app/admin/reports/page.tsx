@@ -403,8 +403,8 @@ export default function AdminReportsPage() {
           <div className="lg:col-span-2">
             <div>
               <div>
-                <div>レポート設定</CardTitle>
-              </CardHeader>
+                <div>レポート設定</div>
+              </div>
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -508,16 +508,16 @@ export default function AdminReportsPage() {
                     </>
                   )}
                 </button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* レポート統計 */}
           <div className="space-y-6">
             <div>
               <div>
-                <div>レポート統計</CardTitle>
-              </CardHeader>
+                <div>レポート統計</div>
+              </div>
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                   <div className="flex items-center space-x-2">
@@ -542,13 +542,13 @@ export default function AdminReportsPage() {
                   </div>
                   <span className="text-sm font-medium text-purple-600">2025-01-15</span>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             <div>
               <div>
-                <div>人気レポート</CardTitle>
-              </CardHeader>
+                <div>人気レポート</div>
+              </div>
               <div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -564,16 +564,16 @@ export default function AdminReportsPage() {
                     <span className="text-sm font-medium text-purple-600">198 DL</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* レポート履歴 */}
         <div>
           <div>
-            <div>レポート履歴</CardTitle>
-          </CardHeader>
+            <div>レポート履歴</div>
+          </div>
           <div>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -618,8 +618,8 @@ export default function AdminReportsPage() {
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </Layout>
   )

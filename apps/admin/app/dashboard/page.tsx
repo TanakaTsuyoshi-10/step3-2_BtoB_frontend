@@ -54,13 +54,13 @@ const DashboardPage: React.FC = () => {
             <div>
               <div className="p-6">
                 <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
             <div>
               <div className="p-6">
                 <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </Layout>
@@ -128,28 +128,28 @@ const DashboardPage: React.FC = () => {
           {/* Monthly Usage Chart */}
           <div>
             <div>
-              <div>月次推移（電気・ガス）</CardTitle>
-            </CardHeader>
+              <div>月次推移（電気・ガス）</div>
+            </div>
             <div>
               <div 
                 data={monthlyUsage || []} 
                 isLoading={monthlyLoading}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* CO2 Trend Chart */}
           <div>
             <div>
-              <div>CO₂削減量推移</CardTitle>
-            </CardHeader>
+              <div>CO₂削減量推移</div>
+            </div>
             <div>
               <div2TrendChart 
                 data={co2Trend || []} 
                 isLoading={co2Loading}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
       </div>

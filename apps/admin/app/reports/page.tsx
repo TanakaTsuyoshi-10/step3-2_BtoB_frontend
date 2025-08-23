@@ -236,11 +236,11 @@ ${formData.start_date}から${formData.end_date}まで
           <div value="create" className="space-y-6">
             <div>
               <div>
-                <div>レポート設定</CardTitle>
+                <div>レポート設定</div>
                 <div>
                   レポートの対象期間と出力形式を設定してください
                 </CardDescription>
-              </CardHeader>
+              </div>
               <div className="space-y-6">
                 {/* プリセット期間 */}
                 <div>
@@ -347,8 +347,8 @@ ${formData.start_date}から${formData.end_date}まで
                     {loading ? 'レポート生成中...' : 'レポート生成'}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
 
           {/* その他のタブコンテンツは省略 */}
@@ -356,9 +356,9 @@ ${formData.start_date}から${formData.end_date}まで
             {preview ? (
               <div>
                 <div>
-                  <div>{preview.title}</CardTitle>
+                  <div>{preview.title}</div>
                   <div>対象期間: {preview.period}</CardDescription>
-                </CardHeader>
+                </div>
                 <div className="space-y-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <pre className="text-sm text-gray-700 whitespace-pre-wrap">
@@ -369,14 +369,14 @@ ${formData.start_date}から${formData.end_date}まで
                     <div className="w-4 h-4 mr-2" />
                     このレポートを生成
                   </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ) : (
               <div>
                 <div className="p-8 text-center">
                   <p className="text-gray-500">まず「プレビュー」ボタンをクリックしてください</p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
           </TabsContent>
 
@@ -384,8 +384,8 @@ ${formData.start_date}から${formData.end_date}まで
             {reportStatus ? (
               <div>
                 <div>
-                  <div>レポート生成状況</CardTitle>
-                </CardHeader>
+                  <div>レポート生成状況</div>
+                </div>
                 <div className="space-y-6">
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
@@ -402,22 +402,22 @@ ${formData.start_date}から${formData.end_date}まで
                       レポートをダウンロード
                     </Button>
                   )}
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ) : (
               <div>
                 <div className="p-8 text-center">
                   <p className="text-gray-500">レポートを生成してください</p>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             )}
           </TabsContent>
 
           <div value="history">
             <div>
               <div>
-                <div>生成履歴</CardTitle>
-              </CardHeader>
+                <div>生成履歴</div>
+              </div>
               <div>
                 {reportHistory.length > 0 ? (
                   <div className="space-y-4">
@@ -438,8 +438,8 @@ ${formData.start_date}から${formData.end_date}まで
                     <p className="text-gray-500">まだレポートが生成されていません</p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </div>
