@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'Energy Management System',
   description: 'Manage your energy consumption and production efficiently',
-};
+}
 
 export default function RootLayout({
   children,

@@ -17,7 +17,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { isAuthenticated, getCurrentUser } from '@/lib/auth';
 import ja from '@/i18n/ja';
 
-const AdminPage: React.FC = () => {
+export default function Page() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -40,7 +40,7 @@ const AdminPage: React.FC = () => {
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     checkAdminAccess();
   }, [router]);
@@ -73,7 +73,7 @@ const AdminPage: React.FC = () => {
       console.error('レポートエクスポートエラー:', error);
       alert('レポートのエクスポートに失敗しました');
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -82,7 +82,7 @@ const AdminPage: React.FC = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -95,7 +95,7 @@ const AdminPage: React.FC = () => {
             <p className="text-lg text-gray-600">管理者権限が必要です</p>
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 
@@ -314,8 +314,6 @@ const AdminPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
-};
-
-export default AdminPage;
+}
