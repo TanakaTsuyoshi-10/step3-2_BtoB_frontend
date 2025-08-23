@@ -30,7 +30,7 @@ const IncentivesPage: React.FC = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </Layout>
+    </div>
   );
 };
 

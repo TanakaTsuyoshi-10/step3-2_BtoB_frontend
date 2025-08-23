@@ -82,7 +82,7 @@ const AdminPage: React.FC = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -95,7 +95,7 @@ const AdminPage: React.FC = () => {
             <p className="text-lg text-gray-600">管理者権限が必要です</p>
           </div>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -314,7 +314,7 @@ const AdminPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

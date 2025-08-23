@@ -63,7 +63,7 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -153,7 +153,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
       </div>
-    </Layout>
+    </div>
   );
 };
 

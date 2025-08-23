@@ -22,7 +22,7 @@ const PointsPage: React.FC = () => {
           <div />
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

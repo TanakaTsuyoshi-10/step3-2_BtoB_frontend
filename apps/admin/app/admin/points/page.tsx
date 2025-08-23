@@ -482,6 +482,6 @@ export default function AdminPointsPage() {
           </div>
         )}
       </div>
-    </Layout>
+    </div>
   )
 }

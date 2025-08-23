@@ -621,6 +621,6 @@ export default function AdminReportsPage() {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   )
 }
