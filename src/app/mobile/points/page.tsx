@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
-import MobileNav from '../../../components/mobile/MobileNav'
+import MobileNav from '@/components/mobile/MobileNav'
 
 interface PointHistory {
   id: number

@@ -4,41 +4,6 @@
 ├── DEPLOYMENT_TROUBLESHOOTING.md
 ├── frontend_structure.txt
 ├── jsconfig.json
-├── mobile
-│   ├── __pycache__
-│   │   └── app.cpython-310.pyc
-│   ├── app
-│   │   ├── ai-analysis
-│   │   ├── components
-│   │   ├── dashboard
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.jsx
-│   │   ├── layout.tsx
-│   │   ├── login
-│   │   ├── page.jsx
-│   │   ├── page.tsx
-│   │   ├── points
-│   │   ├── ranking
-│   │   ├── register
-│   │   └── upload
-│   ├── components
-│   │   └── ui
-│   ├── jsconfig.json
-│   ├── lib
-│   │   ├── api
-│   │   ├── api.js
-│   │   └── utils.ts
-│   ├── next-env.d.ts
-│   ├── next.config.mjs
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── postcss.config.js
-│   ├── README.md
-│   ├── styles
-│   │   └── globals.css
-│   ├── tailwind.config.js
-│   └── tsconfig.json
 ├── next-env.d.ts
 ├── next.config.js
 ├── next.config.mjs
@@ -50,33 +15,99 @@
 ├── src
 │   ├── app
 │   │   ├── admin
+│   │   │   ├── page.tsx
+│   │   │   ├── points
+│   │   │   │   └── page.tsx
+│   │   │   ├── products
+│   │   │   │   └── page.tsx
+│   │   │   └── reports
+│   │   │       └── page.tsx
 │   │   ├── dashboard
+│   │   │   └── page.tsx
 │   │   ├── devices
+│   │   │   └── page.tsx
 │   │   ├── energy-records
+│   │   │   └── page.tsx
 │   │   ├── globals.css
 │   │   ├── incentives
+│   │   │   └── page.tsx
 │   │   ├── layout.tsx
 │   │   ├── login
+│   │   │   └── page.tsx
 │   │   ├── mobile
-│   │   ├── page 2.tsx
+│   │   │   ├── ai-analysis
+│   │   │   │   └── page.tsx
+│   │   │   ├── dashboard
+│   │   │   │   └── page.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── points
+│   │   │   │   └── page.tsx
+│   │   │   ├── ranking
+│   │   │   │   └── page.tsx
+│   │   │   └── upload
+│   │   │       └── page.tsx
 │   │   ├── page.tsx
 │   │   ├── points
+│   │   │   └── page.tsx
 │   │   ├── ranking
+│   │   │   └── page.tsx
 │   │   ├── register
+│   │   │   └── page.tsx
 │   │   ├── reports
+│   │   │   ├── [id]
+│   │   │   │   └── page.tsx
+│   │   │   ├── \[id\]
+│   │   │   ├── new
+│   │   │   │   └── page.tsx
+│   │   │   └── page.tsx
 │   │   └── rewards
+│   │       └── page.tsx
 │   ├── components
 │   │   ├── charts
+│   │   │   ├── Co2TrendChart.tsx
+│   │   │   ├── MonthlyUsageChart.tsx
+│   │   │   └── YoyUsageChart.tsx
 │   │   ├── dashboard
+│   │   │   ├── EnergyChart.tsx
+│   │   │   ├── KPICard.tsx
+│   │   │   └── StatsCard.tsx
 │   │   ├── incentives
+│   │   │   ├── ProductEditor.tsx
+│   │   │   ├── ProductList.tsx
+│   │   │   └── RedemptionStats.tsx
 │   │   ├── layout
+│   │   │   ├── Layout.tsx
+│   │   │   └── Navbar.tsx
 │   │   ├── mobile
+│   │   │   └── MobileNav.tsx
 │   │   ├── points
+│   │   │   ├── PointsEmployeesTable.tsx
+│   │   │   └── PointsOrgDashboard.tsx
 │   │   └── ui
+│   │       ├── badge.tsx
+│   │       ├── button.tsx
+│   │       ├── card
+│   │       │   └── index.tsx
+│   │       ├── dialog.tsx
+│   │       ├── index.ts
+│   │       ├── input.tsx
+│   │       ├── progress.tsx
+│   │       ├── select.tsx
+│   │       ├── switch.tsx
+│   │       ├── tabs.tsx
+│   │       ├── textarea.tsx
+│   │       └── utils.ts
 │   ├── i18n
 │   │   └── ja.ts
 │   ├── lib
 │   │   ├── api
+│   │   │   ├── incentives.ts
+│   │   │   ├── metrics.ts
+│   │   │   ├── mobile.ts
+│   │   │   ├── points.ts
+│   │   │   └── reports.ts
 │   │   ├── api.ts
 │   │   ├── auth.ts
 │   │   ├── axios.ts
@@ -92,4 +123,4 @@
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-43 directories, 50 files
+40 directories, 84 files

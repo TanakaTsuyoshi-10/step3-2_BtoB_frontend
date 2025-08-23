@@ -7,7 +7,7 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["src/*"], "@mobile/*": ["mobile/*"] }
+    "paths": { "@/*": ["src/*"] }
   },
   "include": ["next-env.d.ts","src","*.ts","*.tsx"],
   "exclude": ["node_modules"]

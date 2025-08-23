@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import MobileNav from '../../../components/mobile/MobileNav'
+import MobileNav from '@/components/mobile/MobileNav'
 import { Icon } from '@iconify/react'
 
 interface AnalysisData {

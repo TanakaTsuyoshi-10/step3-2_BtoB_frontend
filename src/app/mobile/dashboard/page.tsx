@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import MobileNav from '../../../components/mobile/MobileNav'
+import MobileNav from '@/components/mobile/MobileNav'
 import { Icon } from '@iconify/react'
-import { energyAPI, pointsAPI } from '../../../lib/api/mobile'
+import { energyAPI, pointsAPI } from '@/lib/api/mobile'
 
 export default function Dashboard() {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())

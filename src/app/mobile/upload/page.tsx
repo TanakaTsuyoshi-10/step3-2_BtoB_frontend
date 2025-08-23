@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import MobileNav from '../../../components/mobile/MobileNav'
+import MobileNav from '@/components/mobile/MobileNav'
 import { Icon } from '@iconify/react'
 
 interface UploadedFile {

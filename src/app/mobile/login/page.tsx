@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
-import { authAPI, setAuthToken, setCurrentUser } from '../../../lib/api/mobile'
+import { authAPI, setAuthToken, setCurrentUser } from '@/lib/api/mobile'
 
 export default function Login() {
   const router = useRouter()

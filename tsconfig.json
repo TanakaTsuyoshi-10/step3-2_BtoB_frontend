@@ -13,9 +13,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "@mobile/*": [
-        "mobile/*"
       ]
     },
     "allowJs": true,
