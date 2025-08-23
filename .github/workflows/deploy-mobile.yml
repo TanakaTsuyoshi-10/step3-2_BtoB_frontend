@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'mobile/**'
+      - 'apps/mobile/**'
       - '.github/workflows/deploy-mobile.yml'
   workflow_dispatch:
 
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: mobile
+        working-directory: apps/mobile
     steps:
       - uses: actions/checkout@v4
 
@@ -21,9 +21,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: apps/mobile/package-lock.json
 
       - name: Install
-        run: npm install
+        run: npm ci
 
       - name: Build
         run: |
@@ -37,4 +39,4 @@ jobs:
         with:
           app-name: ${{ secrets.MOBILE_AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.MOBILE_AZURE_PUBLISH_PROFILE }}
-          package: 'mobile'
+          package: 'apps/mobile'
