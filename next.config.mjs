@@ -37,6 +37,10 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias || {}),
       '@': path.resolve(__dirname, 'src'),
+      '@admin': path.resolve(__dirname, 'apps/admin'),
+      '@mobile': path.resolve(__dirname, 'apps/mobile'),
+      '@mobile-ui': path.resolve(__dirname, 'apps/mobile/components/ui'),
+      '@admin-ui': path.resolve(__dirname, 'apps/admin/components/ui'),
     };
     // src 直下もモジュール解決対象に
     config.resolve.modules = Array.from(new Set([...(config.resolve.modules || []), path.resolve(__dirname, 'src')]));

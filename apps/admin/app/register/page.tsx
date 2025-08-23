@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Zap, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Zap, Mail, Lock, User, Eye, EyeOff } from '@iconify/react/icons/heroicons';
 import { authAPI } from '@/lib/api';
 import { setAuthToken, setCurrentUser } from '@/lib/auth';
 import { RegisterFormData } from '@/types';
 
 const RegisterPage: React.FC = () => {
-  const [formData, setFormData] = useState<RegisterFormData>({
+  const [formData, setFormData] = useState<div>({
     email: '',
     password: '',
     full_name: '',
@@ -19,7 +19,7 @@ const RegisterPage: React.FC = () => {
   const [error, setError] = useState<string>('');
   const router = useRouter();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<div>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -59,7 +59,7 @@ const RegisterPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <Zap className="w-12 h-12 text-primary-600" />
+              <div className="w-12 h-12 text-primary-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Energy Manager</h1>
             <p className="text-gray-600 mt-2">Create your account</p>
@@ -77,7 +77,7 @@ const RegisterPage: React.FC = () => {
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   id="full_name"
                   name="full_name"
@@ -95,7 +95,7 @@ const RegisterPage: React.FC = () => {
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   id="email"
                   name="email"
@@ -114,7 +114,7 @@ const RegisterPage: React.FC = () => {
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   id="password"
                   name="password"
@@ -130,7 +130,7 @@ const RegisterPage: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <div className="w-5 h-5" /> : <div className="w-5 h-5" />}
                 </button>
               </div>
             </div>
@@ -147,7 +147,7 @@ const RegisterPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link href="/login" className="font-medium text-primary-600 hover:text-primary-500">
+              <div href="/login" className="font-medium text-primary-600 hover:text-primary-500">
                 Sign in
               </Link>
             </p>

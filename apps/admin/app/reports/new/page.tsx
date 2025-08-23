@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Plus, Save, FileText, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Save, FileText, Trash2 } from '@iconify/react/icons/heroicons';
 import { reportsAPI, ReportFormData, ReportItem, formatTonnes } from '@/lib/reportingApi';
 
 const NewReportPage: React.FC = () => {
@@ -11,7 +11,7 @@ const NewReportPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>('');
   
-  const [formData, setFormData] = useState<ReportFormData>({
+  const [formData, setFormData] = useState<div>({
     name: '',
     period_start: '',
     period_end: '',
@@ -77,11 +77,11 @@ const NewReportPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
             <div className="flex items-center">
-              <Link 
+              <div 
                 href="/reports"
                 className="mr-4 p-2 rounded-md text-gray-400 hover:text-gray-600"
               >
-                <ArrowLeft className="w-5 h-5" />
+                <div className="w-5 h-5" />
               </Link>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">新規レポート作成</h1>
@@ -177,21 +177,21 @@ const NewReportPage: React.FC = () => {
                     onClick={addItem}
                     className="inline-flex items-center px-3 py-2 border border-transparent rounded-md text-sm font-medium text-primary-700 bg-primary-100 hover:bg-primary-200"
                   >
-                    <Plus className="w-4 h-4 mr-1" />
+                    <div className="w-4 h-4 mr-1" />
                     明細追加
                   </button>
                 </div>
 
                 {formData.items.length === 0 ? (
                   <div className="text-center py-12 text-gray-500">
-                    <FileText className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+                    <div className="w-12 h-12 mx-auto text-gray-300 mb-4" />
                     <p>削減量明細を追加してください</p>
                     <button
                       type="button"
                       onClick={addItem}
                       className="mt-2 inline-flex items-center text-primary-600 hover:text-primary-500"
                     >
-                      <Plus className="w-4 h-4 mr-1" />
+                      <div className="w-4 h-4 mr-1" />
                       明細追加
                     </button>
                   </div>
@@ -248,7 +248,7 @@ const NewReportPage: React.FC = () => {
                             onClick={() => removeItem(index)}
                             className="p-2 text-red-600 hover:text-red-800"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <div2 className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
@@ -266,7 +266,7 @@ const NewReportPage: React.FC = () => {
 
               {/* 保存ボタン */}
               <div className="flex justify-end space-x-3">
-                <Link
+                <div
                   href="/reports"
                   className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
@@ -277,7 +277,7 @@ const NewReportPage: React.FC = () => {
                   disabled={loading}
                   className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:opacity-50"
                 >
-                  <Save className="w-4 h-4 mr-2" />
+                  <div className="w-4 h-4 mr-2" />
                   {loading ? '保存中...' : '下書き保存'}
                 </button>
               </div>

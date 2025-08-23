@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Download, FileText, Calendar, User } from 'lucide-react';
+import { ArrowLeft, Download, FileText, Calendar, User } from '@iconify/react/icons/heroicons';
 import { reportsAPI, Report, formatTonnes, downloadFile } from '@/lib/reportingApi';
 
 const ReportDetailPage: React.FC = () => {
   const params = useParams();
   const router = useRouter();
-  const [report, setReport] = useState<Report | null>(null);
+  const [report, setReport] = useState<div | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
   const [downloading, setDownloading] = useState<string | null>(null);
@@ -92,10 +92,10 @@ const ReportDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <FileText className="w-16 h-16 mx-auto text-gray-300 mb-4" />
+          <div className="w-16 h-16 mx-auto text-gray-300 mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">レポートが見つかりません</h2>
           <p className="text-gray-600 mb-4">{error}</p>
-          <Link 
+          <div 
             href="/reports"
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700"
           >
@@ -116,21 +116,21 @@ const ReportDetailPage: React.FC = () => {
           <div className="py-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <Link 
+                <div 
                   href="/reports"
                   className="mr-4 p-2 rounded-md text-gray-400 hover:text-gray-600"
                 >
-                  <ArrowLeft className="w-5 h-5" />
+                  <div className="w-5 h-5" />
                 </Link>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">{report.name}</h1>
                   <div className="mt-1 flex items-center space-x-4 text-sm text-gray-500">
                     <div className="flex items-center">
-                      <Calendar className="w-4 h-4 mr-1" />
+                      <div className="w-4 h-4 mr-1" />
                       {formatDate(report.period_start)} - {formatDate(report.period_end)}
                     </div>
                     <div className="flex items-center">
-                      <User className="w-4 h-4 mr-1" />
+                      <div className="w-4 h-4 mr-1" />
                       {report.created_by}
                     </div>
                     <span className={getStatusBadge(report.status)}>
@@ -154,7 +154,7 @@ const ReportDetailPage: React.FC = () => {
                   disabled={downloading === 'csv'}
                   className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4 mr-2" />
+                  <div className="w-4 h-4 mr-2" />
                   {downloading === 'csv' ? '...' : 'CSV'}
                 </button>
                 <button
@@ -162,7 +162,7 @@ const ReportDetailPage: React.FC = () => {
                   disabled={downloading === 'pdf'}
                   className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50"
                 >
-                  <Download className="w-4 h-4 mr-2" />
+                  <div className="w-4 h-4 mr-2" />
                   {downloading === 'pdf' ? '...' : 'PDF'}
                 </button>
               </div>

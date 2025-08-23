@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { FileText, Download, Calendar, Filter, BarChart, Users, Coins, Package } from 'lucide-react';
+import { FileText, Download, Calendar, Filter, BarChart, Users, Coins, Package } from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } from 'docx';
 
 // Dynamically import pdfMake only on client side
@@ -52,7 +52,7 @@ interface ReportData {
 }
 
 export default function AdminReportsPage() {
-  const [reportConfig, setReportConfig] = useState<ReportConfig>({
+  const [reportConfig, setReportConfig] = useState<div>({
     type: 'csr',
     period: 'monthly',
     startDate: '2025-01-01',
@@ -387,7 +387,7 @@ export default function AdminReportsPage() {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -401,11 +401,11 @@ export default function AdminReportsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* レポート設定 */}
           <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>レポート設定</CardTitle>
+            <div>
+              <div>
+                <div>レポート設定</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">レポート種別</label>
@@ -503,7 +503,7 @@ export default function AdminReportsPage() {
                     </>
                   ) : (
                     <>
-                      <Download className="w-5 h-5" />
+                      <div className="w-5 h-5" />
                       <span>レポート生成</span>
                     </>
                   )}
@@ -514,14 +514,14 @@ export default function AdminReportsPage() {
 
           {/* レポート統計 */}
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>レポート統計</CardTitle>
+            <div>
+              <div>
+                <div>レポート統計</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                   <div className="flex items-center space-x-2">
-                    <FileText className="w-5 h-5 text-blue-600" />
+                    <div className="w-5 h-5 text-blue-600" />
                     <span className="font-medium text-blue-900">今月生成</span>
                   </div>
                   <span className="text-2xl font-bold text-blue-600">12</span>
@@ -529,7 +529,7 @@ export default function AdminReportsPage() {
                 
                 <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
                   <div className="flex items-center space-x-2">
-                    <Download className="w-5 h-5 text-green-600" />
+                    <div className="w-5 h-5 text-green-600" />
                     <span className="font-medium text-green-900">総ダウンロード</span>
                   </div>
                   <span className="text-2xl font-bold text-green-600">1,247</span>
@@ -537,7 +537,7 @@ export default function AdminReportsPage() {
                 
                 <div className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
                   <div className="flex items-center space-x-2">
-                    <Calendar className="w-5 h-5 text-purple-600" />
+                    <div className="w-5 h-5 text-purple-600" />
                     <span className="font-medium text-purple-900">最終更新</span>
                   </div>
                   <span className="text-sm font-medium text-purple-600">2025-01-15</span>
@@ -545,11 +545,11 @@ export default function AdminReportsPage() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>人気レポート</CardTitle>
+            <div>
+              <div>
+                <div>人気レポート</CardTitle>
               </CardHeader>
-              <CardContent>
+              <div>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600">CSRレポート</span>
@@ -570,11 +570,11 @@ export default function AdminReportsPage() {
         </div>
 
         {/* レポート履歴 */}
-        <Card>
-          <CardHeader>
-            <CardTitle>レポート履歴</CardTitle>
+        <div>
+          <div>
+            <div>レポート履歴</CardTitle>
           </CardHeader>
-          <CardContent>
+          <div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -609,7 +609,7 @@ export default function AdminReportsPage() {
                       </td>
                       <td className="py-3 px-4">
                         <button className="text-primary-600 hover:text-primary-800 flex items-center space-x-1">
-                          <Download className="w-4 h-4" />
+                          <div className="w-4 h-4" />
                           <span>再ダウンロード</span>
                         </button>
                       </td>

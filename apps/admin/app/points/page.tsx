@@ -7,7 +7,7 @@ import PointsEmployeesTable from '@/components/points/PointsEmployeesTable';
 
 const PointsPage: React.FC = () => {
   return (
-    <Layout>
+    <div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">ポイント管理</h1>
@@ -16,10 +16,10 @@ const PointsPage: React.FC = () => {
 
         <div className="space-y-8">
           {/* 組織ダッシュボード */}
-          <PointsOrgDashboard />
+          <div />
           
           {/* 従業員テーブル */}
-          <PointsEmployeesTable />
+          <div />
         </div>
       </div>
     </Layout>

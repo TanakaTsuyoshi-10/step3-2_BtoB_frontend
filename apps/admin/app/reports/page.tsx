@@ -1,14 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@admin-ui/card';
+import { Button } from '@admin-ui/button';
+import { Input } from '@admin-ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@admin-ui/select';
+import { Badge } from '@admin-ui/badge';
+import { Progress } from '@admin-ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@admin-ui/tabs';
+import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
 import { generateReport, getReportStatus, downloadReport, previewReport } from '@/lib/api/reports';
 
@@ -46,7 +46,7 @@ interface ReportHistoryItem {
 }
 
 const ReportsPage: React.FC = () => {
-  const [formData, setFormData] = useState<AutoReportRequest>({
+  const [formData, setFormData] = useState<div>({
     start_date: '',
     end_date: '',
     format: 'pdf',
@@ -54,9 +54,9 @@ const ReportsPage: React.FC = () => {
     report_type: 'summary'
   });
   
-  const [preview, setPreview] = useState<AutoReportPreview | null>(null);
-  const [reportStatus, setReportStatus] = useState<AutoReportStatus | null>(null);
-  const [reportHistory, setReportHistory] = useState<ReportHistoryItem[]>([]);
+  const [preview, setPreview] = useState<div | null>(null);
+  const [reportStatus, setReportStatus] = useState<div | null>(null);
+  const [reportHistory, setReportHistory] = useState<div[]>([]);
   const [loading, setLoading] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('create');
@@ -218,46 +218,46 @@ ${formData.start_date}から${formData.end_date}まで
   };
 
   return (
-    <Layout>
+    <div>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">自動レポート作成</h1>
           <p className="text-gray-600">期間を指定してエネルギー使用量レポートを自動生成・CSR/IR対応</p>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid grid-cols-4 w-full max-w-2xl">
-            <TabsTrigger value="create" className="whitespace-nowrap">レポート作成</TabsTrigger>
-            <TabsTrigger value="preview" className="whitespace-nowrap">プレビュー</TabsTrigger>
-            <TabsTrigger value="status" className="whitespace-nowrap">進捗状況</TabsTrigger>
-            <TabsTrigger value="history" className="whitespace-nowrap">作成履歴</TabsTrigger>
+        <div value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <div className="grid grid-cols-4 w-full max-w-2xl">
+            <div value="create" className="whitespace-nowrap">レポート作成</TabsTrigger>
+            <div value="preview" className="whitespace-nowrap">プレビュー</TabsTrigger>
+            <div value="status" className="whitespace-nowrap">進捗状況</TabsTrigger>
+            <div value="history" className="whitespace-nowrap">作成履歴</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="create" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>レポート設定</CardTitle>
-                <CardDescription>
+          <div value="create" className="space-y-6">
+            <div>
+              <div>
+                <div>レポート設定</CardTitle>
+                <div>
                   レポートの対象期間と出力形式を設定してください
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <div className="space-y-6">
                 {/* プリセット期間 */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     期間プリセット
                   </label>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisMonth')}>
+                    <div variant="outline" size="sm" onClick={() => setPresetPeriod('thisMonth')}>
                       今月
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('lastMonth')}>
+                    <div variant="outline" size="sm" onClick={() => setPresetPeriod('lastMonth')}>
                       先月
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisQuarter')}>
+                    <div variant="outline" size="sm" onClick={() => setPresetPeriod('thisQuarter')}>
                       四半期
                     </Button>
-                    <Button variant="outline" size="sm" onClick={() => setPresetPeriod('thisYear')}>
+                    <div variant="outline" size="sm" onClick={() => setPresetPeriod('thisYear')}>
                       年度
                     </Button>
                   </div>
@@ -269,7 +269,7 @@ ${formData.start_date}から${formData.end_date}まで
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       開始日 *
                     </label>
-                    <Input
+                    <div
                       type="date"
                       value={formData.start_date}
                       onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
@@ -280,7 +280,7 @@ ${formData.start_date}から${formData.end_date}まで
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       終了日 *
                     </label>
-                    <Input
+                    <div
                       type="date"
                       value={formData.end_date}
                       onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
@@ -295,16 +295,16 @@ ${formData.start_date}から${formData.end_date}まで
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       出力形式
                     </label>
-                    <Select
+                    <div
                       value={formData.format}
                       onValueChange={(value) => setFormData({ ...formData, format: value })}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
+                      <div>
+                        <div />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pdf">PDF（推奨）</SelectItem>
-                        <SelectItem value="docx">Word文書 (.docx)</SelectItem>
+                      <div>
+                        <div value="pdf">PDF（推奨）</SelectItem>
+                        <div value="docx">Word文書 (.docx)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -312,16 +312,16 @@ ${formData.start_date}から${formData.end_date}まで
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       レポートタイプ
                     </label>
-                    <Select
+                    <div
                       value={formData.report_type}
                       onValueChange={(value) => setFormData({ ...formData, report_type: value })}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
+                      <div>
+                        <div />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="summary">サマリーレポート</SelectItem>
-                        <SelectItem value="detailed">詳細レポート</SelectItem>
+                      <div>
+                        <div value="summary">サマリーレポート</SelectItem>
+                        <div value="detailed">詳細レポート</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -329,21 +329,21 @@ ${formData.start_date}から${formData.end_date}まで
 
                 {/* アクションボタン */}
                 <div className="flex space-x-4">
-                  <Button
+                  <div
                     onClick={handlePreview}
                     disabled={previewLoading}
                     variant="outline"
                     className="flex-1"
                   >
-                    <Eye className="w-4 h-4 mr-2" />
+                    <div className="w-4 h-4 mr-2" />
                     {previewLoading ? 'プレビュー生成中...' : 'プレビュー'}
                   </Button>
-                  <Button
+                  <div
                     onClick={handleGenerate}
                     disabled={loading}
                     className="flex-1"
                   >
-                    <FileText className="w-4 h-4 mr-2" />
+                    <div className="w-4 h-4 mr-2" />
                     {loading ? 'レポート生成中...' : 'レポート生成'}
                   </Button>
                 </div>
@@ -352,73 +352,73 @@ ${formData.start_date}から${formData.end_date}まで
           </TabsContent>
 
           {/* その他のタブコンテンツは省略 */}
-          <TabsContent value="preview">
+          <div value="preview">
             {preview ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle>{preview.title}</CardTitle>
-                  <CardDescription>対象期間: {preview.period}</CardDescription>
+              <div>
+                <div>
+                  <div>{preview.title}</CardTitle>
+                  <div>対象期間: {preview.period}</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <div className="space-y-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <pre className="text-sm text-gray-700 whitespace-pre-wrap">
                       {preview.content_preview}
                     </pre>
                   </div>
-                  <Button onClick={handleGenerate} disabled={loading}>
-                    <FileText className="w-4 h-4 mr-2" />
+                  <div onClick={handleGenerate} disabled={loading}>
+                    <div className="w-4 h-4 mr-2" />
                     このレポートを生成
                   </Button>
                 </CardContent>
               </Card>
             ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
+              <div>
+                <div className="p-8 text-center">
                   <p className="text-gray-500">まず「プレビュー」ボタンをクリックしてください</p>
                 </CardContent>
               </Card>
             )}
           </TabsContent>
 
-          <TabsContent value="status">
+          <div value="status">
             {reportStatus ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle>レポート生成状況</CardTitle>
+              <div>
+                <div>
+                  <div>レポート生成状況</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <div className="space-y-6">
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium">進捗</span>
                       <span className="text-sm text-gray-600">{reportStatus.progress}%</span>
                     </div>
-                    <Progress value={reportStatus.progress} className="w-full" />
+                    <div value={reportStatus.progress} className="w-full" />
                     <p className="text-sm text-gray-600">{reportStatus.message}</p>
                   </div>
                   
                   {reportStatus.status === 'completed' && (
-                    <Button onClick={handleDownload} className="w-full">
-                      <Download className="w-4 h-4 mr-2" />
+                    <div onClick={handleDownload} className="w-full">
+                      <div className="w-4 h-4 mr-2" />
                       レポートをダウンロード
                     </Button>
                   )}
                 </CardContent>
               </Card>
             ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
+              <div>
+                <div className="p-8 text-center">
                   <p className="text-gray-500">レポートを生成してください</p>
                 </CardContent>
               </Card>
             )}
           </TabsContent>
 
-          <TabsContent value="history">
-            <Card>
-              <CardHeader>
-                <CardTitle>生成履歴</CardTitle>
+          <div value="history">
+            <div>
+              <div>
+                <div>生成履歴</CardTitle>
               </CardHeader>
-              <CardContent>
+              <div>
                 {reportHistory.length > 0 ? (
                   <div className="space-y-4">
                     {reportHistory.map((report) => (
@@ -429,7 +429,7 @@ ${formData.start_date}から${formData.end_date}まで
                             {new Date(report.created_at).toLocaleString('ja-JP')}
                           </p>
                         </div>
-                        <Badge variant="default">{report.format.toUpperCase()}</Badge>
+                        <div variant="default">{report.format.toUpperCase()}</Badge>
                       </div>
                     ))}
                   </div>

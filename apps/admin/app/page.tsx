@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Users, Smartphone, Leaf, ArrowRight, Monitor, BarChart3 } from 'lucide-react';
+import { Users, Smartphone, Leaf, ArrowRight, Monitor, BarChart3 } from '@iconify/react/icons/heroicons';
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-              <Leaf className="w-6 h-6 text-white" />
+              <div className="w-6 h-6 text-white" />
             </div>
             <div className="text-center">
               <h1 className="text-2xl font-bold text-gray-900">Carbon Mate</h1>
@@ -41,10 +41,10 @@ export default function Home() {
           {/* Selection Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Mobile User Card */}
-            <Link href="/mobile" className="group block">
+            <div href="/mobile" className="group block">
               <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border-2 border-transparent group-hover:border-blue-300">
                 <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Smartphone className="w-10 h-10 text-white" />
+                  <div className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-center text-gray-900 mb-4">
                   モバイル利用者
@@ -77,16 +77,16 @@ export default function Home() {
                 </div>
                 <div className="flex items-center justify-center space-x-2 text-blue-600 group-hover:text-blue-700">
                   <span className="font-medium">モバイル版を利用</span>
-                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  <div className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </Link>
 
             {/* Admin Site Card */}
-            <Link href="/login" className="group block">
+            <div href="/login" className="group block">
               <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 p-8 border-2 border-transparent group-hover:border-green-300">
                 <div className="flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl mx-auto mb-6 group-hover:scale-110 transition-transform">
-                  <Monitor className="w-10 h-10 text-white" />
+                  <div className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-center text-gray-900 mb-4">
                   管理者・デスクトップ
@@ -119,7 +119,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center justify-center space-x-2 text-green-600 group-hover:text-green-700">
                   <span className="font-medium">管理者としてログイン</span>
-                  <ArrowRight className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                  <div className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             </Link>
@@ -131,7 +131,7 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
-                  <BarChart3 className="w-6 h-6 text-blue-600" />
+                  <div3 className="w-6 h-6 text-blue-600" />
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-1">利用量可視化</h4>
                 <p className="text-xs text-gray-600">月次のエネルギー利用量・料金を分かりやすく表示</p>

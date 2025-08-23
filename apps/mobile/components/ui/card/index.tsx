@@ -5,25 +5,56 @@ function cn(...classes: Array<string | false | null | undefined>) {
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref}
-      className={cn("bg-white rounded-xl border border-gray-200 shadow-md p-4", className)}
+    <div
+      ref={ref}
+      className={cn("rounded-2xl border border-gray-200 bg-white shadow-sm", className)}
       {...props}
     />
   )
-); Card.displayName = "Card";
+);
+Card.displayName = "Card";
 
-export interface SectionProps extends React.HTMLAttributes<HTMLDivElement> {}
-export const Section = React.forwardRef<HTMLDivElement, SectionProps>(
+export const CardHeader = React.forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("px-4 py-4", className)} {...props} />
+    <div ref={ref} className={cn("p-6 pb-2", className)} {...props} />
   )
-); Section.displayName = "Section";
+);
+CardHeader.displayName = "CardHeader";
 
-export interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
-export const Title = React.forwardRef<HTMLHeadingElement, TitleProps>(
+export const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, ...props }, ref) => (
-    <h3 ref={ref} className={cn("text-sm font-medium text-gray-600 mb-2", className)} {...props} />
+    <div ref={ref} className={cn("p-6 pt-2", className)} {...props} />
   )
-); Title.displayName = "Title";
+);
+CardContent.displayName = "CardContent";
+
+export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  )
+);
+CardFooter.displayName = "CardFooter";
+
+export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
+  ({ className, ...props }, ref) => (
+    <h3 ref={ref} className={cn("text-lg font-semibold tracking-tight", className)} {...props} />
+  )
+);
+CardTitle.displayName = "CardTitle";
+
+export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
+  ({ className, ...props }, ref) => (
+    <p ref={ref} className={cn("text-sm text-gray-500", className)} {...props} />
+  )
+);
+CardDescription.displayName = "CardDescription";
+
+export default Card;

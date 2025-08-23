@@ -10,9 +10,9 @@ import {
   Filter,
   Calendar,
   TrendingUp,
-} from 'lucide-react';
+} from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { isAuthenticated } from '@/lib/auth';
 import ja from '@/i18n/ja';
 
@@ -27,7 +27,7 @@ interface RankingEntry {
 
 const RankingPage: React.FC = () => {
   const router = useRouter();
-  const [rankings, setRankings] = useState<RankingEntry[]>([]);
+  const [rankings, setRankings] = useState<div[]>([]);
   const [period, setPeriod] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [departments, setDepartments] = useState<string[]>([]);
@@ -90,11 +90,11 @@ const RankingPage: React.FC = () => {
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
-        return <Trophy className="w-6 h-6 text-yellow-500" />;
+        return <div className="w-6 h-6 text-yellow-500" />;
       case 2:
-        return <Medal className="w-6 h-6 text-gray-400" />;
+        return <div className="w-6 h-6 text-gray-400" />;
       case 3:
-        return <Award className="w-6 h-6 text-yellow-600" />;
+        return <div className="w-6 h-6 text-yellow-600" />;
       default:
         return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
     }
@@ -115,7 +115,7 @@ const RankingPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <div>
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
@@ -125,7 +125,7 @@ const RankingPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         {/* ヘッダー */}
         <div className="flex items-center justify-between">
@@ -136,17 +136,17 @@ const RankingPage: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <TrendingUp className="w-4 h-4" />
+            <div className="w-4 h-4" />
             <span>期間: {ja.ranking.period[period]}</span>
           </div>
         </div>
 
         {/* フィルター */}
-        <Card>
-          <CardContent className="p-4">
+        <div>
+          <div className="p-4">
             <div className="flex flex-wrap gap-4 items-center">
               <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4 text-gray-500" />
+                <div className="w-4 h-4 text-gray-500" />
                 <span className="text-sm font-medium text-gray-700">期間:</span>
                 <select
                   value={period}
@@ -160,7 +160,7 @@ const RankingPage: React.FC = () => {
               </div>
               
               <div className="flex items-center space-x-2">
-                <Filter className="w-4 h-4 text-gray-500" />
+                <div className="w-4 h-4 text-gray-500" />
                 <span className="text-sm font-medium text-gray-700">部門:</span>
                 <select
                   value={selectedDepartment}
@@ -179,11 +179,11 @@ const RankingPage: React.FC = () => {
 
         {/* 自分の順位 */}
         {myRank && (
-          <Card className="border-primary-200 bg-primary-50">
-            <CardContent className="p-4">
+          <div className="border-primary-200 bg-primary-50">
+            <div className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <Users className="w-5 h-5 text-primary-600" />
+                  <div className="w-5 h-5 text-primary-600" />
                   <span className="font-medium text-primary-900">{ja.ranking.myRank}</span>
                 </div>
                 <span className="text-2xl font-bold text-primary-600">{myRank}位</span>
@@ -193,14 +193,14 @@ const RankingPage: React.FC = () => {
         )}
 
         {/* ランキングリスト */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Trophy className="w-5 h-5" />
+        <div>
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5" />
               ランキング
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <div>
             <div className="space-y-3">
               {rankings.map((entry) => (
                 <div
