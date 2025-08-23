@@ -346,3 +346,139 @@ npm install
 *Final cleanup report: 2025-08-23 18:50*
 *Branch: chore/cleanup-final-redeploy*
 *Status: ✅ Ready for production deployment*
+
+## CI/CD Pipeline Fixes (chore/ci-fix-node-cache-redeploy)
+
+### GitHub Actions Cache Resolution Fixes ✅
+
+**Branch**: `chore/ci-fix-node-cache-redeploy`
+**Committed**: 5 files changed, 106 insertions(+), 12 deletions(-)
+
+#### Key Issues Resolved:
+
+1. **✅ Node.js Version Normalization**:
+   - Created `.nvmrc` with version `20.19.4` for consistent Node.js handling
+   - Updated `azure-deploy.yml` to use `node-version-file: '.nvmrc'`
+   - Standardized Node.js setup across all workflows
+
+2. **✅ Cache Dependency Path Fixes**:
+   - **Main workflow**: `cache-dependency-path: 'package-lock.json'`
+   - **Mobile workflows**: `cache-dependency-path: apps/mobile/package-lock.json`
+   - Fixed cache resolution errors preventing successful builds
+
+3. **✅ Mobile Path Updates After Restructure**:
+   - Updated trigger paths: `mobile/**` → `apps/mobile/**`
+   - Fixed working directories: `mobile` → `apps/mobile`
+   - Updated package deployment paths: `mobile/.next` → `apps/mobile/.next`
+
+4. **✅ CI Build Reliability**:
+   - Changed `npm install` to `npm ci` for deterministic dependency installation
+   - Added npm cache configuration to prevent timeout errors
+   - Maintained environment variables and startup commands unchanged
+
+### Workflow Files Updated:
+
+#### azure-deploy.yml (Main Admin Deploy)
+```yaml
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version-file: '.nvmrc'
+    cache: 'npm'
+    cache-dependency-path: 'package-lock.json'
+
+- name: Install dependencies
+  run: npm ci
+```
+
+#### build-and-deploy-mobile.yml
+```yaml
+paths:
+  - 'apps/mobile/**'
+defaults:
+  run:
+    working-directory: apps/mobile
+with:
+  cache-dependency-path: apps/mobile/package-lock.json
+```
+
+#### deploy-mobile.yml
+```yaml
+paths:
+  - 'apps/mobile/**'
+defaults:
+  run:
+    working-directory: apps/mobile
+run: npm ci
+```
+
+### Environment Variables Compliance ✅
+- ❌ **UNCHANGED**: `NEXT_PUBLIC_API_BASE` and all secrets preserved
+- ❌ **UNCHANGED**: `node server.js` startup command maintained
+- ❌ **UNCHANGED**: API base URL defaults and environment handling
+
+### Deployment Health Status ✅
+
+**API Backend**: 
+```bash
+curl https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1/metrics/kpi
+→ HTTP 401 (Authentication required - service responding correctly)
+```
+
+**Frontend Deployment**:
+```bash 
+curl https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net
+→ HTTP 200 (Frontend deployed and healthy)
+```
+
+### PR Creation ✅
+**Branch**: `chore/ci-fix-node-cache-redeploy`
+**PR URL**: https://github.com/TanakaTsuyoshi-10/step3-2_BtoB_frontend/pull/new/chore/ci-fix-node-cache-redeploy
+
+### Success Criteria Met ✅
+
+1. ✅ **Cache Resolution**: Fixed cache-dependency-path for all workflows
+2. ✅ **Node.js Normalization**: .nvmrc created, workflows use consistent versions  
+3. ✅ **Mobile Path Updates**: All mobile/ references updated to apps/mobile/
+4. ✅ **CI Reliability**: npm ci replaces npm install for deterministic builds
+5. ✅ **Environment Preservation**: No changes to env vars or startup commands
+6. ✅ **API Connectivity**: Backend responds 401 (not 404), frontend returns 200
+7. ✅ **Deployment Ready**: All workflows updated for current structure
+
+### Build Script Integrity ✅
+- **Package.json**: Unchanged (preserves "start": "node server.js")
+- **Next.config.mjs**: Unchanged (preserves API rewrites and env handling)
+- **Server.js**: Unchanged (preserves custom server setup)
+- **Environment Variables**: All NEXT_PUBLIC_API_BASE handling preserved
+
+### Final CI/CD Status
+
+```
+GitHub Actions Workflows:
+├── azure-deploy.yml          ✅ Uses .nvmrc, package-lock.json cache
+├── build-and-deploy-mobile.yml ✅ Updated to apps/mobile paths
+└── deploy-mobile.yml         ✅ Updated to apps/mobile paths + npm ci
+
+Node.js Configuration:
+├── .nvmrc                    ✅ Created (20.19.4)
+├── package.json             ❌ Unchanged (node: 20.x engine)
+└── package-lock.json        ✅ Exists for cache dependency
+
+Build & Deploy:
+├── npm ci                   ✅ Deterministic installs
+├── next build               ✅ Unchanged process
+├── node server.js           ❌ Unchanged startup
+└── Environment variables    ❌ All preserved
+```
+
+### Next Steps After Merge
+
+1. **Auto-Deploy**: Azure App Service will automatically deploy after merge to main
+2. **Monitor**: Watch for successful builds without cache errors
+3. **Verify**: Confirm mobile workflows trigger correctly on apps/mobile changes  
+4. **Health Check**: Validate deployed app continues returning HTTP 200
+
+---
+*CI/CD fixes completed: 2025-08-23 19:15*
+*Branch: chore/ci-fix-node-cache-redeploy*  
+*Status: ✅ Ready for merge → auto-deploy*

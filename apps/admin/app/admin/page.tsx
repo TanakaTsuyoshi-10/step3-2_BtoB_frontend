@@ -11,9 +11,9 @@ import {
   BarChart,
   Shield,
   Download,
-} from 'lucide-react';
+} from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { isAuthenticated, getCurrentUser } from '@/lib/auth';
 import ja from '@/i18n/ja';
 
@@ -77,7 +77,7 @@ const AdminPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <div>
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
@@ -88,10 +88,10 @@ const AdminPage: React.FC = () => {
 
   if (!isAdmin) {
     return (
-      <Layout>
+      <div>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <div className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <p className="text-lg text-gray-600">管理者権限が必要です</p>
           </div>
         </div>
@@ -100,7 +100,7 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         {/* ヘッダー */}
         <div className="flex items-center justify-between">
@@ -111,7 +111,7 @@ const AdminPage: React.FC = () => {
             </p>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Settings className="w-4 h-4" />
+            <div className="w-4 h-4" />
             <span>管理者モード</span>
           </div>
         </div>
@@ -120,11 +120,11 @@ const AdminPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* ポイントルール管理 */}
           <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/points')}>
-            <Card>
-              <CardContent className="p-6">
+            <div>
+              <div className="p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Coins className="w-6 h-6 text-blue-600" />
+                    <div className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">ポイント管理</h3>
@@ -143,11 +143,11 @@ const AdminPage: React.FC = () => {
 
           {/* 景品管理 */}
           <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/products')}>
-            <Card>
-              <CardContent className="p-6">
+            <div>
+              <div className="p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Gift className="w-6 h-6 text-green-600" />
+                    <div className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">商品管理</h3>
@@ -166,11 +166,11 @@ const AdminPage: React.FC = () => {
 
           {/* レポート生成 */}
           <div className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => router.push('/admin/reports')}>
-            <Card>
-              <CardContent className="p-6">
+            <div>
+              <div className="p-6">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <FileText className="w-6 h-6 text-purple-600" />
+                    <div className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">レポート生成</h3>
@@ -189,14 +189,14 @@ const AdminPage: React.FC = () => {
         </div>
 
         {/* CSRレポート */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="w-5 h-5" />
+        <div>
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5" />
               CSRレポート出力
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <div>
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -247,7 +247,7 @@ const AdminPage: React.FC = () => {
                   onClick={handleExportReport}
                   className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
                 >
-                  <Download className="w-4 h-4" />
+                  <div className="w-4 h-4" />
                   <span>CSVでエクスポート</span>
                 </button>
                 
@@ -255,7 +255,7 @@ const AdminPage: React.FC = () => {
                   onClick={() => router.push('/admin/reports')}
                   className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
                 >
-                  <FileText className="w-4 h-4" />
+                  <div className="w-4 h-4" />
                   <span>レポート生成へ</span>
                 </button>
               </div>
@@ -265,50 +265,50 @@ const AdminPage: React.FC = () => {
 
         {/* 統計情報 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総CO₂削減量</p>
                   <p className="text-2xl font-bold text-green-600">2,847.5 kg</p>
                 </div>
-                <BarChart className="w-8 h-8 text-green-500" />
+                <div className="w-8 h-8 text-green-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総付与ポイント</p>
                   <p className="text-2xl font-bold text-blue-600">28,475 pt</p>
                 </div>
-                <Coins className="w-8 h-8 text-blue-500" />
+                <div className="w-8 h-8 text-blue-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">景品交換回数</p>
                   <p className="text-2xl font-bold text-purple-600">156 回</p>
                 </div>
-                <Gift className="w-8 h-8 text-purple-500" />
+                <div className="w-8 h-8 text-purple-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">参加率</p>
                   <p className="text-2xl font-bold text-orange-600">78.5%</p>
                 </div>
-                <Users className="w-8 h-8 text-orange-500" />
+                <div className="w-8 h-8 text-orange-500" />
               </div>
             </CardContent>
           </Card>

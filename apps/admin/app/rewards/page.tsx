@@ -11,9 +11,9 @@ import {
   Package,
   Heart,
   Coffee,
-} from 'lucide-react';
+} from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { isAuthenticated } from '@/lib/auth';
 import ja from '@/i18n/ja';
 
@@ -39,8 +39,8 @@ interface RedemptionHistory {
 
 const RewardsPage: React.FC = () => {
   const router = useRouter();
-  const [rewards, setRewards] = useState<Reward[]>([]);
-  const [redemptions, setRedemptions] = useState<RedemptionHistory[]>([]);
+  const [rewards, setRewards] = useState<div[]>([]);
+  const [redemptions, setRedemptions] = useState<div[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -194,15 +194,15 @@ const RewardsPage: React.FC = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'ギフトカード':
-        return <Gift className="w-5 h-5" />;
+        return <div className="w-5 h-5" />;
       case '商品':
-        return <Package className="w-5 h-5" />;
+        return <div className="w-5 h-5" />;
       case '社内サービス':
-        return <Coffee className="w-5 h-5" />;
+        return <div className="w-5 h-5" />;
       case '寄付':
-        return <Heart className="w-5 h-5" />;
+        return <div className="w-5 h-5" />;
       default:
-        return <Gift className="w-5 h-5" />;
+        return <div className="w-5 h-5" />;
     }
   };
 
@@ -225,7 +225,7 @@ const RewardsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <div>
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
@@ -235,7 +235,7 @@ const RewardsPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         {/* ヘッダー */}
         <div className="flex items-center justify-between">
@@ -247,7 +247,7 @@ const RewardsPage: React.FC = () => {
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 bg-primary-50 px-4 py-2 rounded-lg">
-              <Coins className="w-5 h-5 text-primary-600" />
+              <div className="w-5 h-5 text-primary-600" />
               <span className="font-medium text-primary-900">{currentBalance.toLocaleString()} pt</span>
             </div>
             <button
@@ -262,11 +262,11 @@ const RewardsPage: React.FC = () => {
         {!showHistory ? (
           <>
             {/* フィルター */}
-            <Card>
-              <CardContent className="p-4">
+            <div>
+              <div className="p-4">
                 <div className="flex flex-wrap gap-4 items-center">
                   <div className="flex items-center space-x-2 flex-1 max-w-md">
-                    <Search className="w-4 h-4 text-gray-500" />
+                    <div className="w-4 h-4 text-gray-500" />
                     <input
                       type="text"
                       placeholder="景品を検索..."
@@ -277,7 +277,7 @@ const RewardsPage: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center space-x-2">
-                    <Filter className="w-4 h-4 text-gray-500" />
+                    <div className="w-4 h-4 text-gray-500" />
                     <span className="text-sm font-medium text-gray-700">カテゴリ:</span>
                     <select
                       value={selectedCategory}
@@ -297,8 +297,8 @@ const RewardsPage: React.FC = () => {
             {/* 景品一覧 */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {rewards.map((reward) => (
-                <Card key={reward.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
+                <div key={reward.id} className="hover:shadow-lg transition-shadow">
+                  <div className="p-6">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center space-x-2">
@@ -319,7 +319,7 @@ const RewardsPage: React.FC = () => {
                       
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <Coins className="w-4 h-4 text-yellow-500" />
+                          <div className="w-4 h-4 text-yellow-500" />
                           <span className="font-bold text-gray-900">{reward.points_required.toLocaleString()}</span>
                           <span className="text-sm text-gray-600">pt</span>
                         </div>
@@ -333,7 +333,7 @@ const RewardsPage: React.FC = () => {
                               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                           }`}
                         >
-                          <ShoppingCart className="w-4 h-4 inline mr-1" />
+                          <div className="w-4 h-4 inline mr-1" />
                           交換
                         </button>
                       </div>
@@ -344,8 +344,8 @@ const RewardsPage: React.FC = () => {
             </div>
 
             {rewards.length === 0 && (
-              <Card>
-                <CardContent className="p-8 text-center">
+              <div>
+                <div className="p-8 text-center">
                   <p className="text-gray-500">条件に一致する景品がありません</p>
                 </CardContent>
               </Card>
@@ -353,11 +353,11 @@ const RewardsPage: React.FC = () => {
           </>
         ) : (
           /* 交換履歴 */
-          <Card>
-            <CardHeader>
-              <CardTitle>交換履歴</CardTitle>
+          <div>
+            <div>
+              <div>交換履歴</CardTitle>
             </CardHeader>
-            <CardContent>
+            <div>
               <div className="space-y-4">
                 {redemptions.map((redemption) => (
                   <div

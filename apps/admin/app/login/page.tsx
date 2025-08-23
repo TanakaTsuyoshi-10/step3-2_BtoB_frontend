@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Zap, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Zap, Mail, Lock, Eye, EyeOff } from '@iconify/react/icons/heroicons';
 import { authAPI } from '@/lib/api';
 import { setAuthToken, setCurrentUser } from '@/lib/auth';
 import { LoginFormData } from '@/types';
 
 const LoginPage: React.FC = () => {
-  const [formData, setFormData] = useState<LoginFormData>({
+  const [formData, setFormData] = useState<div>({
     username: '',
     password: '',
   });
@@ -18,7 +18,7 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState<string>('');
   const router = useRouter();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<div>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -72,7 +72,7 @@ const LoginPage: React.FC = () => {
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
-              <Zap className="w-12 h-12 text-primary-600" />
+              <div className="w-12 h-12 text-primary-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">エネルギーマネージャー</h1>
             <p className="text-gray-600 mt-2">アカウントにログイン</p>
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
                 メールアドレス
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   id="username"
                   name="username"
@@ -109,7 +109,7 @@ const LoginPage: React.FC = () => {
                 パスワード
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   id="password"
                   name="password"
@@ -125,7 +125,7 @@ const LoginPage: React.FC = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <div className="w-5 h-5" /> : <div className="w-5 h-5" />}
                 </button>
               </div>
             </div>
@@ -142,7 +142,7 @@ const LoginPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               アカウントをお持ちでない方は{' '}
-              <Link href="/register" className="font-medium text-primary-600 hover:text-primary-500">
+              <div href="/register" className="font-medium text-primary-600 hover:text-primary-500">
                 新規登録
               </Link>
             </p>

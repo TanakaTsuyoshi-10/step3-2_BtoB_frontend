@@ -8,12 +8,12 @@ import {
   Leaf,
   Gift,
   Coins,
-} from 'lucide-react';
+} from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
 import KPICard from '@/components/dashboard/KPICard';
 import MonthlyUsageChart from '@/components/charts/MonthlyUsageChart';
 import Co2TrendChart from '@/components/charts/Co2TrendChart';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { useKpi, useMonthlyUsage, useCo2Trend } from '@/hooks/useKpi';
 import ja from '@/i18n/ja';
 
@@ -27,7 +27,7 @@ const DashboardPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Layout>
+      <div>
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
@@ -39,7 +39,7 @@ const DashboardPage: React.FC = () => {
           {/* KPI Cards Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {Array.from({ length: 4 }).map((_, index) => (
-              <KPICard
+              <div
                 key={index}
                 title=""
                 value=""
@@ -51,13 +51,13 @@ const DashboardPage: React.FC = () => {
 
           {/* Charts Skeleton */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardContent className="p-6">
+            <div>
+              <div className="p-6">
                 <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
               </CardContent>
             </Card>
-            <Card>
-              <CardContent className="p-6">
+            <div>
+              <div className="p-6">
                 <div className="h-64 bg-gray-100 rounded animate-pulse"></div>
               </CardContent>
             </Card>
@@ -68,7 +68,7 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -85,53 +85,53 @@ const DashboardPage: React.FC = () => {
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-          <KPICard
+          <div
             title="総ユーザー数"
             value={kpi?.total_users || 0}
             unit="人"
-            icon={<Users className="text-blue-600" />}
+            icon={<div className="text-blue-600" />}
           />
-          <KPICard
+          <div
             title="節電量"
             value={kpi?.total_energy_saved || 0}
             unit="kWh"
-            icon={<Zap className="text-yellow-600" />}
+            icon={<div className="text-yellow-600" />}
           />
-          <KPICard
+          <div
             title="CO₂削減量"
             value={kpi?.total_co2_reduced || 0}
             unit="kg"
-            icon={<Leaf className="text-green-600" />}
+            icon={<div className="text-green-600" />}
           />
-          <KPICard
+          <div
             title="付与ポイント"
             value={kpi?.total_points_awarded || 0}
             unit="pt"
-            icon={<Coins className="text-green-600" />}
+            icon={<div className="text-green-600" />}
           />
-          <KPICard
+          <div
             title="商品交換回数"
             value={kpi?.total_redemptions || 0}
             unit="回"
-            icon={<Gift className="text-purple-600" />}
+            icon={<div className="text-purple-600" />}
           />
-          <KPICard
+          <div
             title="消費ポイント"
             value={kpi?.total_points_spent || 0}
             unit="pt"
-            icon={<Coins className="text-indigo-600" />}
+            icon={<div className="text-indigo-600" />}
           />
         </div>
 
         {/* Charts Row 1 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Monthly Usage Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>月次推移（電気・ガス）</CardTitle>
+          <div>
+            <div>
+              <div>月次推移（電気・ガス）</CardTitle>
             </CardHeader>
-            <CardContent>
-              <MonthlyUsageChart 
+            <div>
+              <div 
                 data={monthlyUsage || []} 
                 isLoading={monthlyLoading}
               />
@@ -139,12 +139,12 @@ const DashboardPage: React.FC = () => {
           </Card>
 
           {/* CO2 Trend Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle>CO₂削減量推移</CardTitle>
+          <div>
+            <div>
+              <div>CO₂削減量推移</CardTitle>
             </CardHeader>
-            <CardContent>
-              <Co2TrendChart 
+            <div>
+              <div2TrendChart 
                 data={co2Trend || []} 
                 isLoading={co2Loading}
               />

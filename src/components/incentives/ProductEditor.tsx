@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@admin-ui/button';
+import { Input } from '@admin-ui/input';
+import { Textarea } from '@admin-ui/textarea';
+import { Switch } from '@admin-ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@admin-ui/select';
 import { incentivesAPI } from '@/lib/api';
 
 interface Product {

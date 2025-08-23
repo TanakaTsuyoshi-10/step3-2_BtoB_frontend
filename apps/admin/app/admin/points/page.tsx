@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Coins, Users, Award, Plus, Edit, Trash2, FileText } from 'lucide-react';
+import { Coins, Users, Award, Plus, Edit, Trash2, FileText } from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import ja from '@/i18n/ja';
 
 interface PointRule {
@@ -28,7 +28,7 @@ interface PointTransaction {
 
 export default function AdminPointsPage() {
   const [activeTab, setActiveTab] = useState('rules')
-  const [pointRules, setPointRules] = useState<PointRule[]>([
+  const [pointRules, setPointRules] = useState<div[]>([
     {
       id: 1,
       title: 'ガス使用量削減10%以上',
@@ -58,7 +58,7 @@ export default function AdminPointsPage() {
     }
   ])
 
-  const [transactions, setTransactions] = useState<PointTransaction[]>([
+  const [transactions, setTransactions] = useState<div[]>([
     {
       id: 1,
       user_name: '田中 太郎',
@@ -89,7 +89,7 @@ export default function AdminPointsPage() {
   ])
 
   const [showRuleModal, setShowRuleModal] = useState(false)
-  const [editingRule, setEditingRule] = useState<PointRule | null>(null)
+  const [editingRule, setEditingRule] = useState<div | null>(null)
   const [newRule, setNewRule] = useState({
     title: '',
     description: '',
@@ -173,7 +173,7 @@ export default function AdminPointsPage() {
   )
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -186,50 +186,50 @@ export default function AdminPointsPage() {
 
         {/* 統計カード */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総発行ポイント</p>
                   <p className="text-2xl font-bold text-green-600">{totalPointsIssued.toLocaleString()} pt</p>
                 </div>
-                <Coins className="w-8 h-8 text-green-500" />
+                <div className="w-8 h-8 text-green-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総利用ポイント</p>
                   <p className="text-2xl font-bold text-red-600">{totalPointsRedeemed.toLocaleString()} pt</p>
                 </div>
-                <Award className="w-8 h-8 text-red-500" />
+                <div className="w-8 h-8 text-red-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">アクティブルール</p>
                   <p className="text-2xl font-bold text-blue-600">{pointRules.filter(r => r.active).length}</p>
                 </div>
-                <FileText className="w-8 h-8 text-blue-500" />
+                <div className="w-8 h-8 text-blue-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">参加ユーザー数</p>
                   <p className="text-2xl font-bold text-purple-600">1,247</p>
                 </div>
-                <Users className="w-8 h-8 text-purple-500" />
+                <div className="w-8 h-8 text-purple-500" />
               </div>
             </CardContent>
           </Card>
@@ -262,20 +262,20 @@ export default function AdminPointsPage() {
         </div>
 
         {activeTab === 'rules' && (
-          <Card>
-            <CardHeader>
+          <div>
+            <div>
               <div className="flex items-center justify-between">
-                <CardTitle>ポイントルール一覧</CardTitle>
+                <div>ポイントルール一覧</CardTitle>
                 <button
                   onClick={() => setShowRuleModal(true)}
                   className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
                 >
-                  <Plus className="w-4 h-4" />
+                  <div className="w-4 h-4" />
                   <span>新規作成</span>
                 </button>
               </div>
             </CardHeader>
-            <CardContent>
+            <div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -319,13 +319,13 @@ export default function AdminPointsPage() {
                               onClick={() => handleEditRule(rule)}
                               className="text-blue-600 hover:text-blue-800"
                             >
-                              <Edit className="w-4 h-4" />
+                              <div className="w-4 h-4" />
                             </button>
                             <button
                               onClick={() => handleDeleteRule(rule.id)}
                               className="text-red-600 hover:text-red-800"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <div2 className="w-4 h-4" />
                             </button>
                           </div>
                         </td>
@@ -339,11 +339,11 @@ export default function AdminPointsPage() {
         )}
 
         {activeTab === 'transactions' && (
-          <Card>
-            <CardHeader>
-              <CardTitle>取引履歴</CardTitle>
+          <div>
+            <div>
+              <div>取引履歴</CardTitle>
             </CardHeader>
-            <CardContent>
+            <div>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>

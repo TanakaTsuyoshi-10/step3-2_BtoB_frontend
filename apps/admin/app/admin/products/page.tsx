@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Package, Plus, Edit, Trash2, Eye, EyeOff, TrendingUp, Users } from 'lucide-react';
+import { Package, Plus, Edit, Trash2, Eye, EyeOff, TrendingUp, Users } from '@iconify/react/icons/heroicons';
 import Layout from '@/components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 
 interface Product {
   id: number;
@@ -19,7 +19,7 @@ interface Product {
 }
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>([
+  const [products, setProducts] = useState<div[]>([
     {
       id: 1,
       name: 'Amazonギフトカード 500円分',
@@ -71,7 +71,7 @@ export default function AdminProductsPage() {
   ])
 
   const [showProductModal, setShowProductModal] = useState(false)
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [editingProduct, setEditingProduct] = useState<div | null>(null)
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -169,7 +169,7 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <Layout>
+    <div>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -182,65 +182,65 @@ export default function AdminProductsPage() {
             onClick={() => setShowProductModal(true)}
             className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
           >
-            <Plus className="w-4 h-4" />
+            <div className="w-4 h-4" />
             <span>新規商品</span>
           </button>
         </div>
 
         {/* 統計カード */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総商品数</p>
                   <p className="text-2xl font-bold text-blue-600">{totalProducts}</p>
                 </div>
-                <Package className="w-8 h-8 text-blue-500" />
+                <div className="w-8 h-8 text-blue-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">アクティブ商品</p>
                   <p className="text-2xl font-bold text-green-600">{activeProducts}</p>
                 </div>
-                <Eye className="w-8 h-8 text-green-500" />
+                <div className="w-8 h-8 text-green-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">総交換回数</p>
                   <p className="text-2xl font-bold text-purple-600">{totalRedemptions}</p>
                 </div>
-                <Users className="w-8 h-8 text-purple-500" />
+                <div className="w-8 h-8 text-purple-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
+          <div>
+            <div className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">平均人気度</p>
                   <p className="text-2xl font-bold text-orange-600">{avgPopularity.toFixed(1)}</p>
                 </div>
-                <TrendingUp className="w-8 h-8 text-orange-500" />
+                <div className="w-8 h-8 text-orange-500" />
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* フィルター */}
-        <Card>
-          <CardContent className="p-4">
+        <div>
+          <div className="p-4">
             <div className="flex flex-wrap gap-4 items-center">
               <div>
                 <label className="text-sm font-medium text-gray-700 mr-2">カテゴリ:</label>
@@ -273,11 +273,11 @@ export default function AdminProductsPage() {
         </Card>
 
         {/* 商品一覧 */}
-        <Card>
-          <CardHeader>
-            <CardTitle>商品一覧</CardTitle>
+        <div>
+          <div>
+            <div>商品一覧</CardTitle>
           </CardHeader>
-          <CardContent>
+          <div>
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -327,7 +327,7 @@ export default function AdminProductsPage() {
                             product.active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                           }`}
                         >
-                          {product.active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                          {product.active ? <div className="w-3 h-3" /> : <div className="w-3 h-3" />}
                           <span>{product.active ? 'アクティブ' : '非アクティブ'}</span>
                         </button>
                       </td>
@@ -337,13 +337,13 @@ export default function AdminProductsPage() {
                             onClick={() => handleEditProduct(product)}
                             className="text-blue-600 hover:text-blue-800"
                           >
-                            <Edit className="w-4 h-4" />
+                            <div className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteProduct(product.id)}
                             className="text-red-600 hover:text-red-800"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <div2 className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
