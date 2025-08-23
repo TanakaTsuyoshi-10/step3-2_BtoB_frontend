@@ -1,10 +1,10 @@
 // Mobile API configuration - integrated with existing backend
-import { api, path } from '../apiClient';
+import { get, post, put } from '../apiClient';
 
 // Authentication API calls (using existing backend endpoints)
 export const authAPI = {
   login: async (credentials: { email: string; password: string }) => {
-    const response = await api.post(path('/login/access-token'), {
+    const response = await post('/login/access-token', {
       username: credentials.email,
       password: credentials.password,
     });
@@ -12,12 +12,12 @@ export const authAPI = {
   },
   
   getCurrentUser: async () => {
-    const response = await api.get(path('/users/me'));
+    const response = await get('/users/me');
     return response.data;
   },
   
   updateProfile: async (userData: any) => {
-    const response = await api.put(path('/users/me'), userData);
+    const response = await put('/users/me', userData);
     return response.data;
   },
 };
@@ -26,7 +26,7 @@ export const authAPI = {
 export const energyAPI = {
   getMonthlyUsage: async (year: number, month: number) => {
     try {
-      const response = await api.get(path('/metrics/monthly-usage'), {
+      const response = await get('/metrics/monthly-usage', {
         params: { year }
       });
       
@@ -59,7 +59,7 @@ export const energyAPI = {
   
   getCurrentUsage: async () => {
     try {
-      const response = await api.get(path('/metrics/kpi'));
+      const response = await get('/metrics/kpi');
       const kpi = response.data;
       return {
         electricity_total: kpi.electricity_total_kwh || 0,
@@ -78,7 +78,7 @@ export const energyAPI = {
 
   addUsage: async (usageData: any) => {
     try {
-      const response = await api.post(path('/energy-records'), usageData);
+      const response = await post('/energy-records', usageData);
       return response.data;
     } catch (error) {
       console.error('Failed to add usage data:', error);
@@ -91,7 +91,7 @@ export const energyAPI = {
 export const pointsAPI = {
   getBalance: async () => {
     try {
-      const response = await api.get(path('/admin/points/employees'));
+      const response = await get('/admin/points/employees');
       const currentUser = await authAPI.getCurrentUser();
       
       // Find current user's points from employees list
@@ -105,7 +105,7 @@ export const pointsAPI = {
   
   getHistory: async (params: any = {}) => {
     try {
-      const response = await api.get(path('/admin/points/employees'), { params });
+      const response = await get('/admin/points/employees', { params });
       return response.data;
     } catch (error) {
       console.error('Failed to get points history:', error);
@@ -115,7 +115,7 @@ export const pointsAPI = {
   
   getRewards: async () => {
     try {
-      const response = await api.get(path('/admin/incentives/products'), {
+      const response = await get('/admin/incentives/products', {
         params: { active: true }
       });
       return response.data;
@@ -127,7 +127,7 @@ export const pointsAPI = {
   
   redeemPoints: async (rewardData: any) => {
     try {
-      const response = await api.post(path('/admin/incentives/products/redeem'), rewardData);
+      const response = await post('/admin/incentives/products/redeem', rewardData);
       return response.data;
     } catch (error) {
       console.error('Failed to redeem points:', error);
@@ -140,7 +140,7 @@ export const pointsAPI = {
 export const rankingAPI = {
   getIndividualRanking: async (params: any = {}) => {
     try {
-      const response = await api.get(path('/admin/points/employees'), { 
+      const response = await get('/admin/points/employees', { 
         params: { ...params, sort_by: 'points_balance', sort_order: 'desc' }
       });
       return response.data.employees || [];
@@ -153,7 +153,7 @@ export const rankingAPI = {
   getMyPosition: async () => {
     try {
       const currentUser = await authAPI.getCurrentUser();
-      const response = await api.get(path('/admin/points/employees'), {
+      const response = await get('/admin/points/employees', {
         params: { sort_by: 'points_balance', sort_order: 'desc' }
       });
       
@@ -174,7 +174,7 @@ export const rankingAPI = {
   
   getAchievements: async () => {
     try {
-      const response = await api.get(path('/metrics/kpi'));
+      const response = await get('/metrics/kpi');
       const kpi = response.data;
       const currentUser = await authAPI.getCurrentUser();
       
