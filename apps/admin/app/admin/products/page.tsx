@@ -461,6 +461,6 @@ export default function AdminProductsPage() {
           </div>
         )}
       </div>
-    </Layout>
+    </div>
   )
 }

@@ -120,7 +120,7 @@ const RankingPage: React.FC = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
         </div>
-      </Layout>
+      </div>
     );
   }
 
@@ -226,7 +226,7 @@ const RankingPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

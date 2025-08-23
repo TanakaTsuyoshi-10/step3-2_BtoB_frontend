@@ -443,7 +443,7 @@ ${formData.start_date}から${formData.end_date}まで
           </TabsContent>
         </Tabs>
       </div>
-    </Layout>
+    </div>
   );
 };
 
