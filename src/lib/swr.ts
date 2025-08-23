@@ -11,6 +11,6 @@ export const SWR_KEYS = {
   balance: (userId?: number) => userId ? `/balance/${userId}` : '/balance',
   history: (userId?: number) => userId ? `/history/${userId}` : '/history',
   kpi: '/kpi',
-  monthlyUsage: '/metrics/monthly-usage',
-  co2Trend: '/metrics/co2-trend',
+  monthlyUsage: 'metrics/monthly-usage',
+  co2Trend: 'metrics/co2-trend',
 } as const;

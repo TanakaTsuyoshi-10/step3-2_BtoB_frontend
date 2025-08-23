@@ -1,19 +1,15 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || '';
+// Use the shared apiClient for consistency
+import { api } from '@/lib/apiClient';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  if (!API_BASE) {
-    throw new Error('NEXT_PUBLIC_API_BASE is empty. Set it in GitHub Secrets or App Settings.');
-  }
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: { 'Content-Type': 'application/json', ...(init?.headers || {}) },
-    cache: 'no-store',
+  const response = await api.request({
+    url: path,
+    method: init?.method || 'GET',
+    data: init?.body ? JSON.parse(init.body as string) : undefined,
+    headers: init?.headers,
     ...init,
   });
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`API ${path} failed: ${res.status} ${text}`);
-  }
-  return res.json();
+  return response.data;
 }
 
 /* ======== Auth (利用者向け) ======== */

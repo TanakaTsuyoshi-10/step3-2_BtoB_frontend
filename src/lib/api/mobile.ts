@@ -1,5 +1,5 @@
 // Mobile API configuration - integrated with existing backend
-import { get, post, put } from '../apiClient';
+import { get, post, put, path } from '../apiClient';
 
 // Authentication API calls (using existing backend endpoints)
 export const authAPI = {
@@ -26,7 +26,7 @@ export const authAPI = {
 export const energyAPI = {
   getMonthlyUsage: async (year: number, month: number) => {
     try {
-      const response = await get('/metrics/monthly-usage', {
+      const response = await get(path('metrics/monthly-usage'), {
         params: { year }
       });
       
@@ -59,7 +59,7 @@ export const energyAPI = {
   
   getCurrentUsage: async () => {
     try {
-      const response = await get('/metrics/kpi');
+      const response = await get(path('metrics/kpi'));
       const kpi = response.data;
       return {
         electricity_total: kpi.electricity_total_kwh || 0,
@@ -174,7 +174,7 @@ export const rankingAPI = {
   
   getAchievements: async () => {
     try {
-      const response = await get('/metrics/kpi');
+      const response = await get(path('metrics/kpi'));
       const kpi = response.data;
       const currentUser = await authAPI.getCurrentUser();
       

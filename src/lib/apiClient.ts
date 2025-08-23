@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-const rawBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+// DEFAULT_API_BASE: Backend + /api/v1 (safe fallback)
+const DEFAULT_API_BASE = "https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1";
+
+const rawBase = process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE;
 // 末尾のスラッシュを除去（…/api/v1 想定）
 const apiBase = rawBase.replace(/\/+$/, "");
 
@@ -51,8 +54,11 @@ export const post = <T=any>(url: string, data?: any, cfg?: AxiosRequestConfig) =
 export const put  = <T=any>(url: string, data?: any, cfg?: AxiosRequestConfig) => api.put<T>(stripApiV1(url), data, cfg);
 export const del  = <T=any>(url: string, cfg?: AxiosRequestConfig) => api.delete<T>(stripApiV1(url), cfg);
 
+// Export path function for consistent API path handling
+export const path = (endpoint: string) => stripApiV1(endpoint);
+
 // デバッグログ（本番でも1回だけ）
 if (typeof window !== "undefined") {
   // eslint-disable-next-line no-console
-  console.log("[API_BASE]", apiBase);
+  console.log("[API_BASE] resolved:", apiBase, process.env.NEXT_PUBLIC_API_BASE ? "(from env)" : "(fallback)");
 }

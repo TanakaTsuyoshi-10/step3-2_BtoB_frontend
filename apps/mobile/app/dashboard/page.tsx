@@ -1,10 +1,15 @@
 import { Card, Section, Title } from "@mobile/components/ui/card";
+import { api } from "@/lib/apiClient";
 
 export default async function MobileDashboard() {
-  // 既存 API を利用（環境変数は既存 NEXT_PUBLIC_API_BASE を流用）
-  const base = process.env.NEXT_PUBLIC_API_BASE!;
-  const kpiRes = await fetch(`${base}/api/v1/metrics/kpi`, { cache: "no-store" });
-  const kpi = await kpiRes.json().catch(() => ({}));
+  // Use apiClient for consistent API routing
+  let kpi = {};
+  try {
+    const kpiRes = await api.get('/metrics/kpi');
+    kpi = kpiRes.data || {};
+  } catch (error) {
+    console.error('Failed to fetch KPI data:', error);
+  }
 
   return (
     <div className="px-4 py-5 space-y-4">
