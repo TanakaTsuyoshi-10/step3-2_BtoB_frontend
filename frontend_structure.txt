@@ -1,42 +1,52 @@
 .
 ├── apps
 │   ├── admin
-│   │   └── app
-│   │       ├── admin
-│   │       │   ├── page.tsx
-│   │       │   ├── points
-│   │       │   │   └── page.tsx
-│   │       │   ├── products
-│   │       │   │   └── page.tsx
-│   │       │   └── reports
-│   │       │       └── page.tsx
-│   │       ├── dashboard
-│   │       │   └── page.tsx
-│   │       ├── devices
-│   │       │   └── page.tsx
-│   │       ├── energy-records
-│   │       │   └── page.tsx
-│   │       ├── globals.css
-│   │       ├── incentives
-│   │       │   └── page.tsx
-│   │       ├── layout.tsx
-│   │       ├── login
-│   │       │   └── page.tsx
-│   │       ├── page.tsx
-│   │       ├── points
-│   │       │   └── page.tsx
-│   │       ├── ranking
-│   │       │   └── page.tsx
-│   │       ├── register
-│   │       │   └── page.tsx
-│   │       ├── reports
-│   │       │   ├── [id]
-│   │       │   │   └── page.tsx
-│   │       │   ├── new
-│   │       │   │   └── page.tsx
-│   │       │   └── page.tsx
-│   │       └── rewards
-│   │           └── page.tsx
+│   │   ├── app
+│   │   │   ├── admin
+│   │   │   │   ├── page.tsx
+│   │   │   │   ├── points
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── products
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── reports
+│   │   │   │       └── page.tsx
+│   │   │   ├── dashboard
+│   │   │   │   └── page.tsx
+│   │   │   ├── devices
+│   │   │   │   └── page.tsx
+│   │   │   ├── energy-records
+│   │   │   │   └── page.tsx
+│   │   │   ├── globals.css
+│   │   │   ├── incentives
+│   │   │   │   └── page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   ├── login
+│   │   │   │   └── page.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── points
+│   │   │   │   └── page.tsx
+│   │   │   ├── ranking
+│   │   │   │   └── page.tsx
+│   │   │   ├── register
+│   │   │   │   └── page.tsx
+│   │   │   ├── reports
+│   │   │   │   ├── [id]
+│   │   │   │   │   └── page.tsx
+│   │   │   │   ├── new
+│   │   │   │   │   └── page.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── rewards
+│   │   │       └── page.tsx
+│   │   └── components
+│   │       └── ui
+│   │           ├── badge.tsx
+│   │           ├── button.tsx
+│   │           ├── card.tsx
+│   │           ├── input.tsx
+│   │           ├── progress.tsx
+│   │           ├── select.tsx
+│   │           ├── tabs.tsx
+│   │           └── utils.ts
 │   └── mobile
 │       ├── app
 │       │   ├── ai-analysis
@@ -62,8 +72,20 @@
 │       │       └── page.jsx
 │       ├── components
 │       │   └── ui
-│       │       └── card
-│       │           └── index.tsx
+│       │       ├── badge.tsx
+│       │       ├── button.tsx
+│       │       ├── card
+│       │       │   ├── index.ts
+│       │       │   └── index.tsx
+│       │       ├── dialog.tsx
+│       │       ├── index.ts
+│       │       ├── input.tsx
+│       │       ├── progress.tsx
+│       │       ├── select.tsx
+│       │       ├── switch.tsx
+│       │       ├── tabs.tsx
+│       │       ├── textarea.tsx
+│       │       └── utils.ts
 │       ├── jsconfig.json
 │       ├── lib
 │       │   ├── api
@@ -85,13 +107,15 @@
 ├── DEPLOYMENT_TROUBLESHOOTING.md
 ├── DigiCertGlobalRootCA.crt.pem
 ├── docs
-│   └── cleanup-report.md
+│   ├── cleanup-report.md
+│   ├── lockfile-sync-report.md
+│   └── ui-split-report.md
 ├── frontend_structure.txt
 ├── jsconfig.json
 ├── mobile
-│   └── next-env.d.ts
 ├── next-env.d.ts
 ├── next.config.mjs
+├── package-lock 2.json
 ├── package-lock.json
 ├── package.json
 ├── postcss.config.js
@@ -132,7 +156,6 @@
 │   │   ├── reports
 │   │   │   ├── [id]
 │   │   │   │   └── page.tsx
-│   │   │   ├── \[id\]
 │   │   │   ├── new
 │   │   │   │   └── page.tsx
 │   │   │   └── page.tsx
@@ -156,24 +179,9 @@
 │   │   │   └── Navbar.tsx
 │   │   ├── mobile
 │   │   │   └── MobileNav.tsx
-│   │   ├── points
-│   │   │   ├── PointsEmployeesTable.tsx
-│   │   │   └── PointsOrgDashboard.tsx
-│   │   └── ui
-│   │       ├── badge.tsx
-│   │       ├── button.tsx
-│   │       ├── card
-│   │       │   ├── index.ts
-│   │       │   └── index.tsx
-│   │       ├── dialog.tsx
-│   │       ├── index.ts
-│   │       ├── input.tsx
-│   │       ├── progress.tsx
-│   │       ├── select.tsx
-│   │       ├── switch.tsx
-│   │       ├── tabs.tsx
-│   │       ├── textarea.tsx
-│   │       └── utils.ts
+│   │   └── points
+│   │       ├── PointsEmployeesTable.tsx
+│   │       └── PointsOrgDashboard.tsx
 │   ├── hooks
 │   │   ├── useKpi.ts
 │   │   ├── usePoints.ts
@@ -202,7 +210,6 @@
 │       ├── points.ts
 │       └── product.ts
 ├── staticwebapp.config.json
-├── staticwebapp.config.json.backup
 ├── tailwind.config.js
 ├── test_connection 2.py
 ├── test_connection.py
@@ -210,4 +217,4 @@
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-71 directories, 140 files
+70 directories, 148 files

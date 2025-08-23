@@ -1,4 +1,4 @@
-import { get, post } from '../apiClient';
+import { get, post, path } from '../apiClient';
 import type { PointsBalance, PointsHistory, RedemptionResponse } from '@/types/points';
 import type { KPIData, MonthlyUsage, Co2TrendData } from '@/types/kpi';
 
@@ -21,16 +21,16 @@ export async function redeem(productId: number, userId?: number): Promise<Redemp
 }
 
 export async function fetchKpi(): Promise<KPIData> {
-  const response = await get('/metrics/kpi');
+  const response = await get(path('metrics/kpi'));
   return response.data;
 }
 
 export async function fetchMonthlyUsage(): Promise<MonthlyUsage[]> {
-  const response = await get('/metrics/monthly-usage');
+  const response = await get(path('metrics/monthly-usage'));
   return response.data;
 }
 
 export async function fetchCo2Trend(): Promise<Co2TrendData[]> {
-  const response = await get('/metrics/co2-trend');
+  const response = await get(path('metrics/co2-trend'));
   return response.data;
 }
