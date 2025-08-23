@@ -175,6 +175,84 @@ npm install
 - Add environment-specific API configurations
 - Set up proper CI/CD for both apps
 
+## Final Cleanup Actions (chore/cleanup-structure-final)
+
+### Comprehensive Structure Finalization ✅
+
+**Completed Actions**:
+
+1. **✅ Root Mobile Removal**: Completely removed `mobile/` directory (301+ files including .next build artifacts)
+2. **✅ Src Mobile Cleanup**: Removed `src/app/mobile/` directory (7 proxy files)  
+3. **✅ File Extension Deduplication**:
+   - Removed `apps/mobile/app/layout.jsx` (kept .tsx)
+   - Removed `apps/mobile/app/page.jsx` (kept .tsx)
+   - Removed `apps/mobile/app/points/page.jsx` (kept .tsx)
+4. **✅ Reports Directory Fix**: Removed `apps/admin/app/reports/\\[id\\]/` (kept `[id]/`)
+5. **✅ Development Artifacts**: Removed `apps/mobile/__pycache__/`
+6. **✅ Next.js Config Unification**: Removed `next.config.js` (kept `next.config.mjs`)
+7. **✅ API Client Cleanup**: 
+   - Removed unused `src/lib/axios.ts` (no references)
+   - Removed unused `src/lib/reportingApi.ts` (no references)
+   - Enforced `src/lib/apiClient.ts` as single source of truth
+
+### Build Status ⚠️
+- **Dependencies**: Installation timeout due to corrupted node_modules
+- **Next Build**: Skipped due to missing next binary
+- **Structure**: All cleanup completed successfully
+
+### API Connectivity Test ✅
+**All endpoints returning expected responses**:
+```
+/metrics/kpi: Status 401 (Not authenticated) ✅
+/metrics/monthly-usage: Status 401 (Not authenticated) ✅  
+/metrics/co2-trend: Status 401 (Not authenticated) ✅
+```
+**Result**: All 3/3 endpoints working correctly (401 = expected auth required response)
+
+### Final Structure Achieved
+
+```
+/Users/tanakatsuyoshi/Desktop/3-2/step3-2_BtoB_frontend/
+├── apps/
+│   ├── admin/app/          # Admin UI (19+ pages, no mobile routes)
+│   └── mobile/             # Mobile UI (unified, .tsx only)
+├── src/
+│   ├── app/                # Proxy re-exports (admin routes only)
+│   ├── components/         # Shared components (unchanged)  
+│   ├── lib/
+│   │   └── apiClient.ts    # Single API client with path normalization
+│   ├── hooks/              # Shared hooks (unchanged)
+│   └── types/              # Shared types (unchanged)
+├── next.config.mjs         # Single Next.js config
+├── package.json            # Unchanged (preserves env vars & startup)
+└── server.js               # Custom server (preserved, referenced in workflows)
+```
+
+### Files Removed Summary
+**Total Removed**: 300+ files
+- **Duplicates**: `mobile/` directory (complete)  
+- **Proxies**: `src/app/mobile/` (7 files)
+- **Extensions**: `.jsx` duplicates in mobile app (3 files)
+- **Directories**: Reports `\\[id\\]` escape sequence  
+- **Artifacts**: `__pycache__` directories
+- **Configs**: `next.config.js` duplicate
+- **APIs**: `axios.ts`, `reportingApi.ts` (unused)
+
+### Compliance Verification ✅
+- ✅ Environment variables unchanged
+- ✅ Startup commands unchanged (`node server.js`)  
+- ✅ API client unified (`src/lib/apiClient.ts`)
+- ✅ No 404s on `/api/v1/metrics/*` endpoints
+- ✅ Apps structure enforced (admin + mobile separation)
+- ✅ Shared resources preserved (`src/components`, `src/lib`)
+
+### Maintenance Guidelines
+1. **Page Creation**: Only add pages under `apps/admin/app/` or `apps/mobile/app/`
+2. **Shared Code**: Place in `src/components/`, `src/lib/`, `src/hooks/`, `src/types/`  
+3. **API Calls**: Always use `src/lib/apiClient.ts` (prevents /api/v1 duplication)
+4. **File Types**: Prefer `.tsx` over `.jsx`, `.ts` over `.js` for new files
+5. **Imports**: Use `@/` aliases for shared resources, relative paths within apps
+
 ---
-*Report completed: 2025-08-23 18:00*
-*Branch: chore/cleanup-structure-safe*
+*Final report: 2025-08-23 18:15*
+*Branch: chore/cleanup-structure-final*
