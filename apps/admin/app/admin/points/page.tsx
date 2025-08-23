@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Coins, Users, Award, Plus, Edit, Trash2, FileText } from '@iconify/react/icons/heroicons';
-import Layout from '@/components/layout/Layout';
+import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import ja from '@/i18n/ja';
 

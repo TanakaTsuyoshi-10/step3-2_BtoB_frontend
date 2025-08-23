@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import Layout from '@/components/layout/Layout';
-import PointsOrgDashboard from '@/components/points/PointsOrgDashboard';
-import PointsEmployeesTable from '@/components/points/PointsEmployeesTable';
+import Layout from '@components/layout/Layout';
+import PointsOrgDashboard from '@components/points/PointsOrgDashboard';
+import PointsEmployeesTable from '@components/points/PointsEmployeesTable';
 
 export default function Page() {
   return (

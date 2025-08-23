@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { FileText, Download, Calendar, Filter, BarChart, Users, Coins, Package } from '@iconify/react/icons/heroicons';
-import Layout from '@/components/layout/Layout';
+import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType } from 'docx';
 

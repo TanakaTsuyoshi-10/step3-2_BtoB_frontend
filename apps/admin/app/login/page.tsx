@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Zap, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-// import { authAPI } from '@/lib/api';
-// import { setAuthToken, setCurrentUser } from '@/lib/auth';
+// import { authAPI } from '@lib/api';
+// import { setAuthToken, setCurrentUser } from '@lib/auth';
 // import { LoginFormData } from '@/types';
 
 // Temporary mock types and functions for build

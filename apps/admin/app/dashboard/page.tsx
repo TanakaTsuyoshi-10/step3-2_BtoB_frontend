@@ -9,12 +9,12 @@ import {
   Gift,
   Coins,
 } from '@iconify/react/icons/heroicons';
-import Layout from '@/components/layout/Layout';
-import KPICard from '@/components/dashboard/KPICard';
-import MonthlyUsageChart from '@/components/charts/MonthlyUsageChart';
-import Co2TrendChart from '@/components/charts/Co2TrendChart';
+import Layout from '@components/layout/Layout';
+import KPICard from '@components/dashboard/KPICard';
+import MonthlyUsageChart from '@components/charts/MonthlyUsageChart';
+import Co2TrendChart from '@components/charts/Co2TrendChart';
 import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
-import { useKpi, useMonthlyUsage, useCo2Trend } from '@/hooks/useKpi';
+import { useKpi, useMonthlyUsage, useCo2Trend } from '@hooks/useKpi';
 import ja from '@/i18n/ja';
 
 export default function Page() {
