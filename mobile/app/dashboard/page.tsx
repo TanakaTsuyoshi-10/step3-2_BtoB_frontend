@@ -1,4 +1,4 @@
-import { Card, Section, Title } from "@mobile/components/ui/card";
+import { Card, Section, Title } from "@/components/ui/card";
 
 export default async function MobileDashboard() {
   // 既存 API を利用（環境変数は既存 NEXT_PUBLIC_API_BASE を流用）

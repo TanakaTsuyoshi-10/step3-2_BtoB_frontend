@@ -178,7 +178,7 @@ export default function PointsExchangePage() {
                             {product.points_required.toLocaleString()}pt
                           </span>
                           {product.stock <= 5 && (
-                            <Badge variant="destructive" className="text-xs">
+                            <Badge variant="error" className="text-xs">
                               残り{product.stock}個
                             </Badge>
                           )}
