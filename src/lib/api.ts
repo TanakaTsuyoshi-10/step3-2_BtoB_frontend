@@ -1,28 +1,25 @@
-import axios from './axios';
+import { api } from './apiClient';
 import { User, Device, EnergyRecord, DeviceFormData, EnergyRecordFormData, DailySummary } from '@/types';
-
-// Use the same axios instance for all APIs
-const api = axios;
 
 export const authAPI = {
   async login({ username, password }: { username: string; password: string }) {
     const body = new URLSearchParams();
     body.set('username', username);
     body.set('password', password);
-    return axios.post('/login/access-token', body, {
+    return api.post('/login/access-token', body, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then(r => r.data);
   },
   async register(userData: { email: string; password: string; full_name?: string }) {
-    return axios.post('/users/', userData).then(r => r.data);
+    return api.post('/users/', userData).then(r => r.data);
   },
   async me(token: string) {
-    return axios.get('/users/me', {
+    return api.get('/users/me', {
       headers: { Authorization: `Bearer ${token}` },
     }).then(r => r.data);
   },
   async getCurrentUser() {
-    return axios.get('/users/me').then(r => r.data);
+    return api.get('/users/me').then(r => r.data);
   }
 };
 

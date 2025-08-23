@@ -1,4 +1,4 @@
-import { api, path } from '../apiClient';
+import { get } from '../apiClient';
 
 // メトリクス APIレスポンス型定義
 export interface KPIResponse {
@@ -60,7 +60,7 @@ export const metricsAPI = {
     from_date?: string;
     to_date?: string;
   }): Promise<KPIResponse> {
-    const response = await api.get(path('/metrics/kpi'), { params });
+    const response = await get('/metrics/kpi', { params });
     return response.data;
   },
 
@@ -71,7 +71,7 @@ export const metricsAPI = {
     company_id?: number;
     year?: number;
   }): Promise<MonthlyUsageResponse> {
-    const response = await api.get(path('/metrics/monthly-usage'), { params });
+    const response = await get('/metrics/monthly-usage', { params });
     return response.data;
   },
 
@@ -84,7 +84,7 @@ export const metricsAPI = {
     to_date?: string;
     interval?: 'month' | 'week';
   }): Promise<Co2TrendResponse> {
-    const response = await api.get(path('/metrics/co2-trend'), { params });
+    const response = await get('/metrics/co2-trend', { params });
     return response.data;
   },
 
@@ -95,7 +95,7 @@ export const metricsAPI = {
     company_id?: number;
     month?: string;
   }): Promise<YoyUsageResponse> {
-    const response = await api.get(path('/metrics/yoy-usage'), { params });
+    const response = await get('/metrics/yoy-usage', { params });
     return response.data;
   },
 };

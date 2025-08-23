@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@admin-ui/card';
+import { Badge } from '@admin-ui/badge';
+import { Button } from '@admin-ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@admin-ui/select';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Award, Users, TrendingUp, Calendar, RefreshCw } from 'lucide-react';
 import { getPointsSummary, getPointsDistribution } from '@/lib/api/points';

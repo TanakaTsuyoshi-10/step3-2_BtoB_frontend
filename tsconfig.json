@@ -13,6 +13,18 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@admin/*": [
+        "apps/admin/*"
+      ],
+      "@mobile/*": [
+        "apps/mobile/*"
+      ],
+      "@mobile-ui/*": [
+        "apps/mobile/components/ui/*"
+      ],
+      "@admin-ui/*": [
+        "apps/admin/components/ui/*"
       ]
     },
     "allowJs": true,

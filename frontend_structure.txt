@@ -1,60 +1,96 @@
 .
+├── apps
+│   ├── admin
+│   │   └── app
+│   │       ├── admin
+│   │       │   ├── page.tsx
+│   │       │   ├── points
+│   │       │   │   └── page.tsx
+│   │       │   ├── products
+│   │       │   │   └── page.tsx
+│   │       │   └── reports
+│   │       │       └── page.tsx
+│   │       ├── dashboard
+│   │       │   └── page.tsx
+│   │       ├── devices
+│   │       │   └── page.tsx
+│   │       ├── energy-records
+│   │       │   └── page.tsx
+│   │       ├── globals.css
+│   │       ├── incentives
+│   │       │   └── page.tsx
+│   │       ├── layout.tsx
+│   │       ├── login
+│   │       │   └── page.tsx
+│   │       ├── page.tsx
+│   │       ├── points
+│   │       │   └── page.tsx
+│   │       ├── ranking
+│   │       │   └── page.tsx
+│   │       ├── register
+│   │       │   └── page.tsx
+│   │       ├── reports
+│   │       │   ├── [id]
+│   │       │   │   └── page.tsx
+│   │       │   ├── new
+│   │       │   │   └── page.tsx
+│   │       │   └── page.tsx
+│   │       └── rewards
+│   │           └── page.tsx
+│   └── mobile
+│       ├── app
+│       │   ├── ai-analysis
+│       │   │   └── page.jsx
+│       │   ├── components
+│       │   │   ├── CarbonIcon.jsx
+│       │   │   └── MobileNav.jsx
+│       │   ├── dashboard
+│       │   │   └── page.tsx
+│       │   ├── favicon.ico
+│       │   ├── globals.css
+│       │   ├── layout.tsx
+│       │   ├── login
+│       │   │   └── page.jsx
+│       │   ├── page.tsx
+│       │   ├── points
+│       │   │   └── page.tsx
+│       │   ├── ranking
+│       │   │   └── page.jsx
+│       │   ├── register
+│       │   │   └── page.jsx
+│       │   └── upload
+│       │       └── page.jsx
+│       ├── components
+│       │   └── ui
+│       │       └── card
+│       │           └── index.tsx
+│       ├── jsconfig.json
+│       ├── lib
+│       │   ├── api
+│       │   │   └── index.ts
+│       │   ├── api.js
+│       │   └── utils.ts
+│       ├── next-env.d.ts
+│       ├── next.config.mjs
+│       ├── package-lock.json
+│       ├── package.json
+│       ├── postcss.config.js
+│       ├── README.md
+│       ├── styles
+│       │   └── globals.css
+│       ├── tailwind.config.js
+│       └── tsconfig.json
 ├── AZURE_APP_SERVICE_CONFIG.md
 ├── AZURE_CONFIGURATION_SCRIPT.md
 ├── DEPLOYMENT_TROUBLESHOOTING.md
 ├── DigiCertGlobalRootCA.crt.pem
+├── docs
+│   └── cleanup-report.md
 ├── frontend_structure.txt
 ├── jsconfig.json
 ├── mobile
-│   ├── __pycache__
-│   │   └── app.cpython-310.pyc
-│   ├── app
-│   │   ├── ai-analysis
-│   │   │   └── page.jsx
-│   │   ├── components
-│   │   │   ├── CarbonIcon.jsx
-│   │   │   └── MobileNav.jsx
-│   │   ├── dashboard
-│   │   │   └── page.tsx
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.jsx
-│   │   ├── layout.tsx
-│   │   ├── login
-│   │   │   └── page.jsx
-│   │   ├── page.jsx
-│   │   ├── page.tsx
-│   │   ├── points
-│   │   │   ├── page.jsx
-│   │   │   └── page.tsx
-│   │   ├── ranking
-│   │   │   └── page.jsx
-│   │   ├── register
-│   │   │   └── page.jsx
-│   │   └── upload
-│   │       └── page.jsx
-│   ├── components
-│   │   └── ui
-│   │       └── card
-│   │           └── index.tsx
-│   ├── jsconfig.json
-│   ├── lib
-│   │   ├── api
-│   │   │   └── index.ts
-│   │   ├── api.js
-│   │   └── utils.ts
-│   ├── next-env.d.ts
-│   ├── next.config.mjs
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── postcss.config.js
-│   ├── README.md
-│   ├── styles
-│   │   └── globals.css
-│   ├── tailwind.config.js
-│   └── tsconfig.json
+│   └── next-env.d.ts
 ├── next-env.d.ts
-├── next.config.js
 ├── next.config.mjs
 ├── package-lock.json
 ├── package.json
@@ -86,20 +122,6 @@
 │   │   ├── layout.tsx
 │   │   ├── login
 │   │   │   └── page.tsx
-│   │   ├── mobile
-│   │   │   ├── ai-analysis
-│   │   │   │   └── page.tsx
-│   │   │   ├── dashboard
-│   │   │   │   └── page.tsx
-│   │   │   ├── login
-│   │   │   │   └── page.tsx
-│   │   │   ├── page.tsx
-│   │   │   ├── points
-│   │   │   │   └── page.tsx
-│   │   │   ├── ranking
-│   │   │   │   └── page.tsx
-│   │   │   └── upload
-│   │   │       └── page.tsx
 │   │   ├── page.tsx
 │   │   ├── points
 │   │   │   └── page.tsx
@@ -141,6 +163,7 @@
 │   │       ├── badge.tsx
 │   │       ├── button.tsx
 │   │       ├── card
+│   │       │   ├── index.ts
 │   │       │   └── index.tsx
 │   │       ├── dialog.tsx
 │   │       ├── index.ts
@@ -167,10 +190,10 @@
 │   │   │   ├── products.ts
 │   │   │   └── reports.ts
 │   │   ├── api.ts
+│   │   ├── apiClient.ts
 │   │   ├── auth.ts
-│   │   ├── axios.ts
 │   │   ├── constants.ts
-│   │   ├── reportingApi.ts
+│   │   ├── http.ts
 │   │   ├── swr.ts
 │   │   └── utils.ts
 │   └── types
@@ -181,9 +204,10 @@
 ├── staticwebapp.config.json
 ├── staticwebapp.config.json.backup
 ├── tailwind.config.js
+├── test_connection 2.py
 ├── test_connection.py
 ├── test-prod-auth.js
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-58 directories, 129 files
+71 directories, 140 files
