@@ -1,4 +1,4 @@
-import { api, path } from '../apiClient';
+import { get, post } from '../apiClient';
 
 export interface AutoReportRequest {
   start_date: string;
@@ -35,22 +35,22 @@ export interface AutoReportStatus {
 }
 
 export const previewReport = async (request: AutoReportRequest): Promise<AutoReportPreview> => {
-  const response = await api.post(path('/reports/generate/preview'), request);
+  const response = await post('/reports/generate/preview', request);
   return response.data;
 };
 
 export const generateReport = async (request: AutoReportRequest): Promise<AutoReportResponse> => {
-  const response = await api.post(path('/reports/generate'), request);
+  const response = await post('/reports/generate', request);
   return response.data;
 };
 
 export const getReportStatus = async (reportId: string): Promise<AutoReportStatus> => {
-  const response = await api.get(path(`/reports/generate/status/${reportId}`));
+  const response = await get(`/reports/generate/status/${reportId}`);
   return response.data;
 };
 
 export const downloadReport = async (reportId: string): Promise<Blob> => {
-  const response = await api.get(path(`/reports/generate/download/${reportId}`), {
+  const response = await get(`/reports/generate/download/${reportId}`, {
     responseType: 'blob'
   });
   return response.data;
