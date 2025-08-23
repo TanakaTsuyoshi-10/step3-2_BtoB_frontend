@@ -67,7 +67,7 @@ export default function Login() {
         <div className="card-body">
           <div className="text-center mb-6">
             <Link href="/mobile" className="text-2xl font-bold text-primary hover:text-primary/80">
-              Tech0 by scope3
+              Carbon Mate
             </Link>
             <p className="text-gray-600 mt-2">企業向けエネルギー管理</p>
           </div>

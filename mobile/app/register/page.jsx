@@ -102,7 +102,7 @@ export default function Register() {
         <div className="card-body">
           <div className="text-center mb-6">
             <Link href="/" className="text-2xl font-bold text-primary hover:text-primary/80">
-              Tech0 by scope3
+              Carbon Mate
             </Link>
             <p className="text-gray-600 mt-2">アカウント作成</p>
           </div>

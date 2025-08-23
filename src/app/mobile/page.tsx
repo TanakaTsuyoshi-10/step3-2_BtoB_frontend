@@ -6,7 +6,7 @@ export default function MobileHome() {
     <div className="min-h-screen bg-gray-50">
       <div className="navbar bg-corporate shadow-lg px-4">
         <div className="navbar-start">
-          <div className="text-lg sm:text-xl font-bold text-white">Tech0 by scope3</div>
+          <div className="text-lg sm:text-xl font-bold text-white">Carbon Mate</div>
         </div>
         <div className="navbar-end">
           <Link href="/mobile/login" className="btn btn-primary btn-sm sm:btn-md">
@@ -110,7 +110,7 @@ export default function MobileHome() {
 
       <footer className="footer footer-center p-10 bg-gray-800 text-white">
         <aside>
-          <div className="text-2xl font-bold mb-2">Tech0 by scope3</div>
+          <div className="text-2xl font-bold mb-2">Carbon Mate</div>
           <p>企業向けエネルギー管理プラットフォーム</p>
           <p>Copyright © 2025 - All rights reserved</p>
         </aside>

@@ -14,7 +14,7 @@ export default function Home() {
               <Leaf className="w-6 h-6 text-white" />
             </div>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">Tech0 by scope3</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Carbon Mate</h1>
               <p className="text-xs text-gray-600">企業向けエネルギー管理プラットフォーム</p>
             </div>
           </div>
@@ -31,7 +31,7 @@ export default function Home() {
               見える化・ゲーミフィケーション
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-              Tech0 by scope3は、企業のエネルギー管理とCO₂削減活動を総合的にサポートする
+              Carbon Mateは、企業のエネルギー管理とCO₂削減活動を総合的にサポートする
               <br className="hidden sm:block" />
               次世代プラットフォームです。従業員のモチベーション向上とサステナビリティを両立します。
             </p>

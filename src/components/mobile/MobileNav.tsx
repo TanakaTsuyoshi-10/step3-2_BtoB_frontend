@@ -22,7 +22,7 @@ export default function MobileNav() {
       <div className="navbar bg-corporate shadow-lg px-4 fixed top-0 left-0 right-0 z-50">
         <div className="navbar-start">
           <Link href="/mobile" className="text-lg sm:text-xl font-bold text-white">
-            Tech0 by scope3
+            Carbon Mate
           </Link>
         </div>
         
