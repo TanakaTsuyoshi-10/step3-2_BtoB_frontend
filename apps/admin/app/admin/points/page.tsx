@@ -195,8 +195,8 @@ export default function AdminPointsPage() {
                 </div>
                 <div className="w-8 h-8 text-green-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -207,8 +207,8 @@ export default function AdminPointsPage() {
                 </div>
                 <div className="w-8 h-8 text-red-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -219,8 +219,8 @@ export default function AdminPointsPage() {
                 </div>
                 <div className="w-8 h-8 text-blue-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -231,8 +231,8 @@ export default function AdminPointsPage() {
                 </div>
                 <div className="w-8 h-8 text-purple-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* タブ */}
@@ -265,7 +265,7 @@ export default function AdminPointsPage() {
           <div>
             <div>
               <div className="flex items-center justify-between">
-                <div>ポイントルール一覧</CardTitle>
+                <div>ポイントルール一覧</div>
                 <button
                   onClick={() => setShowRuleModal(true)}
                   className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
@@ -274,7 +274,7 @@ export default function AdminPointsPage() {
                   <span>新規作成</span>
                 </button>
               </div>
-            </CardHeader>
+            </div>
             <div>
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -334,15 +334,15 @@ export default function AdminPointsPage() {
                   </tbody>
                 </table>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
         {activeTab === 'transactions' && (
           <div>
             <div>
-              <div>取引履歴</CardTitle>
-            </CardHeader>
+              <div>取引履歴</div>
+            </div>
             <div>
               <div className="overflow-x-auto">
                 <table className="w-full">
@@ -388,8 +388,8 @@ export default function AdminPointsPage() {
                   </tbody>
                 </table>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
 
         {/* ルール作成/編集モーダル */}

@@ -77,7 +77,7 @@ const AdminPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div>
+      <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
@@ -88,7 +88,7 @@ const AdminPage: React.FC = () => {
 
   if (!isAdmin) {
     return (
-      <div>
+      <Layout>
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -100,7 +100,7 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <div>
+    <Layout>
       <div className="space-y-6">
         {/* ヘッダー */}
         <div className="flex items-center justify-between">
@@ -137,8 +137,8 @@ const AdminPage: React.FC = () => {
                     <span className="font-medium">3件</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* 景品管理 */}
@@ -160,8 +160,8 @@ const AdminPage: React.FC = () => {
                     <span className="font-medium">15件</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
 
           {/* レポート生成 */}
@@ -183,8 +183,8 @@ const AdminPage: React.FC = () => {
                     <span className="font-medium">12件</span>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -194,8 +194,8 @@ const AdminPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <div className="w-5 h-5" />
               CSRレポート出力
-            </CardTitle>
-          </CardHeader>
+            </div>
+          </div>
           <div>
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -260,8 +260,8 @@ const AdminPage: React.FC = () => {
                 </button>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* 統計情報 */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -274,8 +274,8 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div className="w-8 h-8 text-green-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -286,8 +286,8 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div className="w-8 h-8 text-blue-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -298,8 +298,8 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div className="w-8 h-8 text-purple-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -310,8 +310,8 @@ const AdminPage: React.FC = () => {
                 </div>
                 <div className="w-8 h-8 text-orange-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>

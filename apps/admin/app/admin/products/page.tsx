@@ -198,8 +198,8 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="w-8 h-8 text-blue-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -210,8 +210,8 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="w-8 h-8 text-green-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -222,8 +222,8 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="w-8 h-8 text-purple-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           <div>
             <div className="p-6">
@@ -234,8 +234,8 @@ export default function AdminProductsPage() {
                 </div>
                 <div className="w-8 h-8 text-orange-500" />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* フィルター */}
@@ -269,14 +269,14 @@ export default function AdminProductsPage() {
                 </select>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* 商品一覧 */}
         <div>
           <div>
-            <div>商品一覧</CardTitle>
-          </CardHeader>
+            <div>商品一覧</div>
+          </div>
           <div>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -352,8 +352,8 @@ export default function AdminProductsPage() {
                 </tbody>
               </table>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* 商品作成/編集モーダル */}
         {showProductModal && (
