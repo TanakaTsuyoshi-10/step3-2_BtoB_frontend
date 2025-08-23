@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,19 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Switch } from '@/components/ui/switch';
 import { Plus, Edit, Eye, EyeOff, Package, Search, AlertTriangle } from 'lucide-react';
 import ProductEditor from './ProductEditor';
-import { incentivesAPI } from '@/lib/api';
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  points_required: number;
-  stock: number;
-  active: boolean;
-  created_at: string;
-  image_url?: string;
-}
+import { useProducts } from '@/hooks/useProducts';
+import type { Product } from '@/types/product';
 
 const CATEGORIES = [
   'ギフトカード',
@@ -33,40 +22,21 @@ const CATEGORIES = [
 ];
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { products, isLoading, createProduct, updateProduct, deleteProduct } = useProducts();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const data = await incentivesAPI.getRewards();
-      setProducts(data);
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleToggleActive = async (productId: number, active: boolean) => {
     try {
-      await incentivesAPI.toggleRewardStatus(productId, active);
-      setProducts(products.map(p => p.id === productId ? { ...p, active } : p));
+      await updateProduct(productId, { active });
     } catch (error) {
       console.error('Failed to toggle product status:', error);
     }
   };
 
   const handleProductSaved = () => {
-    fetchProducts();
     setIsCreateDialogOpen(false);
     setEditingProduct(null);
   };
@@ -79,7 +49,7 @@ const ProductList: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <div className="animate-pulse">

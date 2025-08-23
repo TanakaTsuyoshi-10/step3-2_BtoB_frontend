@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 
 export default function MobileHome() {
   return (
-    <div className="min-h-screen bg-custom">
+    <div className="min-h-screen bg-gray-50">
       <div className="navbar bg-corporate shadow-lg px-4">
         <div className="navbar-start">
           <div className="text-lg sm:text-xl font-bold text-white">Tech0 by scope3</div>

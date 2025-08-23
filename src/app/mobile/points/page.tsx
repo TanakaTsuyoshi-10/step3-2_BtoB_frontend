@@ -3,89 +3,72 @@
 import { useState } from 'react'
 import { Icon } from '@iconify/react'
 import MobileNav from '@/components/mobile/MobileNav'
-
-interface PointHistory {
-  id: number
-  date: string
-  action: string
-  points: number
-  type: 'earn' | 'redeem'
-}
-
-interface Reward {
-  id: number
-  name: string
-  mobileName: string
-  points: number
-  category: string
-  mobileCategory: string
-  icon: string
-}
+import { useProducts } from '@/hooks/useProducts'
+import { usePoints } from '@/hooks/usePoints'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import type { Product } from '@/types/product'
 
 export default function Points() {
-  const [currentPoints, setCurrentPoints] = useState(1250)
-  const [pointHistory, setPointHistory] = useState<PointHistory[]>([
-    { id: 1, date: '2025-01-12', action: 'エアコン温度設定最適化', points: 50, type: 'earn' },
-    { id: 2, date: '2025-01-11', action: '照明LED化完了', points: 100, type: 'earn' },
-    { id: 3, date: '2025-01-10', action: 'コーヒーメーカー交換', points: 30, type: 'redeem' },
-    { id: 4, date: '2025-01-09', action: '省エネ研修受講', points: 80, type: 'earn' },
-    { id: 5, date: '2025-01-08', action: 'ガス使用量10%削減達成', points: 120, type: 'earn' },
-    { id: 6, date: '2025-01-07', action: '社内カフェクーポン', points: 200, type: 'redeem' },
-    { id: 7, date: '2025-01-06', action: '待機電力削減', points: 40, type: 'earn' },
-    { id: 8, date: '2025-01-05', action: '週次削減目標達成', points: 60, type: 'earn' },
-  ])
-
-  const [rewards, setRewards] = useState<Reward[]>([
-    { id: 1, name: '社内カフェクーポン', mobileName: 'Cafe Coupon', points: 200, category: 'カフェ', mobileCategory: 'Cafe', icon: 'carbon:cafe' },
-    { id: 2, name: 'エコバッグ', mobileName: 'Eco Bag', points: 300, category: 'エコグッズ', mobileCategory: 'Eco', icon: 'carbon:shopping-bag' },
-    { id: 3, name: '植物（観葉植物）', mobileName: 'Plant', points: 500, category: 'エコグッズ', mobileCategory: 'Eco', icon: 'carbon:tree' },
-    { id: 4, name: '図書カード 1,000円', mobileName: 'Book Card ¥1,000', points: 800, category: 'ギフト券', mobileCategory: 'Gift', icon: 'carbon:book' },
-    { id: 5, name: 'リサイクル素材タンブラー', mobileName: 'Eco Tumbler', points: 600, category: 'エコグッズ', mobileCategory: 'Eco', icon: 'carbon:drink-01' },
-    { id: 6, name: 'ソーラー充電器', mobileName: 'Solar Charger', points: 1200, category: 'エコグッズ', mobileCategory: 'Eco', icon: 'carbon:solar-panel' },
-    { id: 7, name: '地域農産物ボックス', mobileName: 'Local Food Box', points: 1000, category: 'フード', mobileCategory: 'Food', icon: 'carbon:wheat' },
-    { id: 8, name: 'Amazonギフト券 3,000円', mobileName: 'Amazon Gift ¥3,000', points: 1500, category: 'ギフト券', mobileCategory: 'Gift', icon: 'carbon:gift' },
-  ])
-
+  const { products, isLoading: productsLoading } = useProducts()
+  const { balance, history, isLoading: pointsLoading, redeem } = usePoints()
   const [selectedCategory, setSelectedCategory] = useState('all')
+  
+  const isLoading = productsLoading || pointsLoading
+  
   const categories = [
     { id: 'all', name: 'All', jp: 'すべて' },
-    { id: 'カフェ', name: 'Cafe', jp: 'カフェ' },
-    { id: 'エコグッズ', name: 'Eco', jp: 'エコグッズ' },
-    { id: 'ギフト券', name: 'Gift', jp: 'ギフト券' },
-    { id: 'フード', name: 'Food', jp: 'フード' }
+    { id: 'ギフトカード', name: 'Gift', jp: 'ギフトカード' },
+    { id: '食品・飲料', name: 'Food', jp: '食品・飲料' },
+    { id: '生活用品', name: 'Daily', jp: '生活用品' },
+    { id: 'エンターテイメント', name: 'Entertainment', jp: 'エンタメ' }
   ]
 
-  const filteredRewards = selectedCategory === 'all' 
-    ? rewards 
-    : rewards.filter(reward => reward.category === selectedCategory)
+  const filteredProducts = selectedCategory === 'all' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory)
 
-  const totalEarned = pointHistory.filter(h => h.type === 'earn').reduce((sum, h) => sum + h.points, 0)
-  const totalRedeemed = pointHistory.filter(h => h.type === 'redeem').reduce((sum, h) => sum + h.points, 0)
+  const totalEarned = history.filter(h => h.type === 'earn').reduce((sum, h) => sum + Math.abs(h.delta), 0)
+  const totalSpent = history.filter(h => h.type === 'spend').reduce((sum, h) => sum + Math.abs(h.delta), 0)
 
-  const handleRedeem = (rewardId: number, requiredPoints: number) => {
-    if (currentPoints >= requiredPoints) {
-      setCurrentPoints(currentPoints - requiredPoints)
-      const reward = rewards.find(r => r.id === rewardId)
-      if (reward) {
-        setPointHistory([
-          { 
-            id: Date.now(), 
-            date: new Date().toLocaleDateString('ja-JP'), 
-            action: reward.name, 
-            points: requiredPoints, 
-            type: 'redeem' 
-          },
-          ...pointHistory
-        ])
-        alert(`${reward.name}と交換しました！`)
-      }
-    } else {
+  const handleRedeem = async (productId: number, requiredPoints: number) => {
+    if (!balance || balance.current_balance < requiredPoints) {
       alert('ポイントが不足しています。')
+      return
+    }
+
+    try {
+      const product = products.find(p => p.id === productId)
+      await redeem(productId)
+      alert(`${product?.title}と交換しました！`)
+    } catch (error) {
+      console.error('Redemption failed:', error)
+      alert('交換に失敗しました。もう一度お試しください。')
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 pt-16">
+        <MobileNav />
+        <div className="container mx-auto px-4 py-4 sm:py-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-gray-200 rounded w-1/3"></div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+            <div className="h-64 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-custom pt-16">
+    <div className="min-h-screen bg-white pt-16">
       <MobileNav />
 
       <div className="container mx-auto px-4 py-4 sm:py-8">
@@ -96,7 +79,7 @@ export default function Points() {
             <div className="card-body text-center">
               <Icon icon="ion:trophy" className="text-5xl mb-4" />
               <h2 className="card-title justify-center text-white text-2xl">現在のポイント</h2>
-              <div className="text-4xl font-bold mb-2">{currentPoints.toLocaleString()}</div>
+              <div className="text-4xl font-bold mb-2">{balance?.current_balance?.toLocaleString() || 0}</div>
               <p className="opacity-90">Tech0 Points</p>
             </div>
           </div>
@@ -114,7 +97,7 @@ export default function Points() {
             <div className="card-body text-center">
               <Icon icon="carbon:gift" className="text-4xl mb-4 text-orange-600" />
               <h2 className="card-title justify-center">使用ポイント</h2>
-              <div className="text-3xl font-bold text-orange-600">{totalRedeemed.toLocaleString()}</div>
+              <div className="text-3xl font-bold text-orange-600">{totalSpent.toLocaleString()}</div>
               <p className="text-gray-600">累計使用</p>
             </div>
           </div>
@@ -138,28 +121,50 @@ export default function Points() {
               </div>
 
               <div className="space-y-4">
-                {filteredRewards.map(reward => (
-                  <div key={reward.id} className="p-4 border rounded-lg hover:bg-gray-50">
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                      <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
-                        <Icon icon={reward.icon} className="text-2xl sm:text-3xl flex-shrink-0" />
+                {filteredProducts.map(product => (
+                  <Card key={product.id} className="hover:shadow-md transition-shadow">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between space-x-4">
                         <div className="flex-1 min-w-0">
-                          <div className="font-bold text-sm sm:text-base">{reward.name}</div>
-                          <div className="text-xs sm:text-sm text-gray-600">{reward.mobileCategory}</div>
+                          <h3 className="font-semibold text-gray-900 truncate">
+                            {product.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+                            {product.description}
+                          </p>
+                          
+                          <div className="flex items-center space-x-2 mt-2">
+                            <Badge variant="secondary" className="text-xs">
+                              {product.category}
+                            </Badge>
+                            <span className="text-sm font-medium text-blue-600">
+                              {product.points_required.toLocaleString()}pt
+                            </span>
+                            {product.stock <= 5 && (
+                              <Badge variant="destructive" className="text-xs">
+                                残り{product.stock}個
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <div className="flex-shrink-0">
+                          <Button
+                            size="sm"
+                            onClick={() => handleRedeem(product.id, product.points_required)}
+                            disabled={
+                              !balance ||
+                              balance.current_balance < product.points_required ||
+                              product.stock <= 0
+                            }
+                            className="whitespace-nowrap"
+                          >
+                            交換する
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between sm:flex-col sm:items-end gap-2">
-                        <div className="font-bold text-base sm:text-lg">{reward.points}pt</div>
-                        <button 
-                          className={`btn btn-xs sm:btn-sm ${currentPoints >= reward.points ? 'btn-primary' : 'btn-disabled'} min-w-[50px] sm:min-w-[60px]`}
-                          onClick={() => handleRedeem(reward.id, reward.points)}
-                          disabled={currentPoints < reward.points}
-                        >
-                          交換
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                    </CardContent>
+                  </Card>
                 ))}
               </div>
             </div>
@@ -170,20 +175,20 @@ export default function Points() {
               <h2 className="card-title text-2xl mb-6"><Icon icon="ion:stats-chart" className="inline mr-2" /> ポイント履歴</h2>
               
               <div className="space-y-3 max-h-96 overflow-y-auto">
-                {pointHistory.map(history => (
-                  <div key={history.id} className="flex items-center justify-between p-3 border rounded-lg">
+                {history.map(record => (
+                  <div key={record.id} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">
                       <Icon 
-                        icon={history.type === 'earn' ? 'carbon:chart-line-smooth' : 'carbon:gift'} 
-                        className={`text-2xl ${history.type === 'earn' ? 'text-green-600' : 'text-orange-600'}`} 
+                        icon={record.type === 'earn' ? 'carbon:chart-line-smooth' : 'carbon:gift'} 
+                        className={`text-2xl ${record.type === 'earn' ? 'text-green-600' : 'text-orange-600'}`} 
                       />
                       <div>
-                        <div className="font-medium">{history.action}</div>
-                        <div className="text-sm text-gray-600">{history.date}</div>
+                        <div className="font-medium">{record.reason}</div>
+                        <div className="text-sm text-gray-600">{new Date(record.created_at).toLocaleDateString('ja-JP')}</div>
                       </div>
                     </div>
-                    <div className={`font-bold text-lg ${history.type === 'earn' ? 'text-green-600' : 'text-orange-600'}`}>
-                      {history.type === 'earn' ? '+' : '-'}{history.points}pt
+                    <div className={`font-bold text-lg ${record.type === 'earn' ? 'text-green-600' : 'text-orange-600'}`}>
+                      {record.type === 'earn' ? '+' : ''}{record.delta}pt
                     </div>
                   </div>
                 ))}

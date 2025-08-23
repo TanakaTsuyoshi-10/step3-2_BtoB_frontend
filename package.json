@@ -28,6 +28,7 @@
     "zod": "^3.22.4",
     "recharts": "^2.8.0",
     "lucide-react": "^0.292.0",
+    "swr": "^2.2.4",
     "date-fns": "^2.30.0",
     "react-query": "^3.39.3",
     "js-cookie": "^3.0.5",
