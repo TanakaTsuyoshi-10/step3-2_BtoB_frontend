@@ -1,5 +1,5 @@
 import { Card, Section, Title } from "@mobile/components/ui/card";
-import { api } from "@/lib/apiClient";
+import { api } from "@lib/apiClient";
 
 export default async function MobileDashboard() {
   // Use apiClient for consistent API routing

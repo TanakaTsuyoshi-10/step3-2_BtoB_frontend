@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
-// import Layout from '@/components/layout/Layout';
-// import ProductList from '@/components/incentives/ProductList';
-// import RedemptionStats from '@/components/incentives/RedemptionStats';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@admin-ui/tabs';
+// import Layout from '@components/layout/Layout';
+// import ProductList from '@components/incentives/ProductList';
+// import RedemptionStats from '@components/incentives/RedemptionStats';
 
 // Temporary mock components for build
 const ProductList = () => <div className="p-4 bg-white rounded-lg shadow">商品リスト（準備中）</div>;

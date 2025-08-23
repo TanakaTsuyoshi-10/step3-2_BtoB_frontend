@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Package, Plus, Edit, Trash2, Eye, EyeOff, TrendingUp, Users } from '@iconify/react/icons/heroicons';
-import Layout from '@/components/layout/Layout';
+import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
 
 interface Product {

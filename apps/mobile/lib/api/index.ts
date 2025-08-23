@@ -1,5 +1,5 @@
 // Use the shared apiClient for consistency
-import { api } from '@/lib/apiClient';
+import { api } from '@lib/apiClient';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await api.request({

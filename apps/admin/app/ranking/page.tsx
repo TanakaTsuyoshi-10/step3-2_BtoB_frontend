@@ -11,9 +11,9 @@ import {
   Calendar,
   TrendingUp,
 } from '@iconify/react/icons/heroicons';
-import Layout from '@/components/layout/Layout';
+import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
-import { isAuthenticated } from '@/lib/auth';
+import { isAuthenticated } from '@lib/auth';
 import ja from '@/i18n/ja';
 
 interface RankingEntry {

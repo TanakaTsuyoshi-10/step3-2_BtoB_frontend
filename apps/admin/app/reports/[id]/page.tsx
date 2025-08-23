@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Download, FileText, Calendar, User } from 'lucide-react';
-// import { reportsAPI, Report, formatTonnes, downloadFile } from '@/lib/reportingApi';
+// import { reportsAPI, Report, formatTonnes, downloadFile } from '@lib/reportingApi';
 
 // Temporary types and mock functions for build
 type Report = {

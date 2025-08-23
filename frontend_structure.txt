@@ -108,6 +108,8 @@
 ├── DigiCertGlobalRootCA.crt.pem
 ├── docs
 │   ├── cleanup-report.md
+│   ├── incident-2025-08-db-api.md
+│   ├── investigate-report.md
 │   ├── lockfile-sync-report.md
 │   └── ui-split-report.md
 ├── frontend_structure.txt
@@ -217,4 +219,4 @@
 ├── tsconfig.json
 └── tsconfig.tsbuildinfo
 
-70 directories, 148 files
+70 directories, 150 files
