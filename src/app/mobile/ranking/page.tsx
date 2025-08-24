@@ -78,15 +78,27 @@ export default function Ranking() {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 relative overflow-hidden">
       <MobileNav />
+      
+      {/* Floating Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-32 left-6 w-16 h-16 bg-primary-200/20 rounded-full animate-float"></div>
+        <div className="absolute top-60 right-8 w-12 h-12 bg-green-200/30 rounded-full animate-float" style={{animationDelay: '3s'}}></div>
+        <div className="absolute bottom-80 left-12 w-20 h-20 bg-blue-200/20 rounded-full animate-float" style={{animationDelay: '5s'}}></div>
+        <div className="absolute bottom-40 right-6 w-14 h-14 bg-purple-200/25 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+      </div>
 
-      <div className="container mx-auto px-4 py-4 sm:py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">企業内削減率ランキング</h1>
-          <div className="flex gap-4">
+
+      <div className="relative max-w-none mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 py-6 sm:py-8 pt-20">
+        <div className="text-center mb-8 animate-fade-in-up">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary-600 via-green-500 to-blue-600 bg-clip-text text-transparent animate-gradient">
+            企業内削減率ランキング
+          </h1>
+          <div className="mt-2 h-1 w-24 mx-auto bg-gradient-to-r from-primary-400 to-green-400 rounded-full"></div>
+          <div className="flex gap-4 justify-center mt-6">
             <select 
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-3 border border-gray-200 rounded-xl bg-white/70 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent shadow-sm hover:shadow-md transition-all duration-300"
               value={timeframe}
               onChange={(e) => setTimeframe(e.target.value)}
             >
@@ -97,9 +109,9 @@ export default function Ranking() {
           </div>
         </div>
 
-        <div className="flex bg-gray-200 rounded-lg p-1 mb-6 sm:mb-8 overflow-x-auto whitespace-nowrap">
+        <div className="flex bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl p-1 mb-8 overflow-x-auto whitespace-nowrap shadow-lg animate-fade-in-up" style={{animationDelay: '0.2s'}}>
           <button 
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'individual' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
+            className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0 ${activeTab === 'individual' ? 'bg-white text-primary-600 shadow-lg transform scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'}`}
             onClick={() => setActiveTab('individual')}
           >
             <Icon icon="carbon:user" className="inline mr-1 sm:mr-2" /> 
@@ -107,7 +119,7 @@ export default function Ranking() {
             <span className="sm:hidden">個人</span>
           </button>
           <button 
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'department' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
+            className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0 ${activeTab === 'department' ? 'bg-white text-primary-600 shadow-lg transform scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'}`}
             onClick={() => setActiveTab('department')}
           >
             <Icon icon="carbon:building" className="inline mr-1 sm:mr-2" /> 
@@ -115,7 +127,7 @@ export default function Ranking() {
             <span className="sm:hidden">部門</span>
           </button>
           <button 
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-gray-600 hover:text-gray-900 text-sm sm:text-base flex-shrink-0 ${activeTab === 'achievements' ? 'bg-white text-primary-600 shadow-sm' : ''}`}
+            className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base flex-shrink-0 ${activeTab === 'achievements' ? 'bg-white text-primary-600 shadow-lg transform scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'}`}
             onClick={() => setActiveTab('achievements')}
           >
             <Icon icon="ion:trophy" className="inline mr-1 sm:mr-2" /> 
@@ -125,24 +137,24 @@ export default function Ranking() {
         </div>
 
         {activeTab === 'individual' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
             <div className="lg:col-span-2">
-              <div className="rounded-lg bg-white shadow-lg">
+              <div className="rounded-xl bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl">
                 <div className="p-6">
-                  <h2 className="text-2xl font-bold mb-6"><Icon icon="carbon:user" className="inline mr-2" /> 個人削減率ランキング</h2>
+                  <h2 className="text-2xl font-bold mb-8 flex items-center"><Icon icon="carbon:user" className="mr-3 text-primary-600" /> 個人削減率ランキング</h2>
                   
                   {individualRanking.slice(0, 3).map((person, index) => (
-                    <div key={person.rank} className={`p-4 rounded-lg mb-4 ${
-                      index === 0 ? 'bg-yellow-100' :
-                      index === 1 ? 'bg-gray-100' :
-                      'bg-orange-100'
+                    <div key={person.rank} className={`p-6 rounded-xl mb-6 border border-white/50 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 ${
+                      index === 0 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100' :
+                      index === 1 ? 'bg-gradient-to-r from-gray-50 to-gray-100' :
+                      'bg-gradient-to-r from-orange-50 to-orange-100'
                     }`}>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div>{getRankIcon(person.rank)}</div>
                           <div className="rounded-full">
-                            <div className="w-12 h-12 rounded-full bg-corporate-100 flex items-center justify-center">
-                              <span className="text-corporate font-bold text-lg">{person.avatar}</span>
+                            <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm border-2 border-primary-200 flex items-center justify-center shadow-lg">
+                              <span className="text-primary-600 font-bold text-lg">{person.avatar}</span>
                             </div>
                           </div>
                           <div>
@@ -151,8 +163,8 @@ export default function Ranking() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className="text-2xl font-bold text-green-600">{person.reduction}%</div>
-                          <div className="text-sm text-gray-600">{person.points}pt</div>
+                          <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">{person.reduction}%</div>
+                          <div className="text-sm text-gray-700 font-medium">{person.points}pt</div>
                         </div>
                       </div>
                     </div>

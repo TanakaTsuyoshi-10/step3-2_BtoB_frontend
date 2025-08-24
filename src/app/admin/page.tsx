@@ -63,7 +63,7 @@ export default function AdminHomePage() {
           {/* Selection Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto animate-fade-in-up" style={{animationDelay: '0.6s'}}>
             {/* Mobile User Card */}
-            <Link href="/mobile" className="group block">
+            <Link href="/mobile/login" className="group block">
               <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 hover:scale-105 p-6 md:p-8 border-2 border-transparent group-hover:border-blue-300 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">

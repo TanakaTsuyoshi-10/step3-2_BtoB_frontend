@@ -9,7 +9,10 @@
       "Bash(git add:*)",
       "Bash(mkdir:*)",
       "Bash(cp:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(copy \"src\\app\\mobile\\components\\MobileNav.jsx\" \"src\\components\\mobile\\MobileNav.jsx\")",
+      "Bash(npm run build:*)",
+      "Bash(npm run lint)"
     ],
     "deny": [],
     "ask": [],
