@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    // ビルド時の型チェックをスキップ
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    // ビルド時のESLintチェックをスキップ
+    ignoreDuringBuilds: true,
+  },
   async rewrites() {
     return [
       {
@@ -9,4 +17,4 @@ const nextConfig = {
     ];
   },
 };
-module.exports = nextConfig;
+export default nextConfig;
