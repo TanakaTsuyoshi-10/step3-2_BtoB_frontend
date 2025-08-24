@@ -28,12 +28,10 @@ export default function AdminHomePage() {
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               毎日の<span className="text-green-600">エコ活動</span>を
               <br className="hidden sm:block" />
-              見える化・ゲーミフィケーション
+              見える化
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8">
-              Carbon Mateは、企業のエネルギー管理とCO₂削減活動を総合的にサポートする
-              <br className="hidden sm:block" />
-              次世代プラットフォームです。従業員のモチベーション向上とサステナビリティを両立します。
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-8">
+              企業のエネルギー管理とCO₂削減活動をサポートする次世代プラットフォーム
             </p>
             <p className="text-lg text-gray-500">ご利用の目的を選択してください</p>
           </div>
