@@ -19,7 +19,6 @@
     "autoprefixer": "10.4.21",
     "axios": "1.7.9",
     "clsx": "2.1.1",
-    "daisyui": "4.12.14",
     "date-fns": "2.30.0",
     "dequal": "2.0.3",
     "docx": "8.5.0",
@@ -48,7 +47,6 @@
     "@types/pdfmake": "0.2.9",
     "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
-    "daisyui": "4.12.14",
     "eslint": "^8.57.1",
     "eslint-config-next": "14.0.0",
     "typescript": "5.7.3"

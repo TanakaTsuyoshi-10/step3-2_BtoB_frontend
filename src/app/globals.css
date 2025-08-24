@@ -48,6 +48,38 @@ body {
     @apply text-2xl font-bold text-gray-900;
   }
   
+  /* Mobile Navigation Styles - Force Override */
+  .mobile-nav-header {
+    background: linear-gradient(to right, #16a34a, #2563eb, #1d4ed8) !important;
+    background-color: #2563eb !important;
+  }
+  
+  .mobile-nav-header * {
+    color: white !important;
+  }
+  
+  .mobile-nav-dropdown {
+    background: linear-gradient(to bottom, #2563eb, #1d4ed8) !important;
+    background-color: #2563eb !important;
+  }
+  
+  /* DaisyUI Override - Force navbar styles */
+  .navbar {
+    background: linear-gradient(to right, #16a34a, #2563eb, #1d4ed8) !important;
+    background-color: #2563eb !important;
+  }
+  
+  .navbar * {
+    color: white !important;
+  }
+  
+  /* Additional specificity */
+  div.mobile-nav-header,
+  div.navbar {
+    background: #2563eb !important;
+    background: linear-gradient(to right, #16a34a, #2563eb, #1d4ed8) !important;
+  }
+  
   .no-scrollbar {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* Internet Explorer 10+ */

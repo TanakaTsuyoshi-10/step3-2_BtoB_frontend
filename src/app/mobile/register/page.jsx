@@ -97,25 +97,33 @@ export default function Register() {
   }
 
   return (
-    <div className="min-h-screen bg-custom flex items-center justify-center p-4">
-      <div className="card w-full max-w-lg bg-white shadow-2xl">
-        <div className="card-body">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-blue-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg bg-white shadow-2xl rounded-2xl border border-gray-200">
+        <div className="p-8">
           <div className="text-center mb-6">
-            <Link href="/" className="text-2xl font-bold text-primary hover:text-primary/80">
+            <Link href="/" className="text-2xl font-bold text-primary-600 hover:text-primary-700 transition-colors">
               Carbon Mate
             </Link>
             <p className="text-gray-600 mt-2">アカウント作成</p>
           </div>
 
-          <div className="tabs tabs-custom mb-6">
+          <div className="flex bg-gray-200 rounded-lg p-1 mb-6">
             <button 
-              className={`tab tab-sm sm:tab-lg flex-1 ${registerType === 'general' ? 'tab-active' : ''}`}
+              className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-sm ${
+                registerType === 'general' 
+                  ? 'bg-white text-primary-600 shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
               onClick={() => setRegisterType('general')}
             >
               一般登録
             </button>
             <button 
-              className={`tab tab-sm sm:tab-lg flex-1 ${registerType === 'tokyogas' ? 'tab-active' : ''}`}
+              className={`flex-1 py-2 px-4 rounded-md font-medium transition-colors text-sm ${
+                registerType === 'tokyogas' 
+                  ? 'bg-white text-primary-600 shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
               onClick={() => setRegisterType('tokyogas')}
             >
               <span className="hidden sm:inline">東京ガス連携</span>
@@ -124,13 +132,13 @@ export default function Register() {
           </div>
 
           {error && (
-            <div className="alert alert-error mb-4">
+            <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg mb-4">
               <span>{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="alert alert-success mb-4">
+            <div className="bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg mb-4">
               <span>{success}</span>
             </div>
           )}
@@ -144,75 +152,75 @@ export default function Register() {
                   </p>
                 </div>
                 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">東京ガスお客さま番号</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    東京ガスお客さま番号
                   </label>
                   <input 
                     type="text" 
                     name="customerNumber"
                     placeholder="お客さま番号を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.customerNumber}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">会社コード</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    会社コード
                   </label>
                   <input 
                     type="text" 
                     name="companyCode"
                     placeholder="会社コードを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.companyCode}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">社員番号</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    社員番号
                   </label>
                   <input 
                     type="text" 
                     name="employeeId"
                     placeholder="社員番号を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.employeeId}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">メールアドレス</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    メールアドレス
                   </label>
                   <input 
                     type="email" 
                     name="email"
                     placeholder="メールアドレスを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.email}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">お名前</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    お名前
                   </label>
                   <input 
                     type="text" 
                     name="userName"
                     placeholder="お名前を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.userName}
                     onChange={handleInputChange}
                     required 
@@ -220,59 +228,59 @@ export default function Register() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">部署</span>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      部署
                     </label>
                     <input 
                       type="text" 
                       name="department"
                       placeholder="部署名"
-                      className="input input-bordered" 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                       value={formData.department}
                       onChange={handleInputChange}
                     />
                   </div>
 
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">役職</span>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      役職
                     </label>
                     <input 
                       type="text" 
                       name="position"
                       placeholder="役職名"
-                      className="input input-bordered" 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                       value={formData.position}
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    パスワード
                   </label>
                   <input 
                     type="password" 
                     name="password"
                     placeholder="パスワードを入力（6文字以上）"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.password}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード確認</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    パスワード確認
                   </label>
                   <input 
                     type="password" 
                     name="confirmPassword"
                     placeholder="パスワードを再入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     required 
@@ -281,11 +289,11 @@ export default function Register() {
 
                 <button 
                   type="submit" 
-                  className="btn btn-primary w-full btn-md sm:btn-lg"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                   ) : (
                     <>
                       <Icon icon="carbon:connect" className="text-lg" />
@@ -296,15 +304,15 @@ export default function Register() {
               </>
             ) : (
               <>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">会社コード</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    会社コード
                   </label>
                   <input 
                     type="text" 
                     name="companyCode"
                     placeholder="会社コードを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.companyCode}
                     onChange={handleInputChange}
                     required 
@@ -312,30 +320,30 @@ export default function Register() {
                 </div>
 
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">社員番号</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    社員番号
                   </label>
                   <input 
                     type="text" 
                     name="employeeId"
                     placeholder="社員番号を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.employeeId}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">お名前</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    お名前
                   </label>
                   <input 
                     type="text" 
                     name="userName"
                     placeholder="お名前を入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.userName}
                     onChange={handleInputChange}
                     required 
@@ -343,74 +351,74 @@ export default function Register() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">部署</span>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      部署
                     </label>
                     <input 
                       type="text" 
                       name="department"
                       placeholder="部署名"
-                      className="input input-bordered" 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                       value={formData.department}
                       onChange={handleInputChange}
                     />
                   </div>
 
-                  <div className="form-control">
-                    <label className="label">
-                      <span className="label-text">役職</span>
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      役職
                     </label>
                     <input 
                       type="text" 
                       name="position"
                       placeholder="役職名"
-                      className="input input-bordered" 
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                       value={formData.position}
                       onChange={handleInputChange}
                     />
                   </div>
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">メールアドレス</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    メールアドレス
                   </label>
                   <input 
                     type="email" 
                     name="email"
                     placeholder="メールアドレスを入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.email}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    パスワード
                   </label>
                   <input 
                     type="password" 
                     name="password"
                     placeholder="パスワードを入力（6文字以上）"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.password}
                     onChange={handleInputChange}
                     required 
                   />
                 </div>
 
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">パスワード確認</span>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    パスワード確認
                   </label>
                   <input 
                     type="password" 
                     name="confirmPassword"
                     placeholder="パスワードを再入力"
-                    className="input input-bordered" 
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500" 
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     required 
@@ -419,11 +427,11 @@ export default function Register() {
 
                 <button 
                   type="submit" 
-                  className="btn btn-primary w-full btn-md sm:btn-lg"
+                  className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="loading loading-spinner loading-sm"></span>
+                    <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                   ) : (
                     <>
                       <Icon icon="carbon:user-plus" className="text-lg" />
@@ -435,7 +443,7 @@ export default function Register() {
             )}
 
             <div className="text-center mt-6">
-              <Link href="/login" className="link link-primary">
+              <Link href="/login" className="text-primary-600 hover:text-primary-700 transition-colors underline">
                 すでにアカウントをお持ちの方はこちら
               </Link>
             </div>
