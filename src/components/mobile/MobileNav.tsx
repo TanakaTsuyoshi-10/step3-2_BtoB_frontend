@@ -19,7 +19,12 @@ export default function MobileNav() {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-corporate-600 via-corporate-500 to-blue-600 shadow-xl backdrop-blur-sm px-6 fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16">
+      <div 
+        className="shadow-xl backdrop-blur-sm px-6 fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16"
+        style={{
+          background: 'linear-gradient(to right, #16a34a, #2563eb, #1d4ed8)'
+        }}
+      >
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
             <Icon icon="carbon:leaf" className="w-5 h-5 text-white" />
@@ -36,7 +41,7 @@ export default function MobileNav() {
               href="/mobile/dashboard" 
               className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 pathname === '/mobile/dashboard' 
-                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  ? 'bg-white text-blue-600 shadow-lg scale-105' 
                   : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
               }`}
             >
@@ -47,7 +52,7 @@ export default function MobileNav() {
               href="/mobile/points" 
               className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 pathname === '/mobile/points' 
-                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  ? 'bg-white text-blue-600 shadow-lg scale-105' 
                   : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
               }`}
             >
@@ -58,7 +63,7 @@ export default function MobileNav() {
               href="/mobile/ranking" 
               className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 pathname === '/mobile/ranking' 
-                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  ? 'bg-white text-blue-600 shadow-lg scale-105' 
                   : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
               }`}
             >
@@ -69,7 +74,7 @@ export default function MobileNav() {
               href="/mobile/upload" 
               className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 pathname === '/mobile/upload' 
-                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  ? 'bg-white text-blue-600 shadow-lg scale-105' 
                   : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
               }`}
             >
@@ -80,7 +85,7 @@ export default function MobileNav() {
               href="/mobile/ai-analysis" 
               className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                 pathname === '/mobile/ai-analysis' 
-                  ? 'bg-white text-corporate-600 shadow-lg scale-105' 
+                  ? 'bg-white text-blue-600 shadow-lg scale-105' 
                   : 'text-white/90 hover:text-white hover:bg-white/20 hover:scale-105'
               }`}
             >
@@ -123,7 +128,12 @@ export default function MobileNav() {
 
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-gradient-to-b from-corporate-600 to-corporate-700 shadow-2xl backdrop-blur-md border-t border-white/20 fixed top-16 left-0 right-0 z-40">
+        <div 
+          className="lg:hidden shadow-2xl backdrop-blur-md border-t border-white/20 fixed top-16 left-0 right-0 z-40"
+          style={{
+            background: 'linear-gradient(to bottom, #2563eb, #1d4ed8)'
+          }}
+        >
           <div className="px-4 py-4 space-y-2">
             <Link 
               href="/mobile/dashboard" 
@@ -184,7 +194,7 @@ export default function MobileNav() {
             <div className="border-t pt-2 mt-2">
               <div className="flex items-center px-3 py-2">
                 <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-3">
-                  <span className="text-primary font-bold text-sm">田</span>
+                  <span className="text-blue-600 font-bold text-sm">田</span>
                 </div>
                 <span className="text-sm font-medium text-white">田中 太郎</span>
               </div>
