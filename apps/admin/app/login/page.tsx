@@ -4,23 +4,49 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Zap, Mail, Lock, Eye, EyeOff } from 'lucide-react';
-// import { authAPI } from '@lib/api';
-// import { setAuthToken, setCurrentUser } from '@lib/auth';
-// import { LoginFormData } from '@/types';
+import { setAuthToken, setCurrentUser } from '@/lib/auth';
 
-// Temporary mock types and functions for build
+// Login form data type
 type LoginFormData = {
   username: string;
   password: string;
 };
 
+// Real API implementation for authentication
 const authAPI = {
-  login: async (data: LoginFormData) => ({ access_token: 'mock-token' }),
-  me: async (token: string) => ({ id: '1', username: 'admin', email: 'admin@example.com' })
+  login: async (data: LoginFormData) => {
+    const response = await fetch('/api/v1/login/access-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        username: data.username,
+        password: data.password,
+      }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.detail || 'ログインに失敗しました');
+    }
+    
+    return response.json();
+  },
+  me: async (token: string) => {
+    const response = await fetch('/api/v1/users/me', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error('ユーザー情報の取得に失敗しました');
+    }
+    
+    return response.json();
+  }
 };
-
-const setAuthToken = (token: string) => {};
-const setCurrentUser = (user: any) => {};
 
 export default function Page() {
   const [formData, setFormData] = useState<LoginFormData>({
@@ -109,6 +135,7 @@ export default function Page() {
                   id="username"
                   name="username"
                   type="email"
+                  autoComplete="email"
                   required
                   value={formData.username}
                   onChange={handleInputChange}
@@ -128,6 +155,7 @@ export default function Page() {
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   required
                   value={formData.password}
                   onChange={handleInputChange}
