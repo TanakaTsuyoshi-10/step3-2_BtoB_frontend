@@ -1,3 +1,3 @@
-// Auto-generated proxy re-export
-export { default } from '../../apps/admin/app/page.tsx';
-export * from '../../apps/admin/app/page.tsx';
+// Re-export from new admin structure
+export { default } from './admin/page';
+export * from './admin/page';

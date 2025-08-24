@@ -3,214 +3,131 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import MobileNav from '@/components/mobile/MobileNav'
-import { Icon } from '@iconify/react'
-import { energyAPI, pointsAPI } from '@/lib/api/mobile'
 
-export default function Dashboard() {
-  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear())
-  const [usageData, setUsageData] = useState({
-    gas: { amount: 245, cost: 12450, unit: 'm³' },
-    electricity: { amount: 432, cost: 15680, unit: 'kWh' }
+interface KPIData {
+  totalKWh: number
+  totalGasM3: number
+  co2Reduction: number
+  currentPoints: number
+  monthlyTarget: number
+  recentActivity: Activity[]
+}
+
+interface Activity {
+  id: number
+  date: string
+  type: string
+  description: string
+  points: number
+}
+
+export default function MobileDashboard() {
+  const [kpiData, setKpiData] = useState<KPIData>({
+    totalKWh: 245,
+    totalGasM3: 432,
+    co2Reduction: 180,
+    currentPoints: 850,
+    monthlyTarget: 1000,
+    recentActivity: [
+      { id: 1, date: '2025-01-13', type: 'upload', description: 'ガス明細書をアップロード', points: 30 },
+      { id: 2, date: '2025-01-12', type: 'survey', description: '省エネアンケートに回答', points: 15 },
+      { id: 3, date: '2025-01-11', type: 'achievement', description: '週間削減目標達成', points: 50 },
+    ]
   })
-  const [points, setPoints] = useState(1250)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
-  const loadEnergyData = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      
-      const monthlyData = await energyAPI.getMonthlyUsage(currentYear, currentMonth + 1)
-      const pointsData = await pointsAPI.getBalance()
-      
-      setUsageData(monthlyData.usage || usageData)
-      setPoints(pointsData.balance || points)
-    } catch (error) {
-      console.warn('API not available, using mock data:', error)
-      setError('APIに接続できません。サンプルデータを表示しています。')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    loadEnergyData()
-  }, [currentMonth, currentYear])
-
-  const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-
-  const changeMonth = (direction: 'prev' | 'next') => {
-    if (direction === 'prev') {
-      if (currentMonth === 0) {
-        setCurrentMonth(11)
-        setCurrentYear(currentYear - 1)
-      } else {
-        setCurrentMonth(currentMonth - 1)
-      }
-    } else {
-      if (currentMonth === 11) {
-        setCurrentMonth(0)
-        setCurrentYear(currentYear + 1)
-      } else {
-        setCurrentMonth(currentMonth + 1)
-      }
-    }
-  }
-
-  const totalCost = usageData.gas.cost + usageData.electricity.cost
+  const progressPercentage = (kpiData.currentPoints / kpiData.monthlyTarget) * 100
 
   return (
     <div className="min-h-screen bg-white pt-16">
       <MobileNav />
-
-      <div className="container mx-auto px-4 py-4 sm:py-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">エネルギー利用状況</h1>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <button 
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white flex items-center justify-center font-medium transition-colors"
-              onClick={() => changeMonth('prev')}
-            >
-              ❮
-            </button>
-            <div className="text-lg sm:text-xl font-bold text-center min-w-[100px] sm:min-w-[120px]">
-              {currentYear}年{monthNames[currentMonth]}
-            </div>
-            <button 
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white flex items-center justify-center font-medium transition-colors"
-              onClick={() => changeMonth('next')}
-            >
-              ❯
-            </button>
+      
+      <div className="px-4 py-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">ダッシュボード</h1>
+        
+        {/* KPI Cards */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <div className="bg-blue-50 rounded-lg p-4">
+            <div className="text-sm text-blue-600 font-medium">ガス使用量</div>
+            <div className="text-2xl font-bold text-blue-900">{kpiData.totalGasM3} m³</div>
+            <div className="text-xs text-blue-700">今月合計</div>
+          </div>
+          
+          <div className="bg-green-50 rounded-lg p-4">
+            <div className="text-sm text-green-600 font-medium">電力使用量</div>
+            <div className="text-2xl font-bold text-green-900">{kpiData.totalKWh} kWh</div>
+            <div className="text-xs text-green-700">今月合計</div>
+          </div>
+          
+          <div className="bg-purple-50 rounded-lg p-4 col-span-2">
+            <div className="text-sm text-purple-600 font-medium">CO₂削減量</div>
+            <div className="text-2xl font-bold text-purple-900">{kpiData.co2Reduction} kg</div>
+            <div className="text-xs text-purple-700">累計削減量</div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="lg:col-span-2">
-            <div className="rounded-lg bg-white shadow-lg">
-              <div className="p-4 sm:p-6">
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">月次利用料金・利用量</h2>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <div className="flex justify-end text-gray-600">
-                      <Icon icon="carbon:fire" className="inline-block w-8 h-8" />
-                    </div>
-                    <div className="text-sm text-gray-600">ガス使用量</div>
-                    <div className="text-2xl font-bold text-gray-800">{usageData.gas.amount}</div>
-                    <div className="text-sm text-gray-500">{usageData.gas.unit}</div>
-                    <div className="text-lg font-bold mt-2">¥{usageData.gas.cost.toLocaleString()}</div>
-                  </div>
-
-                  <div className="p-4 bg-gray-50 rounded-lg">
-                    <div className="flex justify-end text-gray-600">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                      </svg>
-                    </div>
-                    <div className="text-sm text-gray-600">電力使用量</div>
-                    <div className="text-2xl font-bold text-gray-800">{usageData.electricity.amount}</div>
-                    <div className="text-sm text-gray-500">{usageData.electricity.unit}</div>
-                    <div className="text-lg font-bold mt-2">¥{usageData.electricity.cost.toLocaleString()}</div>
-                  </div>
-                </div>
-
-                <div className="border-t border-gray-300 my-6"></div>
-
-                <div className="flex justify-between items-center">
-                  <div className="text-2xl font-bold text-gray-800">
-                    合計: ¥{totalCost.toLocaleString()}
-                  </div>
-                  <div className="border border-corporate text-corporate inline-flex items-center px-3 py-2 rounded font-medium">
-                    前年比 -8.5%
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Points Section */}
+        <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between mb-2">
+            <div className="text-sm text-orange-600 font-medium">Tech0ポイント</div>
+            <div className="text-xl font-bold text-orange-900">{kpiData.currentPoints}pt</div>
           </div>
-
-          <div className="space-y-4 sm:space-y-6">
-            <div className="rounded-lg bg-white border border-corporate shadow-lg">
-              <div className="p-4 sm:p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-corporate-100 rounded-lg">
-                      <Icon icon="ion:trophy" className="text-xl text-corporate" />
-                    </div>
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Tech0ポイント</h2>
-                  </div>
-                </div>
-                <div className="mb-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-corporate mb-1">{points.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">今月獲得: <span className="font-medium text-corporate">+180pt</span></div>
-                </div>
-                <Link href="/mobile/points" className="px-3 py-1 text-sm rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white w-full text-center block">
-                  詳細を見る
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-lg bg-white shadow-lg">
-              <div className="p-6">
-                <h3 className="text-lg font-bold">
-                  <Icon icon="carbon:watson-machine-learning" className="text-lg mr-2" />
-                  AI分析コメント
-                </h3>
-                <div className="space-y-3 text-sm">
-                  <p className="bg-gray-50 p-3 rounded-lg border-l-4 border-corporate">
-                    「今月のガス使用量は前月比で8.5%削減されています。暖房設定温度の適正化が効果的でした。」
-                  </p>
-                  <p className="bg-gray-50 p-3 rounded-lg border-l-4 border-corporate">
-                    「電力使用量も順調に削減中。照明のLED化による効果が現れています。」
-                  </p>
-                </div>
-                <div className="flex gap-2 pt-4 justify-end mt-4">
-                  <Link href="/mobile/ai-analysis" className="px-3 py-1 text-sm rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white">詳細分析</Link>
-                </div>
-              </div>
-            </div>
+          <div className="w-full bg-orange-200 rounded-full h-2">
+            <div 
+              className="bg-orange-500 h-2 rounded-full transition-all duration-300" 
+              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+            />
+          </div>
+          <div className="text-xs text-orange-700 mt-1">
+            月間目標まで {kpiData.monthlyTarget - kpiData.currentPoints}pt
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <div className="rounded-lg bg-white shadow-lg">
-            <div className="p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold">
-                <Icon icon="ion:stats-chart" className="text-lg mr-2" />
-                使用量推移グラフ
-              </h3>
-              <div className="h-48 sm:h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                <p className="text-gray-500 text-sm sm:text-base text-center">グラフコンポーネント<br className="sm:hidden" />（Chart.js等で実装予定）</p>
-              </div>
+        {/* AI Comment */}
+        <div className="bg-gray-50 rounded-lg p-4 mb-6">
+          <div className="flex items-center mb-2">
+            <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-2">
+              <span className="text-white text-xs font-bold">AI</span>
             </div>
+            <div className="text-sm font-medium text-gray-700">今月の分析コメント</div>
           </div>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            今月は前月比で8.5%の使用量削減を達成されています。特にガス使用量の削減が顕著で、暖房設定の工夫が効果的でした。
+            継続的な省エネ活動で年間目標の達成が期待できます。
+          </p>
+        </div>
 
-          <div className="rounded-lg bg-white shadow-lg">
-            <div className="p-4 sm:p-6">
-              <h3 className="text-lg sm:text-xl font-bold">
-                <Icon icon="ion:flag" className="text-lg mr-2" />
-                今月の削減目標
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>ガス使用量削減</span>
-                    <span>85%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-primary-600 h-2 rounded-full" style={{width: '85%'}}></div></div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-sm mb-1">
-                    <span>電力使用量削減</span>
-                    <span>92%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2"><div className="bg-primary-600 h-2 rounded-full" style={{width: '92%'}}></div></div>
-                </div>
-              </div>
-            </div>
+        {/* Usage Chart Placeholder */}
+        <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">月次使用量推移</h3>
+          <div className="h-32 bg-gray-100 rounded flex items-center justify-center">
+            <span className="text-gray-500 text-sm">グラフ表示エリア</span>
           </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white border border-gray-200 rounded-lg p-4">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">最近のアクティビティ</h3>
+          <div className="space-y-3">
+            {kpiData.recentActivity.map((activity) => (
+              <div key={activity.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0">
+                <div className="flex-1">
+                  <div className="text-sm font-medium text-gray-900">{activity.description}</div>
+                  <div className="text-xs text-gray-500">{activity.date}</div>
+                </div>
+                <div className="text-sm font-bold text-green-600">+{activity.points}pt</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-4 mt-6">
+          <Link href="/mobile/upload" className="bg-primary-500 text-white rounded-lg p-4 text-center hover:bg-primary-600 transition-colors">
+            <div className="font-medium">明細書アップロード</div>
+          </Link>
+          <Link href="/mobile/ranking" className="bg-green-500 text-white rounded-lg p-4 text-center hover:bg-green-600 transition-colors">
+            <div className="font-medium">ランキング確認</div>
+          </Link>
         </div>
       </div>
     </div>
