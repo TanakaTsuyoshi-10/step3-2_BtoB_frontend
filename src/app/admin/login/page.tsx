@@ -51,7 +51,7 @@ export default function Page() {
       
       const userResponse = await authAPI.me(tokenResponse.access_token);
       setCurrentUser(userResponse);
-      router.push('/dashboard');
+      router.push('/admin/dashboard');
     } catch (err: any) {
       // Axios ネットワーク/サーバー/バリデーションの切り分け
       const isAxios = !!err?.isAxiosError;
