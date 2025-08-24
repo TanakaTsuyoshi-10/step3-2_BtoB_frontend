@@ -8,15 +8,26 @@ export async function fetchProducts(): Promise<Product[]> {
     '/incentives/products'
   ];
 
-  for (const endpoint of endpoints) {
+  // 並列で全エンドポイントを試す
+  const promises = endpoints.map(async (endpoint) => {
     try {
       const response = await get(endpoint);
       if (response.status === 200) {
         return response.data;
       }
+      return null;
     } catch (error) {
       console.warn(`Failed to fetch from ${endpoint}:`, error);
-      continue;
+      return null;
+    }
+  });
+
+  const results = await Promise.allSettled(promises);
+  
+  // 最初に成功したレスポンスを返す
+  for (const result of results) {
+    if (result.status === 'fulfilled' && result.value !== null) {
+      return result.value;
     }
   }
   

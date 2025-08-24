@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import MobileNav from '@/components/mobile/MobileNav'
 import { Icon } from '@iconify/react'
+import MobileNav from '@/components/mobile/MobileNav'
 
 interface AnalysisData {
   overall: {
@@ -173,73 +173,84 @@ export default function AIAnalysis() {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 relative overflow-hidden">
       <MobileNav />
+      
+      {/* Floating Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-8 w-16 h-16 bg-primary-200/20 rounded-full animate-float"></div>
+        <div className="absolute top-60 right-6 w-12 h-12 bg-green-200/30 rounded-full animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-40 left-6 w-20 h-20 bg-blue-200/20 rounded-full animate-float" style={{animationDelay: '4s'}}></div>
+        <div className="absolute bottom-60 right-8 w-14 h-14 bg-purple-200/25 rounded-full animate-float" style={{animationDelay: '1s'}}></div>
+      </div>
 
-      <div className="container mx-auto px-4 py-4 sm:py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 sm:mb-8 flex items-center gap-3">
-          <Icon icon="carbon:watson-machine-learning" className="text-4xl text-corporate" />
-          AI分析・コメント
-        </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
-          <div className="rounded-lg bg-corporate text-white shadow-lg">
-            <div className="p-6 text-center">
-              <div className="mb-4">
-                <Icon icon="carbon:analytics" className="text-6xl text-white" />
-              </div>
-              <h2 className="text-xl font-bold justify-center text-white">総合スコア</h2>
-              <div className="text-4xl font-bold">{analysisData.overall.score}</div>
-              <p className="opacity-90">エネルギー効率</p>
+      <div className="relative max-w-none mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 py-6 pt-20">
+        {/* Header */}
+        <div className="text-center mb-8 animate-fade-in-up">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-600 via-green-500 to-blue-600 bg-clip-text text-transparent animate-gradient">
+            AI分析・コメント
+          </h1>
+          <div className="mt-2 h-1 w-20 mx-auto bg-gradient-to-r from-primary-400 to-green-400 rounded-full"></div>
+        </div>
+
+        {/* KPI Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
+          <div className="bg-white/70 backdrop-blur-lg border border-blue-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center">
+            <div className="p-3 bg-gradient-to-r from-blue-100 to-blue-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Icon icon="carbon:analytics" className="w-8 h-8 text-blue-600" />
+            </div>
+            <h2 className="text-lg font-bold text-gray-900 mb-2">総合スコア</h2>
+            <div className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent mb-1">
+              {analysisData.overall.score}
+            </div>
+            <p className="text-sm text-gray-600">エネルギー効率</p>
+          </div>
+
+          <div className="bg-white/70 backdrop-blur-lg border border-green-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div className="p-3 bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mb-4">
+              <Icon icon="carbon:trending-up" className="w-8 h-8 text-green-600" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">予測削減率</h3>
+            <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
+              {analysisData.predictions.next_month_reduction}%
+            </div>
+            <p className="text-sm text-gray-600 mb-3">来月予測</p>
+            <div className="border-t pt-3">
+              <div className="text-xs text-gray-600">年間削減見込み</div>
+              <div className="font-bold text-gray-700">{analysisData.predictions.co2_reduction}kg CO2</div>
             </div>
           </div>
 
-          <div className="rounded-lg bg-white shadow-lg">
-            <div className="p-6">
-              <h3 className="text-lg font-bold flex items-center gap-2">
-                <Icon icon="carbon:trending-up" className="text-xl" />
-                予測削減率
-              </h3>
-              <div className="text-3xl font-bold text-green-600 mb-2">
-                {analysisData.predictions.next_month_reduction}%
-              </div>
-              <p className="text-sm text-gray-600">来月予測</p>
-              <div className="mt-3">
-                <div className="text-sm text-gray-600">年間削減見込み</div>
-                <div className="font-bold">{analysisData.predictions.co2_reduction}kg CO2</div>
-              </div>
+          <div className="bg-white/70 backdrop-blur-lg border border-yellow-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <div className="p-3 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mb-4">
+              <Icon icon="carbon:currency-yen" className="w-8 h-8 text-yellow-600" />
             </div>
-          </div>
-
-          <div className="rounded-lg bg-white shadow-lg">
-            <div className="p-6">
-              <h3 className="text-lg font-bold flex items-center gap-2">
-                <Icon icon="carbon:currency-yen" className="text-xl" />
-                予測節約額
-              </h3>
-              <div className="text-3xl font-bold text-corporate mb-2">
-                ¥{analysisData.predictions.annual_savings.toLocaleString()}
-              </div>
-              <p className="text-sm text-gray-600">年間節約予測</p>
-              <div className="mt-3">
-                <div className="text-sm text-gray-600">月平均</div>
-                <div className="font-bold">¥{Math.round(analysisData.predictions.annual_savings / 12).toLocaleString()}</div>
-              </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">予測節約額</h3>
+            <div className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-orange-500 bg-clip-text text-transparent mb-2">
+              ¥{analysisData.predictions.annual_savings.toLocaleString()}
+            </div>
+            <p className="text-sm text-gray-600 mb-3">年間節約予測</p>
+            <div className="border-t pt-3">
+              <div className="text-xs text-gray-600">月平均</div>
+              <div className="font-bold text-gray-700">¥{Math.round(analysisData.predictions.annual_savings / 12).toLocaleString()}</div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
-          <div className="rounded-lg bg-white shadow-lg">
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                <Icon icon="carbon:idea" className="text-2xl text-corporate" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
+          <div className="lg:col-span-2 bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="p-6 lg:p-8">
+              <h2 className="text-2xl lg:text-3xl font-bold mb-6 lg:mb-8 flex items-center gap-3 text-gray-800">
+                <div className="p-2 bg-gradient-to-r from-purple-100 to-purple-200 rounded-xl shadow-sm">
+                  <Icon icon="carbon:idea" className="w-6 h-6 lg:w-8 lg:h-8 text-purple-600" />
+                </div>
                 AI改善提案
               </h2>
               
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                 {analysisData.recommendations.map((rec) => (
-                  <div key={rec.id} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                  <div key={rec.id} className="bg-white/50 backdrop-blur-sm border border-gray-100/50 rounded-xl p-5 lg:p-6 hover:bg-white/70 transition-all duration-300 hover:shadow-md hover:scale-105">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <div>
@@ -271,7 +282,7 @@ export default function AIAnalysis() {
                         {rec.difficulty === 'easy' ? '簡単' : rec.difficulty === 'medium' ? '普通' : '困難'}
                       </div>
                       <button 
-                        className="px-3 py-1 text-sm rounded font-medium transition-colors bg-primary-600 hover:bg-primary-700 text-white"
+                        className="px-4 py-2 text-sm rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
                         onClick={() => implementRecommendation(rec)}
                       >
                         実行する
@@ -283,11 +294,13 @@ export default function AIAnalysis() {
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="rounded-lg bg-white shadow-lg">
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Icon icon="carbon:analytics" className="text-xl" />
+          <div className="xl:col-span-1 space-y-6">
+            <div className="bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="p-6 lg:p-8">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-800">
+                  <div className="p-2 bg-gradient-to-r from-teal-100 to-teal-200 rounded-xl shadow-sm">
+                    <Icon icon="carbon:analytics" className="w-5 h-5 text-teal-600" />
+                  </div>
                   使用パターン分析
                 </h3>
                 
@@ -324,10 +337,12 @@ export default function AIAnalysis() {
               </div>
             </div>
 
-            <div className="rounded-lg bg-white shadow-lg">
+            <div className="bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  <Icon icon="carbon:flag" className="text-xl" />
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2 text-gray-800">
+                  <div className="p-2 bg-gradient-to-r from-orange-100 to-orange-200 rounded-xl shadow-sm">
+                    <Icon icon="carbon:flag" className="w-5 h-5 text-orange-600" />
+                  </div>
                   改善目標
                 </h3>
                 
@@ -361,19 +376,23 @@ export default function AIAnalysis() {
           </div>
         </div>
 
-        <div className="rounded-lg bg-white shadow-lg mt-6 sm:mt-8">
+        <div className="bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mt-8 animate-fade-in-up" style={{animationDelay: '0.6s'}}>
           <div className="p-6">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Icon icon="carbon:chat" className="text-2xl text-corporate" />
+            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+              <div className="p-2 bg-gradient-to-r from-indigo-100 to-indigo-200 rounded-xl shadow-sm">
+                <Icon icon="carbon:chat" className="w-6 h-6 text-indigo-600" />
+              </div>
               AIコメント履歴
             </h2>
             
             <div className="space-y-4">
               {aiComments.map((comment) => (
-                <div key={comment.id} className="border-l-4 border-corporate pl-4 py-3 bg-corporate-50 rounded-r-lg">
+                <div key={comment.id} className="border-l-4 border-gradient-to-b from-primary-400 to-green-400 pl-4 py-3 bg-gradient-to-r from-primary-50/50 to-green-50/50 rounded-r-xl backdrop-blur-sm">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <Icon icon={getSentimentIcon(comment.sentiment)} className="text-2xl text-corporate" />
+                      <div className="p-1 bg-gradient-to-r from-primary-100 to-primary-200 rounded-lg shadow-sm">
+                        <Icon icon={getSentimentIcon(comment.sentiment)} className="w-5 h-5 text-primary-600" />
+                      </div>
                       <div>
                         <div className="font-bold">{comment.category}</div>
                         <div className="text-sm text-gray-600">{comment.date}</div>
@@ -389,7 +408,7 @@ export default function AIAnalysis() {
             </div>
 
             <div className="text-center mt-6">
-              <button className="border border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-4 py-2 rounded font-medium transition-colors">
+              <button className="border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95">
                 過去のコメントをもっと見る
               </button>
             </div>
