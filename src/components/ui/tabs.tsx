@@ -1,115 +1,52 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+// src/components/ui/tabs.tsx
+"use client";
 
-export interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
-  defaultValue?: string;
-  value?: string;
-  onValueChange?: (value: string) => void;
-}
+import * as TabsPrimitive from "@radix-ui/react-tabs";
+import React from "react";
 
-export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(
-  ({ className, value, onValueChange, children, ...props }, ref) => {
-    const [internalValue, setInternalValue] = React.useState(value || '');
+export type TabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>;
+export type TabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>;
+export type TabsTriggerProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>;
+export type TabsContentProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>;
 
-    const handleValueChange = (newValue: string) => {
-      setInternalValue(newValue);
-      onValueChange?.(newValue);
-    };
+export const Tabs = React.forwardRef<HTMLDivElement, TabsProps>(function Tabs(
+  { children, ...props },
+  ref
+) {
+  return (
+    <TabsPrimitive.Root ref={ref} {...props}>
+      {children}
+    </TabsPrimitive.Root>
+  );
+});
 
-    return (
-      <div
-        ref={ref}
-        className={cn('w-full', className)}
-        data-tabs-value={value || internalValue}
-        {...props}
-      >
-        {React.Children.map(children, (child) =>
-          React.isValidElement(child)
-            ? React.cloneElement(child, { onValueChange: handleValueChange, currentValue: value || internalValue })
-            : child
-        )}
-      </div>
-    );
-  }
-);
-
-Tabs.displayName = 'Tabs';
-
-export interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-);
-
-TabsList.displayName = 'TabsList';
-
-export interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  value: string;
-  currentValue?: string;
-  onValueChange?: (value: string) => void;
-}
+export const TabsList = React.forwardRef<HTMLDivElement, TabsListProps>(function TabsList(
+  { children, ...props },
+  ref
+) {
+  return (
+    <TabsPrimitive.List ref={ref} {...props}>
+      {children}
+    </TabsPrimitive.List>
+  );
+});
 
 export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  ({ className, value, currentValue, onValueChange, ...props }, ref) => {
-    const isActive = currentValue === value;
-
-    const handleClick = () => {
-      onValueChange?.(value);
-    };
-
+  function TabsTrigger({ children, ...props }, ref) {
     return (
-      <button
-        ref={ref}
-        type="button"
-        className={cn(
-          'inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-          isActive ? 'bg-background text-foreground shadow-sm' : 'hover:bg-muted hover:text-foreground',
-          className
-        )}
-        onClick={handleClick}
-        data-state={isActive ? 'active' : 'inactive'}
-        {...props}
-      />
+      <TabsPrimitive.Trigger ref={ref} {...props}>
+        {children}
+      </TabsPrimitive.Trigger>
     );
   }
 );
-
-TabsTrigger.displayName = 'TabsTrigger';
-
-export interface TabsContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  value: string;
-  currentValue?: string;
-}
 
 export const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
-  ({ className, value, currentValue, ...props }, ref) => {
-    if (currentValue !== value) {
-      return null;
-    }
-
+  function TabsContent({ children, ...props }, ref) {
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
-          className
-        )}
-        data-state="active"
-        {...props}
-      />
+      <TabsPrimitive.Content ref={ref} {...props}>
+        {children}
+      </TabsPrimitive.Content>
     );
   }
 );
-
-TabsContent.displayName = 'TabsContent';
