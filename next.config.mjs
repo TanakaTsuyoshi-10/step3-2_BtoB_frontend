@@ -81,7 +81,8 @@ const nextConfig = {
   },
   
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true, // ← critters モジュール要求により無効化
+    optimizeCss: false,
     optimizePackageImports: ['lucide-react', '@iconify/react']
   }
 };
