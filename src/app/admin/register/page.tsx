@@ -77,8 +77,8 @@ export default function Page() {
             <div className="flex items-center justify-center mb-4">
               <Zap className="w-12 h-12 text-primary-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">Energy Manager</h1>
-            <p className="text-gray-600 mt-2">Create your account</p>
+            <h1 className="text-2xl font-bold text-gray-900">CarbonMate 管理システム</h1>
+            <p className="text-gray-600 mt-2">管理者アカウントを作成</p>
           </div>
 
           {error && (

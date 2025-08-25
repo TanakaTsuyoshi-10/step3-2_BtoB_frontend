@@ -4,8 +4,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Energy Management System',
-  description: 'Manage your energy consumption and production efficiently',
+  title: 'CarbonMate 管理システム',
+  description: 'CO₂削減活動とポイント管理を効率的に運営',
 }
 
 export default function RootLayout({
