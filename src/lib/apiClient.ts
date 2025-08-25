@@ -1,9 +1,10 @@
 import axios, { AxiosRequestConfig } from "axios";
 
-// DEFAULT_API_BASE: Backend + /api/v1 (safe fallback)
-const DEFAULT_API_BASE = "https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1";
-
-const rawBase = process.env.NEXT_PUBLIC_API_BASE || DEFAULT_API_BASE;
+// API base from environment variable (required)
+const rawBase = process.env.NEXT_PUBLIC_API_BASE;
+if (!rawBase) {
+  throw new Error('NEXT_PUBLIC_API_BASE environment variable is required');
+}
 // 末尾のスラッシュを除去（…/api/v1 想定）
 const apiBase = rawBase.replace(/\/+$/, "");
 

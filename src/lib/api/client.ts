@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE;
+if (!baseURL) {
+  throw new Error('NEXT_PUBLIC_API_BASE environment variable is required');
+}
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net',
+  baseURL: baseURL,
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
