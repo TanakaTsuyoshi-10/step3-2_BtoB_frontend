@@ -1,24 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   output: 'standalone',
-  
-  // Performance optimizations
-  swcMinify: true,
-  compress: true,
-  
-  // Build optimizations
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  
-  // Environment validation
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
   
   async rewrites() {
     return [
@@ -32,29 +14,75 @@ const nextConfig = {
         source: '/admin/admin/:path*',
         destination: '/admin/:path*',
       },
+      // ルート階層からadmin内部へのリダイレクト
+      {
+        source: '/dashboard',
+        destination: '/admin/dashboard'
+      },
+      {
+        source: '/login',
+        destination: '/admin/login'
+      },
+      {
+        source: '/register', 
+        destination: '/admin/register'
+      },
+      {
+        source: '/points',
+        destination: '/admin/points'
+      },
+      {
+        source: '/ranking',
+        destination: '/admin/ranking'
+      },
+      {
+        source: '/reports/:path*',
+        destination: '/admin/reports/:path*'
+      },
+      {
+        source: '/rewards',
+        destination: '/admin/rewards'
+      },
+      {
+        source: '/devices',
+        destination: '/admin/devices'
+      },
+      {
+        source: '/energy-records',
+        destination: '/admin/energy-records'
+      },
+      {
+        source: '/incentives',
+        destination: '/admin/incentives'
+      }
     ];
   },
   
-  async headers() {
+  async redirects() {
     return [
       {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-        ],
-      },
+        source: '/',
+        destination: '/admin/dashboard',
+        permanent: false
+      }
     ];
   },
+  
+  env: {
+    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1'
+  },
+  
+  typescript: {
+    ignoreBuildErrors: false
+  },
+  
+  eslint: {
+    ignoreDuringBuilds: false
+  },
+  
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@iconify/react']
+  }
 };
 export default nextConfig;

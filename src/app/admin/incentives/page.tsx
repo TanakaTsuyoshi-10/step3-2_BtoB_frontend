@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@admin-ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 // import Layout from '@components/layout/Layout';
 // import ProductList from '@components/incentives/ProductList';
 // import RedemptionStats from '@components/incentives/RedemptionStats';

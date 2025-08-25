@@ -1,6 +1,45 @@
 import { get, post, path } from '../apiClient';
-import type { PointsBalance, PointsHistory, RedemptionResponse } from '@/types/points';
-import type { KPIData, MonthlyUsage, Co2TrendData } from '@/types/kpi';
+import type { PointsEmployee, PointsSummary, PointsDistribution } from '@/shared/types';
+
+// Legacy types for backwards compatibility
+export interface PointsBalance {
+  current: number;
+  earned: number;
+  redeemed: number;
+}
+
+export interface PointsHistory {
+  id: string;
+  type: 'earned' | 'redeemed';
+  amount: number;
+  description: string;
+  date: string;
+}
+
+export interface RedemptionResponse {
+  success: boolean;
+  message: string;
+  newBalance: number;
+}
+
+export interface KPIData {
+  totalUsers: number;
+  totalPoints: number;
+  averageUsage: number;
+  co2Reduction: number;
+}
+
+export interface MonthlyUsage {
+  month: string;
+  usage: number;
+  target: number;
+}
+
+export interface Co2TrendData {
+  date: string;
+  reduction: number;
+  baseline: number;
+}
 
 export async function fetchBalance(userId?: number): Promise<PointsBalance> {
   const params = userId ? { userId } : {};
@@ -33,4 +72,35 @@ export async function fetchMonthlyUsage(): Promise<MonthlyUsage[]> {
 export async function fetchCo2Trend(): Promise<Co2TrendData[]> {
   const response = await get(path('metrics/co2-trend'));
   return response.data;
+}
+
+// New API functions for shared types
+export async function getPointsEmployees(): Promise<PointsEmployee[]> {
+  try {
+    const response = await get('/points/employees');
+    return response.data || [];
+  } catch (error) {
+    console.error('Error fetching points employees:', error);
+    return [];
+  }
+}
+
+export async function getPointsSummary(): Promise<PointsSummary> {
+  try {
+    const response = await get('/points/summary');
+    return response.data || { totalPoints: 0, monthlyChange: 0, activeUsers: 0 };
+  } catch (error) {
+    console.error('Error fetching points summary:', error);
+    return { totalPoints: 0, monthlyChange: 0, activeUsers: 0 };
+  }
+}
+
+export async function getPointsDistribution(): Promise<PointsDistribution[]> {
+  try {
+    const response = await get('/points/distribution');
+    return response.data || [];
+  } catch (error) {
+    console.error('Error fetching points distribution:', error);
+    return [];
+  }
 }

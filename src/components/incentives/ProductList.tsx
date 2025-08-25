@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@admin-ui/card';
-import { Button } from '@admin-ui/button';
-import { Input } from '@admin-ui/input';
-import { Badge } from '@admin-ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@admin-ui/dialog';
-import { Switch } from '@admin-ui/switch';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Switch } from '@/components/ui/switch';
 import { Plus, Edit, Eye, EyeOff, Package, Search, AlertTriangle } from 'lucide-react';
 import ProductEditor from './ProductEditor';
 import { useProducts } from '@/hooks/useProducts';

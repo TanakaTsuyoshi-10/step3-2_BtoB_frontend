@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { LucideIcon } from 'lucide-react';
-import { Card, CardContent } from '@admin-ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface KPICardProps {
   title: string;
@@ -68,7 +68,10 @@ const KPICard: React.FC<KPICardProps> = ({
             </div>
           </div>
           <div className="w-12 h-12 bg-primary-50 rounded-lg flex items-center justify-center">
-            {React.cloneElement(icon, { className: 'w-6 h-6' })}
+            {React.cloneElement(icon, { 
+              className: 'w-6 h-6',
+              style: { width: '24px', height: '24px' }
+            } as any)}
           </div>
         </div>
       </CardContent>

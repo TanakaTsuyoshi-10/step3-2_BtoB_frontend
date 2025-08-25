@@ -1,0 +1,5 @@
+total 0
+drwxr-xr-x   4 tanakatsuyoshi  staff   128  8 25 22:58 .
+drwxr-xr-x@ 43 tanakatsuyoshi  staff  1376  8 25 23:22 ..
+drwxr-xr-x   4 tanakatsuyoshi  staff   128  8 25 16:08 admin
+drwx------  20 tanakatsuyoshi  staff   640  8 25 22:58 mobile

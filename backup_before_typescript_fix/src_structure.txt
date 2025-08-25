@@ -1,0 +1,256 @@
+total 32
+drwxr-xr-x@ 17 tanakatsuyoshi  staff   544  8 25 23:01 .
+drwxr-xr-x@  9 tanakatsuyoshi  staff   288  8 25 23:01 ..
+drwxr-xr-x  16 tanakatsuyoshi  staff   512  8 25 23:01 admin
+drwx------   3 tanakatsuyoshi  staff    96  8 24 22:48 dashboard
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:51 devices
+drwx------   3 tanakatsuyoshi  staff    96  8 24 22:48 energy-records
+-rw-r--r--   1 tanakatsuyoshi  staff  4391  8 25 04:06 globals.css
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:51 incentives
+-rw-r--r--   1 tanakatsuyoshi  staff   142  8 25 04:06 layout.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:51 login
+drwxr-xr-x  14 tanakatsuyoshi  staff   448  8 25 22:55 mobile
+-rw-r--r--   1 tanakatsuyoshi  staff   108  8 25 04:06 page.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:51 points
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:50 ranking
+drwx------   3 tanakatsuyoshi  staff    96  8 24 22:48 register
+drwxr-xr-x   5 tanakatsuyoshi  staff   160  8 25 21:51 reports
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:51 rewards
+
+src/app/admin:
+total 56
+drwxr-xr-x  16 tanakatsuyoshi  staff    512  8 25 23:01 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff    544  8 25 23:01 ..
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 dashboard
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 devices
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 energy-records
+-rw-r--r--   1 tanakatsuyoshi  staff   1926  8 25 04:06 globals.css
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 incentives
+-rw-r--r--   1 tanakatsuyoshi  staff    451  8 25 04:06 layout.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 login
+-rw-r--r--   1 tanakatsuyoshi  staff  16400  8 25 21:46 page.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 16:08 points
+drwx------   3 tanakatsuyoshi  staff     96  8 24 22:48 products
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 ranking
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 register
+drwxr-xr-x   5 tanakatsuyoshi  staff    160  8 25 16:12 reports
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 rewards
+
+src/app/admin/dashboard:
+total 24
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff    512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  11989  8 25 04:06 page.tsx
+
+src/app/admin/devices:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff  512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  187  8 25 04:06 page.tsx
+
+src/app/admin/energy-records:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff  512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  196  8 25 04:06 page.tsx
+
+src/app/admin/incentives:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff   512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  1589  8 25 04:06 page.tsx
+
+src/app/admin/login:
+total 16
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff   512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  6591  8 25 04:06 page.tsx
+
+src/app/admin/points:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 16:08 .
+drwxr-xr-x  16 tanakatsuyoshi  staff  512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  831  8 25 04:06 page.tsx
+
+src/app/admin/products:
+total 8
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x  16 tanakatsuyoshi  staff  512  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  180  8 24 21:37 page.tsx
+
+src/app/admin/ranking:
+total 24
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff   512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  9073  8 25 04:06 page.tsx
+
+src/app/admin/register:
+total 16
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff   512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  6250  8 25 04:06 page.tsx
+
+src/app/admin/reports:
+total 32
+drwxr-xr-x   5 tanakatsuyoshi  staff    160  8 25 16:12 .
+drwxr-xr-x  16 tanakatsuyoshi  staff    512  8 25 23:01 ..
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 16:12 [id]
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 16:12 new
+-rw-r--r--   1 tanakatsuyoshi  staff  12392  8 25 04:06 page.tsx
+
+src/app/admin/reports/[id]:
+total 32
+drwxr-xr-x  3 tanakatsuyoshi  staff     96  8 25 16:12 .
+drwxr-xr-x  5 tanakatsuyoshi  staff    160  8 25 16:12 ..
+-rw-r--r--  1 tanakatsuyoshi  staff  15167  8 25 04:06 page.tsx
+
+src/app/admin/reports/new:
+total 32
+drwxr-xr-x  3 tanakatsuyoshi  staff     96  8 25 16:12 .
+drwxr-xr-x  5 tanakatsuyoshi  staff    160  8 25 16:12 ..
+-rw-r--r--  1 tanakatsuyoshi  staff  15289  8 25 04:06 page.tsx
+
+src/app/admin/rewards:
+total 32
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 05:22 .
+drwxr-xr-x  16 tanakatsuyoshi  staff    512  8 25 23:01 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  14785  8 25 04:06 page.tsx
+
+src/app/dashboard:
+total 8
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  164  8 24 21:37 page.tsx
+
+src/app/devices:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  160  8 24 21:37 page.tsx
+
+src/app/energy-records:
+total 8
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  174  8 24 21:37 page.tsx
+
+src/app/incentives:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  166  8 24 21:37 page.tsx
+
+src/app/login:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  148  8 24 22:06 page.tsx
+
+src/app/mobile:
+total 88
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff    544  8 25 23:01 ..
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 ai-analysis
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 11:04 components
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 dashboard
+-rw-r--r--   1 tanakatsuyoshi  staff  25931  8 25 04:06 favicon.ico
+-rw-r--r--   1 tanakatsuyoshi  staff   5339  8 25 04:06 globals.css
+-rw-r--r--   1 tanakatsuyoshi  staff    333  8 25 21:46 layout.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 login
+-rw-r--r--   1 tanakatsuyoshi  staff   1021  8 25 04:06 page.tsx
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 22:55 points
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 ranking
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 11:04 register
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 upload
+
+src/app/mobile/ai-analysis:
+total 40
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  20214  8 25 21:46 page.tsx
+
+src/app/mobile/components:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 11:04 .
+drwxr-xr-x  14 tanakatsuyoshi  staff   448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  3349  8 25 04:06 CarbonIcon.jsx
+
+src/app/mobile/dashboard:
+total 24
+drwxr-xr-x   3 tanakatsuyoshi  staff    96  8 25 21:46 .
+drwxr-xr-x  14 tanakatsuyoshi  staff   448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  8700  8 25 21:46 page.tsx
+
+src/app/mobile/login:
+total 24
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  10154  8 25 21:46 page.tsx
+
+src/app/mobile/points:
+total 64
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 22:55 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  28923  8 25 22:54 page.tsx
+
+src/app/mobile/ranking:
+total 48
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  20809  8 25 21:46 page.tsx
+
+src/app/mobile/register:
+total 40
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 11:04 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  18601  8 25 04:06 page.jsx
+
+src/app/mobile/upload:
+total 40
+drwxr-xr-x   3 tanakatsuyoshi  staff     96  8 25 21:46 .
+drwxr-xr-x  14 tanakatsuyoshi  staff    448  8 25 22:55 ..
+-rw-r--r--   1 tanakatsuyoshi  staff  17670  8 25 21:46 page.tsx
+
+src/app/points:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  158  8 24 21:37 page.tsx
+
+src/app/ranking:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:50 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  160  8 24 21:37 page.tsx
+
+src/app/register:
+total 8
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  162  8 24 21:37 page.tsx
+
+src/app/reports:
+total 8
+drwxr-xr-x   5 tanakatsuyoshi  staff  160  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 [id]
+drwx------   3 tanakatsuyoshi  staff   96  8 24 22:48 new
+-rw-------   1 tanakatsuyoshi  staff  160  8 24 21:37 page.tsx
+
+src/app/reports/[id]:
+total 8
+drwx------  3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x  5 tanakatsuyoshi  staff  160  8 25 21:51 ..
+-rw-------  1 tanakatsuyoshi  staff  176  8 24 21:37 page.tsx
+
+src/app/reports/new:
+total 8
+drwx------  3 tanakatsuyoshi  staff   96  8 24 22:48 .
+drwxr-xr-x  5 tanakatsuyoshi  staff  160  8 25 21:51 ..
+-rw-------  1 tanakatsuyoshi  staff  174  8 24 21:37 page.tsx
+
+src/app/rewards:
+total 8
+drwxr-xr-x   3 tanakatsuyoshi  staff   96  8 25 21:51 .
+drwxr-xr-x@ 17 tanakatsuyoshi  staff  544  8 25 23:01 ..
+-rw-------   1 tanakatsuyoshi  staff  160  8 24 21:37 page.tsx
