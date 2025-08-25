@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Gift, 
-  Search, 
-  Filter, 
-  Coins,
-  ShoppingCart,
-  Package,
-  Heart,
-  Coffee,
-} from '@iconify/react';
+import { Icon } from '@iconify/react';
 import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated } from '@lib/auth';
