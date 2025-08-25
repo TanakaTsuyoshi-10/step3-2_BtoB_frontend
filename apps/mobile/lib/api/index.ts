@@ -1,60 +1,64 @@
-// Use the shared apiClient for consistency
-import { api } from '@lib/apiClient';
+// apps/mobile/lib/api/index.ts
+import axios, { AxiosInstance } from "axios";
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await api.request({
-    url: path,
-    method: init?.method || 'GET',
-    data: init?.body ? JSON.parse(init.body as string) : undefined,
-    headers: init?.headers as Record<string, string>,
-    ...init,
-  });
-  return response.data;
-}
+const BASE = process.env.NEXT_PUBLIC_API_BASE || "";
+if (!BASE) throw new Error("NEXT_PUBLIC_API_BASE is not set for mobile api");
 
-/* ======== Auth (利用者向け) ======== */
-export async function login(email: string, password: string) {
-  return request<{ access_token: string; token_type: string }>('/api/v1/login/access-token', {
-    method: 'POST',
-    body: JSON.stringify({ username: email, password }),
-  });
-}
+const api: AxiosInstance = axios.create({
+  baseURL: BASE.replace(/\/+$/, "") + "/",
+  headers: {
+    "Content-Type": "application/json",
+  } as Record<string, string>,
+});
 
-export async function register(payload: { email: string; password: string; full_name?: string }) {
-  return request('/api/v1/users/', { method: 'POST', body: JSON.stringify(payload) });
-}
+// ---- named exports expected by apps/mobile/app/points/page.tsx
 
-/* ======== Metrics (ダッシュボード) ======== */
-export async function fetchKpi() {
-  return request('/api/v1/metrics/kpi');
-}
-export async function fetchMonthlyUsage() {
-  return request('/api/v1/metrics/monthly-usage');
-}
-export async function fetchCo2Trend() {
-  return request('/api/v1/metrics/co2-trend');
-}
-export async function fetchYoyUsage() {
-  return request('/api/v1/metrics/yoy-usage');
-}
-
-/* ======== Mobile Products & Rewards ======== */
 export async function getProducts() {
-  return request('/api/v1/mobile/products');
+  const res = await api.get("products");
+  return res.data;
 }
 
 export async function redeemProduct(productId: number) {
-  return request(`/api/v1/mobile/redeem?product_id=${productId}`, {
-    method: 'POST',
-  });
+  const res = await api.post("points/redeem", { product_id: productId });
+  return res.data;
 }
 
 export async function getPointsBalance() {
-  return request('/api/v1/mobile/points/balance');
+  const res = await api.get("points/balance");
+  return res.data;
 }
 
 export async function getPointsHistory(limit: number = 20) {
-  return request(`/api/v1/mobile/points/history?limit=${limit}`);
+  const res = await api.get(`points/history?limit=${limit}`);
+  return res.data;
+}
+
+// Legacy exports for compatibility
+export async function login(email: string, password: string) {
+  return api.post('/login/access-token', {
+    username: email,
+    password,
+  }).then(res => res.data);
+}
+
+export async function register(payload: { email: string; password: string; full_name?: string }) {
+  return api.post('/users/', payload).then(res => res.data);
+}
+
+export async function fetchKpi() {
+  return api.get('/metrics/kpi').then(res => res.data);
+}
+
+export async function fetchMonthlyUsage() {
+  return api.get('/metrics/monthly-usage').then(res => res.data);
+}
+
+export async function fetchCo2Trend() {
+  return api.get('/metrics/co2-trend').then(res => res.data);
+}
+
+export async function fetchYoyUsage() {
+  return api.get('/metrics/yoy-usage').then(res => res.data);
 }
 
 export default {
