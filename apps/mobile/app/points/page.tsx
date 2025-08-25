@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/apps/mobile/componen
 import { Button } from '@/apps/mobile/components/ui/button';
 import { Badge } from '@/apps/mobile/components/ui/badge';
 import { Coins, Gift, History, CheckCircle, AlertCircle } from 'lucide-react';
-import { getProducts, redeemProduct, getPointsBalance, getPointsHistory } from '@mobile/lib/api';
+import { getProducts, redeemProduct, getPointsBalance, getPointsHistory, toViewProduct, toViewPointsBalance, ApiProduct, ApiPointsBalance } from '@mobile/lib/api';
 
 interface Product {
   id: number;
@@ -50,12 +50,12 @@ export default function PointsExchangePage() {
       setLoading(true);
       const [productsData, balanceData, historyData] = await Promise.all([
         getProducts(),
-        getPointsBalance(),
-        getPointsHistory(10)
+        getPointsBalance(String(1)), // ユーザーID=1をstring化
+        getPointsHistory(String(1), 10)
       ]);
       
-      setProducts(productsData as Product[]);
-      setBalance(balanceData as PointsBalance);
+      setProducts(productsData.map(p => toViewProduct(p)));
+      setBalance(toViewPointsBalance(balanceData));
       setHistory((historyData as any).history || []);
     } catch (error) {
       console.error('Failed to load data:', error);
@@ -73,7 +73,7 @@ export default function PointsExchangePage() {
 
     try {
       setRedeeming(productId);
-      const result = await redeemProduct(productId) as { new_balance: number };
+      const result = await redeemProduct(String(productId));
       
       setMessage({ 
         type: 'success', 
