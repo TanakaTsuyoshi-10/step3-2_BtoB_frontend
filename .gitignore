@@ -125,5 +125,42 @@ coverage/
 tmp/
 temp/
 
+# Azure deployment
+.azure/
+deploy.zip
+
+# Backup files
+*.backup
+*~
+*.bak
+
+# Environment specific
+.env.production
+.env.staging
+
+# Build artifacts
+*.tgz
+*.tar.gz
+.next/standalone/
+
+# TypeScript incremental
+*.tsbuildinfo
+
+# IDE
+.vscode/settings.json
+.vscode/launch.json
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python files (cleanup from previous structure)
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.pytest_cache/
+
 # Prevent nested duplicate folders
 /step3-2_BtoB_frontend/
