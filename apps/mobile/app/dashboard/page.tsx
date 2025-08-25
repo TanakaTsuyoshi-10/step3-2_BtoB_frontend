@@ -1,9 +1,15 @@
 import { Card, Section, Title } from "@mobile/components/ui/card";
 import { api } from "@lib/apiClient";
 
+interface KpiData {
+  power_total?: number;
+  gas_total?: number;
+  co2_saved?: number;
+}
+
 export default async function MobileDashboard() {
   // Use apiClient for consistent API routing
-  let kpi = {};
+  let kpi: KpiData = {};
   try {
     const kpiRes = await api.get('/metrics/kpi');
     kpi = kpiRes.data || {};

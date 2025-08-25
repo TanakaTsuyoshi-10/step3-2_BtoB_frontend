@@ -6,57 +6,71 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     url: path,
     method: init?.method || 'GET',
     data: init?.body ? JSON.parse(init.body as string) : undefined,
-    headers: init?.headers,
-    ...init,
+    headers: init?.headers as Record<string, string>,
   });
   return response.data;
 }
 
 /* ======== Auth (利用者向け) ======== */
-export async function login(email: string, password: string) {
+async function login(email: string, password: string) {
   return request<{ access_token: string; token_type: string }>('/api/v1/login/access-token', {
     method: 'POST',
     body: JSON.stringify({ username: email, password }),
   });
 }
 
-export async function register(payload: { email: string; password: string; full_name?: string }) {
+async function register(payload: { email: string; password: string; full_name?: string }) {
   return request('/api/v1/users/', { method: 'POST', body: JSON.stringify(payload) });
 }
 
 /* ======== Metrics (ダッシュボード) ======== */
-export async function fetchKpi() {
+async function fetchKpi() {
   return request('/api/v1/metrics/kpi');
 }
-export async function fetchMonthlyUsage() {
+async function fetchMonthlyUsage() {
   return request('/api/v1/metrics/monthly-usage');
 }
-export async function fetchCo2Trend() {
+async function fetchCo2Trend() {
   return request('/api/v1/metrics/co2-trend');
 }
-export async function fetchYoyUsage() {
+async function fetchYoyUsage() {
   return request('/api/v1/metrics/yoy-usage');
 }
 
 /* ======== Mobile Products & Rewards ======== */
-export async function getProducts() {
+async function getProducts() {
   return request('/api/v1/mobile/products');
 }
 
-export async function redeemProduct(productId: number) {
+async function redeemProduct(productId: number) {
   return request(`/api/v1/mobile/redeem?product_id=${productId}`, {
     method: 'POST',
   });
 }
 
-export async function getPointsBalance() {
+async function getPointsBalance() {
   return request('/api/v1/mobile/points/balance');
 }
 
-export async function getPointsHistory(limit: number = 20) {
+async function getPointsHistory(limit: number = 20) {
   return request(`/api/v1/mobile/points/history?limit=${limit}`);
 }
 
+// Named exports for individual imports
+export { 
+  login,
+  register,
+  fetchKpi,
+  fetchMonthlyUsage,
+  fetchCo2Trend,
+  fetchYoyUsage,
+  getProducts,
+  redeemProduct,
+  getPointsBalance,
+  getPointsHistory,
+};
+
+// Default export for backward compatibility
 export default {
   login,
   register,

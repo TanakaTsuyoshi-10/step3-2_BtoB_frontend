@@ -5,6 +5,7 @@ export interface SwitchProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonE
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   onCheckedChange?: (checked: boolean) => void;
+  size?: string;
 }
 
 export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(

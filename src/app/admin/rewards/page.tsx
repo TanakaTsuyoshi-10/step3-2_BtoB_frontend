@@ -2,16 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Gift, 
-  Search, 
-  Filter, 
-  Coins,
-  ShoppingCart,
-  Package,
-  Heart,
-  Coffee,
-} from '@iconify/react';
+import { Icon } from '@iconify/react';
 import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated } from '@lib/auth';
@@ -39,8 +30,8 @@ interface RedemptionHistory {
 
 export default function Page() {
   const router = useRouter();
-  const [rewards, setRewards] = useState<div[]>([]);
-  const [redemptions, setRedemptions] = useState<div[]>([]);
+  const [rewards, setRewards] = useState<Reward[]>([]);
+  const [redemptions, setRedemptions] = useState<RedemptionHistory[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -194,15 +185,15 @@ export default function Page() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'ギフトカード':
-        return <div className="w-5 h-5" />;
+        return <Icon icon="heroicons:gift" className="w-5 h-5" />;
       case '商品':
-        return <div className="w-5 h-5" />;
+        return <Icon icon="heroicons:shopping-bag" className="w-5 h-5" />;
       case '社内サービス':
-        return <div className="w-5 h-5" />;
+        return <Icon icon="heroicons:building-office" className="w-5 h-5" />;
       case '寄付':
-        return <div className="w-5 h-5" />;
+        return <Icon icon="heroicons:heart" className="w-5 h-5" />;
       default:
-        return <div className="w-5 h-5" />;
+        return <Icon icon="heroicons:gift" className="w-5 h-5" />;
     }
   }
 
@@ -247,7 +238,7 @@ export default function Page() {
           </div>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 bg-primary-50 px-4 py-2 rounded-lg">
-              <div className="w-5 h-5 text-primary-600" />
+              <Icon icon="heroicons:gift" className="w-5 h-5 text-primary-600" />
               <span className="font-medium text-primary-900">{currentBalance.toLocaleString()} pt</span>
             </div>
             <button
@@ -277,7 +268,7 @@ export default function Page() {
                   </div>
                   
                   <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 text-gray-500" />
+                    <Icon icon="heroicons:tag" className="w-4 h-4 text-gray-500" />
                     <span className="text-sm font-medium text-gray-700">カテゴリ:</span>
                     <select
                       value={selectedCategory}
@@ -319,7 +310,7 @@ export default function Page() {
                       
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <div className="w-4 h-4 text-yellow-500" />
+                          <Icon icon="heroicons:star" className="w-4 h-4 text-yellow-500" />
                           <span className="font-bold text-gray-900">{reward.points_required.toLocaleString()}</span>
                           <span className="text-sm text-gray-600">pt</span>
                         </div>
@@ -333,7 +324,7 @@ export default function Page() {
                               : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                           }`}
                         >
-                          <div className="w-4 h-4 inline mr-1" />
+                          <Icon icon="heroicons:check-circle" className="w-4 h-4 inline mr-1" />
                           交換
                         </button>
                       </div>
