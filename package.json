@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "typecheck": "tsc --noEmit",
-    "clean": "rm -rf .next out",
+    "start": "node .next/standalone/server.js",
+    "lint": "next lint --fix",
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next out dist",
     "test": "echo \"No tests configured\" && exit 0"
   },
   "engines": {
@@ -19,6 +20,7 @@
     "@iconify/icons-heroicons": "^1.2.9",
     "@iconify/react": "^6.0.0",
     "@iconify/types": "2.0.0",
+    "@radix-ui/react-tabs": "^1.1.13",
     "autoprefixer": "10.4.21",
     "axios": "1.7.9",
     "clsx": "2.1.1",

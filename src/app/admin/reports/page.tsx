@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Layout from '@components/layout/Layout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@admin-ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 
 // Mock components for build

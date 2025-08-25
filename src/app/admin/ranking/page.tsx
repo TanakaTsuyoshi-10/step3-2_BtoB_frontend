@@ -39,7 +39,7 @@ export default function Page() {
 
   useEffect(() => {
     if (!isAuthenticated()) {
-      router.push('/login');
+      router.push('/admin/login');
       return;
     }
 
@@ -330,4 +330,3 @@ export default function Page() {
     </Layout>
   );
 }
-

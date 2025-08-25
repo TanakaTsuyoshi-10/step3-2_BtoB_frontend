@@ -1,11 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@mobile-ui/card';
-import { Button } from '@mobile-ui/button';
-import { Badge } from '@mobile-ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/apps/mobile/components/ui/card';
+import { Button } from '@/apps/mobile/components/ui/button';
+import { Badge } from '@/apps/mobile/components/ui/badge';
 import { Coins, Gift, History, CheckCircle, AlertCircle } from 'lucide-react';
-import { getProducts, redeemProduct, getPointsBalance, getPointsHistory } from '@lib/api/index';
+import {
+  getProducts,
+  redeemProduct,
+  getPointsBalance,
+  getPointsHistory,
+} from "@mobile/lib/api";
 
 interface Product {
   id: number;

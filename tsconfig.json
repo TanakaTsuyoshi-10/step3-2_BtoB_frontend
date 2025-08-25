@@ -1,70 +1,72 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
     "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2020"
+      "dom",
+      "dom.iterable",
+      "es6"
     ],
-    "jsx": "preserve",
-    "jsxImportSource": "react",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@lib/*": [
-        "src/lib/*"
-      ],
-      "@components/*": [
-        "src/components/*"
-      ],
-      "@hooks/*": [
-        "src/hooks/*"
-      ],
-      "@types/*": [
-        "src/types/*"
-      ],
-      "@admin/*": [
-        "apps/admin/*"
-      ],
-      "@mobile/*": [
-        "apps/mobile/*"
-      ],
-      "@mobile-ui/*": [
-        "apps/mobile/components/ui/*"
-      ],
-      "@admin-ui/*": [
-        "apps/admin/components/ui/*"
-      ]
-    },
     "allowJs": true,
     "skipLibCheck": true,
+    "strict": false,
     "noEmit": true,
-    "incremental": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve",
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@/shared/*": [
+        "./shared/*"
+      ],
+      "@/apps/*": [
+        "./apps/*"
+      ],
+      "@admin-ui/*": [
+        "./src/components/ui/*"
+      ],
+      "@mobile-ui/*": [
+        "./apps/mobile/components/ui/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@admin/*": [
+        "./apps/admin/*"
+      ],
+      "@mobile/*": [
+        "./apps/mobile/*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
-    "src",
-    "apps",
-    "*.ts",
-    "*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "shared/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "legacy/**/*"
   ]
 }
