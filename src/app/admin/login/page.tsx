@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Zap, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { setAuthToken, setCurrentUser } from '@/lib/auth';
 // import { authAPI } from '@lib/api';
-// import { setAuthToken, setCurrentUser } from '@lib/auth';
 // import { LoginFormData } from '@/types';
 
 // Temporary mock types and functions for build
@@ -15,12 +15,17 @@ type LoginFormData = {
 };
 
 const authAPI = {
-  login: async (data: LoginFormData) => ({ access_token: 'mock-token' }),
-  me: async (token: string) => ({ id: '1', username: 'admin', email: 'admin@example.com' })
+  login: async (data: LoginFormData) => {
+    // モックの遅延を追加してリアルな動作をシミュレート
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return Promise.resolve({ access_token: 'mock-token' });
+  },
+  me: async (token: string) => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return Promise.resolve({ id: '1', username: 'admin', email: 'admin@example.com' });
+  }
 };
 
-const setAuthToken = (token: string) => {};
-const setCurrentUser = (user: any) => {};
 
 export default function Page() {
   const [formData, setFormData] = useState<LoginFormData>({
@@ -88,8 +93,8 @@ export default function Page() {
             <div className="flex items-center justify-center mb-4">
               <Zap className="w-12 h-12 text-primary-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">エネルギーマネージャー</h1>
-            <p className="text-gray-600 mt-2">アカウントにログイン</p>
+            <h1 className="text-2xl font-bold text-gray-900">CarbonMate 管理システム</h1>
+            <p className="text-gray-600 mt-2">管理者アカウントでログイン</p>
           </div>
 
           {error && (

@@ -1,6 +1,6 @@
 export const ja = {
   app: {
-    name: "エネルギーマネージャー",
+    name: "CarbonMate 管理システム",
     subtitle: "従業員CO2削減プラットフォーム",
     loading: "読み込み中...",
     error: "エラーが発生しました",
@@ -118,7 +118,7 @@ export const ja = {
   },
   
   admin: {
-    title: "管理コンソール",
+    title: "CarbonMate 管理システム",
     pointsRulesLabel: "ポイントルール",
     rewardsManagement: "景品管理",
     reportsLabel: "レポート",

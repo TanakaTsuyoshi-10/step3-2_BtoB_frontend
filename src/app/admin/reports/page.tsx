@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Layout from '@components/layout/Layout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@admin-ui/tabs';
 import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 
@@ -78,7 +79,7 @@ export default function Page() {
   };
 
   return (
-    <div>
+    <Layout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">自動レポート作成</h1>
@@ -273,6 +274,6 @@ export default function Page() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </Layout>
   );
 }
