@@ -57,4 +57,8 @@ export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescri
 );
 CardDescription.displayName = "CardDescription";
 
+// 互換: Section / Title を既存UI向けエイリアスで提供（見た目は同じ）
+export const Section = CardContent;
+export const Title = CardTitle;
+
 export default Card;

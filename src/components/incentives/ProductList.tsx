@@ -91,7 +91,7 @@ const ProductList: React.FC = () => {
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
+          <DialogTrigger>
             <Button className="whitespace-nowrap">
               <Plus className="w-4 h-4 mr-2" />
               新しい商品を追加
@@ -218,7 +218,7 @@ const ProductList: React.FC = () => {
                   open={editingProduct?.id === product.id} 
                   onOpenChange={(open) => !open && setEditingProduct(null)}
                 >
-                  <DialogTrigger asChild>
+                  <DialogTrigger>
                     <Button
                       variant="outline"
                       size="sm"
