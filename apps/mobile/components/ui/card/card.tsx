@@ -57,4 +57,8 @@ export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescri
 );
 CardDescription.displayName = "CardDescription";
 
+// Mobile specific aliases
+export const Section = CardContent;
+export const Title = CardTitle;
+
 export default Card;
