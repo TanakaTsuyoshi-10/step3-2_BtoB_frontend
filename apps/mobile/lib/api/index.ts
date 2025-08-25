@@ -6,7 +6,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     url: path,
     method: init?.method || 'GET',
     data: init?.body ? JSON.parse(init.body as string) : undefined,
-    headers: init?.headers,
+    headers: init?.headers as Record<string, string>,
     ...init,
   });
   return response.data;
