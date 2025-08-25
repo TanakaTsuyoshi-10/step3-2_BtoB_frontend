@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@admin-ui/card';
-import { Badge } from '@admin-ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@admin-ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { TrendingUp, Award, Package, Users } from 'lucide-react';
 import { getRedemptionStats, getPopularity } from '@/lib/api/incentives';

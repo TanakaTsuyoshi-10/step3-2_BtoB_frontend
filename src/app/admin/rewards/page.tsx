@@ -11,9 +11,9 @@ import {
   Package,
   Heart,
   Coffee,
-} from '@iconify/react/icons/heroicons';
+} from '@iconify/react';
 import Layout from '@components/layout/Layout';
-import { Card, CardHeader, CardTitle, CardContent } from '@admin-ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated } from '@lib/auth';
 import ja from '@/i18n/ja';
 
