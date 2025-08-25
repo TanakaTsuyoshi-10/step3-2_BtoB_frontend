@@ -1,20 +1,15 @@
 import { get, post, path } from '../apiClient';
 import type { PointsEmployee, PointsSummary, PointsDistribution } from '@/shared/types';
+import type { PointsBalance } from '@/types/points';
 
-// Legacy types for backwards compatibility
-export interface PointsBalance {
-  current: number;
-  earned: number;
-  redeemed: number;
-}
-
-export interface PointsHistory {
-  id: string;
-  type: 'earned' | 'redeemed';
-  amount: number;
-  description: string;
-  date: string;
-}
+// Use PointsHistory from @/types/points instead
+// export interface PointsHistory {
+//   id: string;
+//   type: 'earned' | 'redeemed';
+//   amount: number;
+//   description: string;
+//   date: string;
+// }
 
 export type RedemptionResponse = { new_balance: number } & Record<string, unknown>;
 
@@ -40,13 +35,13 @@ export interface Co2TrendData {
 export async function fetchBalance(userId?: number): Promise<PointsBalance> {
   const params = userId ? { userId } : {};
   const response = await get('/mobile/points/balance', { params });
-  return response.data;
+  return response.data as Promise<PointsBalance>;
 }
 
-export async function fetchHistory(userId?: number, limit: number = 20): Promise<{ history: PointsHistory[] }> {
+export async function fetchHistory(userId?: number, limit: number = 20): Promise<{ history: import('@/types/points').PointsHistory[] }> {
   const params = userId ? { userId, limit } : { limit };
   const response = await get('/mobile/points/history', { params });
-  return response.data;
+  return response.data as Promise<{ history: import('@/types/points').PointsHistory[] }>;
 }
 
 export async function redeem(productId: number, userId?: number): Promise<RedemptionResponse> {
