@@ -1,11 +1,25 @@
-// Re-export all API modules for centralized access
-export * from './client';
-export * from './points';
-export * from './metrics';
-export * from './products';
-export * from './reports';
-export * from './incentives';
-export * from './mobile';
+// Client
+export * from "./client";
 
-// For compatibility with mobile app imports
-export { getProducts, redeemProduct, getPointsBalance, getPointsHistory } from './mobile';
+// Points
+export * from "./points";
+
+// Metrics
+export * from "./metrics";
+
+// Reports
+export * from "./reports";
+
+// Incentives
+export * from "./incentives";
+
+// Products - 明示的export で重複回避
+export { 
+  fetchProducts as getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct 
+} from "./products";
+
+// Mobile imports削除 - mobile は独立管理
+// 以下は削除: export { ... } from "./mobile";
