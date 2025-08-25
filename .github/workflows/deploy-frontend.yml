@@ -2,153 +2,121 @@ name: Deploy Frontend to Azure App Service
 
 on:
   push:
-    branches: [ "main", "hotfix/**" ]
+    branches:
+      - main
+      - hotfix/**
   workflow_dispatch:
 
-permissions:
-  contents: read
-
-env:
-  NODE_VERSION: '20.x'
-  NEXT_PUBLIC_API_BASE: ${{ vars.NEXT_PUBLIC_API_BASE || secrets.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1' }}
+concurrency:
+  group: azure-deploy-frontend
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    concurrency:
-      group: 'deploy-frontend'
-      cancel-in-progress: false
-      
+    env:
+      NODE_VERSION: '20.x'
+      NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1' }}
+      APP_NAME: app-002-gen10-step3-2-node-oshima2
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: npm
 
-      - name: Clear npm cache
-        run: npm cache clean --force
+      - name: Install deps (ci)
+        run: npm ci
 
-      - name: Install dependencies
-        run: npm ci --no-audit
-
-      - name: TypeScript check
+      - name: TypeScript check (non-blocking if missing)
         run: |
-          echo "TypeScript チェック実行中..."
+          echo "TypeScript check..."
           npm run typecheck --if-present
-          echo "✅ TypeScript チェック成功"
 
-      - name: Lint check
-        run: |
-          npm run lint --fix || true
-          echo "✅ Lint チェック完了"
+      - name: Build
+        run: npm run build
 
-      - name: Build application
-        run: |
-          echo "ビルド開始 - API Base: ${{ env.NEXT_PUBLIC_API_BASE }}"
-          npm run build
-          echo "✅ ビルド成功"
-        env:
-          NEXT_PUBLIC_API_BASE: ${{ env.NEXT_PUBLIC_API_BASE }}
-          NODE_ENV: production
+      # SCM の再起動・反映直後の競合を避けるための待機
+      - name: Wait for SCM to settle
+        run: sleep 60
 
-      - name: Create deployment artifact
-        run: |
-          zip -r artifact.zip . \
-            -x "node_modules/*" \
-            -x ".git/*" \
-            -x ".next/cache/*" \
-            -x "coverage/*" \
-            -x "*.log" \
-            -x ".env*" \
-            -x "README.md"
-          
-          echo "アーティファクトサイズ:"
-          ls -lh artifact.zip
-
-      - name: Pre-deploy wait (SCM restart conflict avoidance)
-        run: |
-          echo "SCM restart 衝突回避のため45秒待機中..."
-          sleep 45
-
-      - name: Deploy to Azure App Service (Attempt 1)
-        id: deploy-primary
+      # --- Deploy attempt #1
+      - name: Deploy attempt #1
+        id: deploy1
         uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
         continue-on-error: true
-        with:
-          app-name: app-002-gen10-step3-2-node-oshima2
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: artifact.zip
 
-      - name: Wait before retry (if needed)
-        if: steps.deploy-primary.outcome == 'failure'
-        run: |
-          echo "初回デプロイ失敗 - 60秒待機してリトライします..."
-          sleep 60
+      - name: Sleep before retry #2 (if failed)
+        if: steps.deploy1.outcome == 'failure'
+        run: sleep 60
 
-      - name: Deploy to Azure App Service (Attempt 2)
-        if: steps.deploy-primary.outcome == 'failure'
-        id: deploy-retry1
+      # --- Deploy attempt #2
+      - name: Deploy attempt #2
+        id: deploy2
+        if: steps.deploy1.outcome == 'failure'
         uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
         continue-on-error: true
-        with:
-          app-name: app-002-gen10-step3-2-node-oshima2
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: artifact.zip
 
-      - name: Deploy to Azure App Service (Final Attempt)
-        if: steps.deploy-retry1.outcome == 'failure'
+      - name: Sleep before retry #3 (if failed)
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: sleep 60
+
+      # --- Deploy attempt #3
+      - name: Deploy attempt #3
+        id: deploy3
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
         uses: azure/webapps-deploy@v3
         with:
-          app-name: app-002-gen10-step3-2-node-oshima2
+          app-name: ${{ env.APP_NAME }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          package: artifact.zip
+          package: .
+        continue-on-error: false
 
-      - name: Wait for deployment stabilization
+      # 成功/失敗の最終判定（3回目で止める）
+      - name: Ensure deployed at least once
+        if: |
+          steps.deploy1.outcome == 'failure' &&
+          steps.deploy2.outcome == 'failure' &&
+          steps.deploy3.outcome == 'failure'
         run: |
-          echo "デプロイ安定化のため60秒待機中..."
-          sleep 60
+          echo "All 3 deploy attempts failed."
+          exit 1
 
-      - name: Health check - App root
+      # --- Health checks after deploy
+      - name: Warm up & health check (root)
         run: |
-          echo "フロントエンド ヘルスチェック実行中..."
+          set -e
+          URL="https://${{ env.APP_NAME }}.azurewebsites.net"
           for i in {1..10}; do
-            if curl -fsS -I https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net | head -n 1; then
-              echo "✅ ルートページ正常"
-              break
-            else
-              echo "待機中... ($i/10)"
-              sleep 30
-            fi
-            if [ $i -eq 10 ]; then
-              echo "❌ ルートページ ヘルスチェック失敗"
-              exit 1
-            fi
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            echo "[$i/10] $URL -> $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 12
           done
+          echo "Root did not return 200"
+          exit 1
 
-      - name: Health check - Admin page
+      - name: Health check (/admin)
         run: |
-          echo "/admin ページヘルスチェック実行中..."
-          if curl -fsS https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net/admin | head -n 20; then
-            echo "✅ /admin ページ正常"
-          else
-            echo "❌ /admin ページ問題"
-            exit 1
-          fi
-
-      - name: Health check - Backend API
-        run: |
-          echo "バックエンドAPI ヘルスチェック実行中..."
-          if curl -fsS https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/health; then
-            echo "✅ バックエンドAPI正常"
-          else
-            echo "⚠️ バックエンドAPI警告（続行）"
-          fi
-
-      - name: Verify rewrite functionality
-        run: |
-          echo "/admin/admin/* リライト検証中..."
-          curl -I https://app-002-gen10-step3-2-node-oshima2.azurewebsites.net/admin/admin/dashboard || echo "リライト検証完了"
+          set -e
+          URL="https://${{ env.APP_NAME }}.azurewebsites.net/admin"
+          for i in {1..10}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            echo "[$i/10] $URL -> $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 12
+          done
+          echo "/admin did not return 200"
+          exit 1
