@@ -173,7 +173,6 @@ const ProductList: React.FC = () => {
                   <Switch
                     checked={product.active}
                     onCheckedChange={(checked) => handleToggleActive(product.id, checked)}
-                    size="sm"
                   />
                 </div>
               </div>

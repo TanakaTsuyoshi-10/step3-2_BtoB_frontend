@@ -16,11 +16,7 @@ export interface PointsHistory {
   date: string;
 }
 
-export interface RedemptionResponse {
-  success: boolean;
-  message: string;
-  newBalance: number;
-}
+export type RedemptionResponse = { new_balance: number } & Record<string, unknown>;
 
 export interface KPIData {
   totalUsers: number;
@@ -56,7 +52,7 @@ export async function fetchHistory(userId?: number, limit: number = 20): Promise
 export async function redeem(productId: number, userId?: number): Promise<RedemptionResponse> {
   const data = userId ? { userId, productId } : { productId };
   const response = await post('/mobile/redeem', data);
-  return response.data;
+  return response.data as Promise<RedemptionResponse>;
 }
 
 export async function fetchKpi(): Promise<KPIData> {

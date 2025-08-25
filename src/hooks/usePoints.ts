@@ -27,7 +27,7 @@ export function usePoints(userId?: number) {
     dedupingInterval: 2000,
   });
 
-  const redeemWithOptimisticUpdate = async (productId: number): Promise<RedemptionResponse> => {
+  const redeemWithOptimisticUpdate = async (productId: number): Promise<import("@/types/points").RedemptionResponse> => {
     if (!balance) {
       throw new Error('Balance not loaded');
     }
@@ -36,13 +36,13 @@ export function usePoints(userId?: number) {
       // Optimistic update
       const optimisticBalance = {
         ...balance,
-        current_balance: balance.current_balance,
+        current_balance: (balance as import("@/types/points").PointsBalance | undefined)?.current_balance ?? 0,
       };
       
       await mutateBalance(optimisticBalance, false);
 
       // API call
-      const result = await redeem(productId, userId);
+      const result: import("@/types/points").RedemptionResponse = await redeem(productId, userId);
 
       // Update both balance and history
       await mutateBalance();
