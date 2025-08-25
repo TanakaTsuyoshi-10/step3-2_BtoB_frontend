@@ -2,7 +2,9 @@ name: Deploy Frontend to Azure App Service
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+      - main
+      - hotfix/**
   workflow_dispatch:
 
 env:
@@ -182,6 +184,30 @@ jobs:
           if [ "$success" = "false" ]; then
             echo "❌ App health check failed after all attempts"
             exit 1
+          fi
+          
+          # Admin health check
+          echo "=== Admin Health Check ==="
+          admin_success=false
+          for i in {1..5}; do
+            echo "Admin check attempt $i/5..."
+            if code=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL/admin" 2>/dev/null); then
+              echo "Admin HTTP response: $code"
+              if [ "$code" = "200" ] || [ "$code" = "302" ]; then
+                echo "✅ Admin endpoint responding correctly"
+                admin_success=true
+                break
+              fi
+            fi
+            
+            if [ $i -lt 5 ]; then
+              echo "Waiting 15 seconds before retry..."
+              sleep 15
+            fi
+          done
+          
+          if [ "$admin_success" = "false" ]; then
+            echo "⚠️  Admin health check failed but continuing..."
           fi
           
           # API connectivity check
