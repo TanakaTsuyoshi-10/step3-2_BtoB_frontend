@@ -2,15 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { 
-  Trophy, 
-  Medal, 
-  Award, 
-  Users, 
-  Filter,
-  Calendar,
-  TrendingUp,
-} from '@iconify/react';
+import { Icon } from '@iconify/react';
 import Layout from '@components/layout/Layout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { isAuthenticated } from '@lib/auth';
