@@ -3,7 +3,7 @@ import type { PointsEmployee, PointsSummary, PointsDistribution } from '@/shared
 
 // Legacy types for backwards compatibility
 export interface PointsBalance {
-  current: number;
+  current_balance: number;
   earned: number;
   redeemed: number;
 }
@@ -19,7 +19,7 @@ export interface PointsHistory {
 export interface RedemptionResponse {
   success: boolean;
   message: string;
-  newBalance: number;
+  new_balance: number;
 }
 
 export interface KPIData {
