@@ -1,10 +1,1 @@
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-  CardDescription,
-  Section,
-  Title,
-} from "./card";
+export { Card, CardHeader, CardTitle, CardContent, Section, Title } from "./card";

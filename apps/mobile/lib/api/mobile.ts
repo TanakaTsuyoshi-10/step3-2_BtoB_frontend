@@ -1,40 +1,50 @@
-// apps/mobile/lib/api/mobile.ts
-const BASE = process.env.NEXT_PUBLIC_API_BASE!;
-const api = (p: string) => `${BASE.replace(/\/+$/,"")}/${p.replace(/^\/+/,"")}`;
+const BASE = process.env.NEXT_PUBLIC_API_BASE || "";
+
+function u(path: string) {
+  return `${BASE.replace(/\/+$/,"")}/mobile/${path.replace(/^\/+/,"")}`;
+}
 
 export type Product = {
-  id: string; title: string; description: string;
-  category?: string; points_required: number; image_url?: string;
-  stock?: number; active?: boolean;
+  id: string|number;
+  title: string;
+  description: string;
+  category?: string;
+  points_required: number;
+  image_url?: string;
 };
 export type PointsBalance = {
-  user_id: string; current_balance: number; last_updated?: string;
+  current_balance: number;
+  user_id?: string|number;
+  last_updated?: string;
 };
 export type PointsHistoryItem = {
-  id: string; type: "earn"|"redeem"; points: number; created_at: string;
+  id: string|number;
+  type: "earn"|"redeem";
+  points: number;
+  created_at: string;
 };
 
 export async function getProducts(): Promise<Product[]> {
-  const r = await fetch(api("mobile/products"), { cache: "no-store" });
-  if(!r.ok) throw new Error(await r.text());
+  const r = await fetch(u("products"), { cache: "no-store" });
+  if (!r.ok) throw new Error(`getProducts ${r.status}`);
   return r.json();
 }
-export async function redeemProduct(productId: string, body?: Record<string,unknown>) {
-  const r = await fetch(api(`mobile/redeem/${encodeURIComponent(productId)}`), {
+export async function redeemProduct(productId: string|number, body?: Record<string,unknown>) {
+  const r = await fetch(u(`redeem/${String(productId)}`), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: body ? JSON.stringify(body) : "{}",
+    body: JSON.stringify(body||{}),
   });
-  if(!r.ok) throw new Error(await r.text());
+  if (!r.ok) throw new Error(`redeemProduct ${r.status}: ${await r.text()}`);
   return r.json();
 }
-export async function getPointsBalance(userId: string): Promise<PointsBalance> {
-  const r = await fetch(api(`mobile/points/balance/${encodeURIComponent(userId)}`), { cache: "no-store" });
-  if(!r.ok) throw new Error(await r.text());
+export async function getPointsBalance(userId?: string|number): Promise<PointsBalance> {
+  const r = await fetch(u(`points/balance${userId?`?userId=${String(userId)}`:""}`), { cache: "no-store" });
+  if (!r.ok) throw new Error(`getPointsBalance ${r.status}`);
   return r.json();
 }
-export async function getPointsHistory(userId: string): Promise<PointsHistoryItem[]> {
-  const r = await fetch(api(`mobile/points/history/${encodeURIComponent(userId)}`), { cache: "no-store" });
-  if(!r.ok) throw new Error(await r.text());
+export async function getPointsHistory(userId?: string|number): Promise<PointsHistoryItem[]> {
+  const r = await fetch(u(`points/history${userId?`?userId=${String(userId)}`:""}`), { cache: "no-store" });
+  if (!r.ok) throw new Error(`getPointsHistory ${r.status}`);
   return r.json();
 }
