@@ -1,0 +1,122 @@
+name: Deploy Frontend to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+      - hotfix/**
+  workflow_dispatch:
+
+concurrency:
+  group: azure-deploy-frontend
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: '20.x'
+      NEXT_PUBLIC_API_BASE: ${{ secrets.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1' }}
+      APP_NAME: app-002-gen10-step3-2-node-oshima2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install deps (ci)
+        run: npm ci
+
+      - name: TypeScript check (non-blocking if missing)
+        run: |
+          echo "TypeScript check..."
+          npm run typecheck --if-present
+
+      - name: Build
+        run: npm run build
+
+      # SCM の再起動・反映直後の競合を避けるための待機
+      - name: Wait for SCM to settle
+        run: sleep 60
+
+      # --- Deploy attempt #1
+      - name: Deploy attempt #1
+        id: deploy1
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
+        continue-on-error: true
+
+      - name: Sleep before retry #2 (if failed)
+        if: steps.deploy1.outcome == 'failure'
+        run: sleep 60
+
+      # --- Deploy attempt #2
+      - name: Deploy attempt #2
+        id: deploy2
+        if: steps.deploy1.outcome == 'failure'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
+        continue-on-error: true
+
+      - name: Sleep before retry #3 (if failed)
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: sleep 60
+
+      # --- Deploy attempt #3
+      - name: Deploy attempt #3
+        id: deploy3
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: .
+        continue-on-error: false
+
+      # 成功/失敗の最終判定（3回目で止める）
+      - name: Ensure deployed at least once
+        if: |
+          steps.deploy1.outcome == 'failure' &&
+          steps.deploy2.outcome == 'failure' &&
+          steps.deploy3.outcome == 'failure'
+        run: |
+          echo "All 3 deploy attempts failed."
+          exit 1
+
+      # --- Health checks after deploy
+      - name: Warm up & health check (root)
+        run: |
+          set -e
+          URL="https://${{ env.APP_NAME }}.azurewebsites.net"
+          for i in {1..10}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            echo "[$i/10] $URL -> $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 12
+          done
+          echo "Root did not return 200"
+          exit 1
+
+      - name: Health check (/admin)
+        run: |
+          set -e
+          URL="https://${{ env.APP_NAME }}.azurewebsites.net/admin"
+          for i in {1..10}; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            echo "[$i/10] $URL -> $code"
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 12
+          done
+          echo "/admin did not return 200"
+          exit 1
