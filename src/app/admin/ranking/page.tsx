@@ -19,7 +19,7 @@ interface RankingEntry {
 
 export default function Page() {
   const router = useRouter();
-  const [rankings, setRankings] = useState<div[]>([]);
+  const [rankings, setRankings] = useState<RankingEntry[]>([]);
   const [period, setPeriod] = useState<'monthly' | 'quarterly' | 'yearly'>('monthly');
   const [selectedDepartment, setSelectedDepartment] = useState<string>('');
   const [departments, setDepartments] = useState<string[]>([]);
@@ -82,11 +82,11 @@ export default function Page() {
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
-        return <div className="w-6 h-6 text-yellow-500" />;
+        return <Icon icon="heroicons:trophy" className="w-6 h-6 text-yellow-500" />;
       case 2:
-        return <div className="w-6 h-6 text-gray-400" />;
+        return <Icon icon="heroicons:star" className="w-6 h-6 text-gray-400" />;
       case 3:
-        return <div className="w-6 h-6 text-yellow-600" />;
+        return <Icon icon="heroicons:star" className="w-6 h-6 text-yellow-600" />;
       default:
         return <span className="w-6 h-6 flex items-center justify-center text-sm font-bold text-gray-500">{rank}</span>;
     }
@@ -128,7 +128,7 @@ export default function Page() {
             </p>
           </div>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <div className="w-4 h-4" />
+            <Icon icon="heroicons:calendar" className="w-4 h-4" />
             <span>期間: {ja.ranking.period[period]}</span>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function Page() {
           <div className="p-4">
             <div className="flex flex-wrap gap-4 items-center">
               <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 text-gray-500" />
+                <Icon icon="heroicons:calendar" className="w-4 h-4 text-gray-500" />
                 <span className="text-sm font-medium text-gray-700">期間:</span>
                 <select
                   value={period}
@@ -152,7 +152,7 @@ export default function Page() {
               </div>
               
               <div className="flex items-center space-x-2">
-                <div className="w-4 h-4 text-gray-500" />
+                <Icon icon="heroicons:building-office" className="w-4 h-4 text-gray-500" />
                 <span className="text-sm font-medium text-gray-700">部門:</span>
                 <select
                   value={selectedDepartment}
@@ -175,7 +175,7 @@ export default function Page() {
             <div className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="w-5 h-5 text-primary-600" />
+                  <Icon icon="heroicons:user" className="w-5 h-5 text-primary-600" />
                   <span className="font-medium text-primary-900">{ja.ranking.myRank}</span>
                 </div>
                 <span className="text-2xl font-bold text-primary-600">{myRank}位</span>
@@ -188,7 +188,7 @@ export default function Page() {
         <div>
           <div>
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5" />
+              <Icon icon="heroicons:trophy" className="w-5 h-5" />
               ランキング
             </div>
           </div>
