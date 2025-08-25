@@ -5,4 +5,6 @@ export {
   CardContent,
   CardFooter,
   CardDescription,
+  Section,
+  Title,
 } from "./card";
