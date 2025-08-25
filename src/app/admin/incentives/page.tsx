@@ -21,8 +21,8 @@ export default function Page() {
 
         <Tabs defaultValue="products" className="space-y-6">
           <TabsList className="grid grid-cols-2 w-full max-w-md">
-            <TabsTrigger value="products" className="whitespace-nowrap">商品管理</TabsTrigger>
-            <TabsTrigger value="stats" className="whitespace-nowrap">実績・人気度</TabsTrigger>
+            <TabsTrigger value="products">商品管理</TabsTrigger>
+            <TabsTrigger value="stats">実績・人気度</TabsTrigger>
           </TabsList>
 
           <TabsContent value="products" className="space-y-6">
