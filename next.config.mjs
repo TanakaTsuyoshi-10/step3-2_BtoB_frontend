@@ -61,19 +61,11 @@ const nextConfig = {
     ];
   },
   
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/admin/dashboard',
-        permanent: false
-      }
-    ];
-  },
+
   
   env: {
     // デモモードの場合は環境変数を設定しない（undefinedのまま）
-    // NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || undefined
+    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || undefined
   },
   
   typescript: {
