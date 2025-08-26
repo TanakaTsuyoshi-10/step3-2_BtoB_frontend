@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Download, FileText, Calendar, User } from 'lucide-react';
@@ -62,11 +62,7 @@ export default function Page() {
 
   const reportId = params.id as string;
 
-  useEffect(() => {
-    loadReport();
-  }, [reportId]);
-
-  const loadReport = async () => {
+  const loadReport = useCallback(async () => {
     try {
       setLoading(true);
       const data = await reportsAPI.getReport(reportId);
@@ -76,7 +72,11 @@ export default function Page() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [reportId]);
+
+  useEffect(() => {
+    loadReport();
+  }, [loadReport]);
 
   const handleDownload = async (format: 'csv' | 'pdf') => {
     if (!report) return;

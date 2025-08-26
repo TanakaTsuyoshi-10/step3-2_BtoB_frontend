@@ -25,6 +25,7 @@ const authAPI = {
     return Promise.resolve({ 
       id: 1, 
       email: 'admin@example.com', 
+      username: 'admin',
       full_name: 'System Administrator',
       is_active: true 
     });
