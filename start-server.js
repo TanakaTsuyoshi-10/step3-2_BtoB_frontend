@@ -1,45 +1,28 @@
 #!/usr/bin/env node
 
-// Azure App Service用のシンプルなスタートスクリプト
-const path = require('path');
+// Azure App Service専用スタートスクリプト
+process.env.NODE_ENV = 'production';
 
-// 環境変数を設定
-process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+// Azure環境変数を確実に設定 (Azureは PORT を設定してくれる)
+if (!process.env.PORT && process.env.WEBSITES_PORT) {
+  process.env.PORT = process.env.WEBSITES_PORT;
+}
 process.env.PORT = process.env.PORT || '8080';
 process.env.HOSTNAME = process.env.HOSTNAME || '0.0.0.0';
 
-console.log('=== SERVER STARTUP ===');
-console.log(`Environment: ${process.env.NODE_ENV}`);
-console.log(`Port: ${process.env.PORT}`);
-console.log(`Hostname: ${process.env.HOSTNAME}`);
-console.log(`Process PID: ${process.pid}`);
-console.log('========================');
+console.log('🚀 Azure App Service Startup');
+console.log(`PORT: ${process.env.PORT}`);
+console.log(`HOSTNAME: ${process.env.HOSTNAME}`);
 
-// エラーハンドリング
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
-  process.exit(1);
-});
+// standaloneサーバーを直接起動 (ディレクトリ変更なし)
+const path = require('path');
+const serverPath = path.join(__dirname, '.next', 'standalone', 'server.js');
 
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-  process.exit(1);
-});
+console.log(`Starting server: ${serverPath}`);
 
-// standaloneディレクトリに移動
-const standaloneDir = path.join(__dirname, '.next', 'standalone');
-process.chdir(standaloneDir);
-
-console.log(`Changed to directory: ${standaloneDir}`);
-console.log(`Starting Next.js server on ${process.env.HOSTNAME}:${process.env.PORT}...`);
-
-// standaloneサーバーを起動
 try {
-  require('./server.js');
-} catch (error) {
-  console.error('Failed to require server.js:', error.message);
-  // フォールバック: フルパスで試行
-  const serverPath = path.join(standaloneDir, 'server.js');
-  console.log(`Trying absolute path: ${serverPath}`);
   require(serverPath);
+} catch (error) {
+  console.error('Server startup failed:', error);
+  process.exit(1);
 }
