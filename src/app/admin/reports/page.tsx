@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Layout from '@components/layout/Layout';
-import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
+import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar, BarChart3, TrendingDown, DollarSign, Lightbulb, Target, Building2, Factory, Truck, TrendingUp, Clipboard } from 'lucide-react';
 
 // Mock components for build
 const Card = ({ children, className }: any) => <div className={`bg-white rounded-lg shadow ${className}`}>{children}</div>;
@@ -15,6 +15,130 @@ const Input = ({ className, ...props }: any) => <input className={`border rounde
 const Select = ({ children, ...props }: any) => <select className="border rounded px-3 py-2" {...props}>{children}</select>;
 const Badge = ({ children, className }: any) => <span className={`px-2 py-1 text-xs rounded ${className}`}>{children}</span>;
 const Progress = ({ value, className }: any) => <div className={`w-full bg-gray-200 rounded ${className}`}><div className="bg-blue-600 h-2 rounded" style={{ width: `${value}%` }}></div></div>;
+
+// Report Preview Component
+const ReportPreview = () => {
+  return (
+    <div className="space-y-6">
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <h3 className="font-bold text-lg mb-3 text-blue-800 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5" /> 主要指標サマリー
+        </h3>
+        <div className="grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">-15.3%</div>
+            <div className="text-sm text-gray-600">CO₂排出量削減</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">1,234</div>
+            <div className="text-sm text-gray-600">省エネ量 (MWh)</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-orange-600">¥248万</div>
+            <div className="text-sm text-gray-600">コスト削減額</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white border rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+          <TrendingUp className="w-5 h-5" /> 月別CO₂削減推移
+        </h3>
+        <div className="bg-gray-100 h-32 rounded flex items-center justify-center mb-2">
+          <span className="text-gray-500">[グラフエリア] 月別削減率の棒グラフが表示されます</span>
+        </div>
+        <p className="text-sm text-gray-600">※ 3月、8月に大幅な削減を達成。夏季の空調効率化が効果的でした。</p>
+      </div>
+
+      <div className="bg-white border rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+          <Clipboard className="w-5 h-5" /> 部門別削減実績
+        </h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-3 py-2 text-left">部門</th>
+                <th className="px-3 py-2 text-center">削減率</th>
+                <th className="px-3 py-2 text-center">削減量(t-CO₂)</th>
+                <th className="px-3 py-2 text-center">評価</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr>
+                <td className="px-3 py-2">本社オフィス</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-20.2%</td>
+                <td className="px-3 py-2 text-center">45.6</td>
+                <td className="px-3 py-2 text-center">
+                  <span className="inline-flex items-center gap-1">
+                    <CheckCircle className="w-4 h-4 text-green-500" /> 優秀
+                  </span>
+                </td>
+              </tr>
+              <tr className="bg-gray-50">
+                <td className="px-3 py-2">製造部門</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-12.8%</td>
+                <td className="px-3 py-2 text-center">32.4</td>
+                <td className="px-3 py-2 text-center">
+                  <span className="inline-flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4 text-yellow-500" /> 良好
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td className="px-3 py-2">倉庫・配送</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-8.9%</td>
+                <td className="px-3 py-2 text-center">18.7</td>
+                <td className="px-3 py-2 text-center">
+                  <span className="inline-flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4 text-yellow-500" /> 良好
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="text-sm text-gray-600 mt-2">※ 本社オフィスでは LED照明・高効率空調の導入が大きく寄与</p>
+      </div>
+
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-2 text-yellow-800 flex items-center gap-2">
+          <Lightbulb className="w-5 h-5" /> 主な取り組みと成果
+        </h3>
+        <ul className="space-y-2 text-sm">
+          <li className="flex items-start space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+            <span><strong>LED照明への全面切り替え:</strong> 電力消費量を35%削減、年間¥120万のコスト削減</span>
+          </li>
+          <li className="flex items-start space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+            <span><strong>高効率空調システム導入:</strong> 冷暖房効率28%向上、快適性も改善</span>
+          </li>
+          <li className="flex items-start space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+            <span><strong>従業員エコ活動:</strong> Tech0ポイント制度により意識向上、節電行動が定着</span>
+          </li>
+        </ul>
+      </div>
+
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <h3 className="font-bold text-lg mb-2 text-blue-800 flex items-center gap-2">
+          <Target className="w-5 h-5" /> 来年度の目標と計画
+        </h3>
+        <div className="space-y-2 text-sm">
+          <p><strong>目標:</strong> さらなる10%削減（2025年度）</p>
+          <p><strong>重点施策:</strong></p>
+          <ul className="list-disc list-inside ml-4 space-y-1">
+            <li>太陽光パネルの導入検討（本社屋上）</li>
+            <li>電気自動車への社用車切り替え</li>
+            <li>リモートワーク推進によるオフィス電力削減</li>
+            <li>AIによるエネルギー使用量最適化システム導入</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Mock Tabs components
 const Tabs = ({ children, value, onValueChange, className }: any) => <div className={className} data-value={value}>{children}</div>;
@@ -35,11 +159,14 @@ const generateReport = async (data: any) => ({ task_id: '123' });
 const getReportStatus = async (taskId: string) => ({ status: 'completed', progress: 100 });
 const downloadReport = async (taskId: string) => new Blob();
 const previewReport = async (data: any) => ({ 
-  title: 'Sample Report', 
+  title: 'CO₂削減実績レポート', 
   period: '2024年1月-12月', 
-  summary: 'Sample summary', 
-  key_metrics: {}, 
-  content_preview: 'Preview content' 
+  summary: '2024年度において、全社的なエネルギー削減施策により、前年比15.3%のCO₂削減を達成しました。特に本社オフィスビルでは省エネ設備の導入により20.2%の大幅削減を実現しています。', 
+  key_metrics: {
+    co2_reduction: '15.3%',
+    energy_savings: '1,234 MWh',
+    cost_savings: '¥2,480,000'
+  }
 });
 
 export default function Page() {
@@ -218,7 +345,7 @@ export default function Page() {
                     </div>
                     <div className="bg-gray-50 p-4 rounded">
                       <h4 className="font-medium mb-2">内容プレビュー</h4>
-                      <p>{previewData.content_preview}</p>
+                      <ReportPreview />
                     </div>
                   </div>
                 ) : (
