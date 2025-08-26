@@ -22,7 +22,12 @@ const authAPI = {
   },
   me: async (token: string) => {
     await new Promise(resolve => setTimeout(resolve, 200));
-    return Promise.resolve({ id: '1', username: 'admin', email: 'admin@example.com' });
+    return Promise.resolve({ 
+      id: 1, 
+      email: 'admin@example.com', 
+      full_name: 'System Administrator',
+      is_active: true 
+    });
   }
 };
 

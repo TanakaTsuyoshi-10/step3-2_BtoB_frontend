@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Layout from '@components/layout/Layout';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Download, Eye, Clock, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 
 // Mock components for build
@@ -16,6 +15,12 @@ const Input = ({ className, ...props }: any) => <input className={`border rounde
 const Select = ({ children, ...props }: any) => <select className="border rounded px-3 py-2" {...props}>{children}</select>;
 const Badge = ({ children, className }: any) => <span className={`px-2 py-1 text-xs rounded ${className}`}>{children}</span>;
 const Progress = ({ value, className }: any) => <div className={`w-full bg-gray-200 rounded ${className}`}><div className="bg-blue-600 h-2 rounded" style={{ width: `${value}%` }}></div></div>;
+
+// Mock Tabs components
+const Tabs = ({ children, value, onValueChange, className }: any) => <div className={className} data-value={value}>{children}</div>;
+const TabsList = ({ children, className }: any) => <div className={`flex space-x-1 ${className}`}>{children}</div>;
+const TabsTrigger = ({ children, value, className, onClick }: any) => <button className={`px-4 py-2 rounded ${className}`} onClick={() => onClick?.(value)}>{children}</button>;
+const TabsContent = ({ children, value, className }: any) => <div className={className}>{children}</div>;
 
 interface AutoReportRequest {
   start_date: string;
@@ -86,14 +91,39 @@ export default function Page() {
           <p className="text-gray-600">AI搭載の自動レポート生成システムでCO₂削減レポートを効率的に作成できます</p>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <Tabs value={activeTab} className="space-y-6">
           <TabsList className="grid grid-cols-4 w-full max-w-2xl">
-            <TabsTrigger value="create" className="whitespace-nowrap">レポート作成</TabsTrigger>
-            <TabsTrigger value="preview" className="whitespace-nowrap">プレビュー</TabsTrigger>
-            <TabsTrigger value="status" className="whitespace-nowrap">進捗状況</TabsTrigger>
-            <TabsTrigger value="history" className="whitespace-nowrap">作成履歴</TabsTrigger>
+            <TabsTrigger 
+              value="create" 
+              className={`whitespace-nowrap ${activeTab === 'create' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+              onClick={() => setActiveTab('create')}
+            >
+              レポート作成
+            </TabsTrigger>
+            <TabsTrigger 
+              value="preview" 
+              className={`whitespace-nowrap ${activeTab === 'preview' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+              onClick={() => setActiveTab('preview')}
+            >
+              プレビュー
+            </TabsTrigger>
+            <TabsTrigger 
+              value="status" 
+              className={`whitespace-nowrap ${activeTab === 'status' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+              onClick={() => setActiveTab('status')}
+            >
+              進捗状況
+            </TabsTrigger>
+            <TabsTrigger 
+              value="history" 
+              className={`whitespace-nowrap ${activeTab === 'history' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700'}`}
+              onClick={() => setActiveTab('history')}
+            >
+              作成履歴
+            </TabsTrigger>
           </TabsList>
 
+          {activeTab === 'create' && (
           <TabsContent value="create" className="space-y-6">
             <Card>
               <CardHeader>
@@ -168,7 +198,9 @@ export default function Page() {
               </CardContent>
             </Card>
           </TabsContent>
+          )}
 
+          {activeTab === 'preview' && (
           <TabsContent value="preview" className="space-y-6">
             <Card>
               <CardHeader>
@@ -198,7 +230,9 @@ export default function Page() {
               </CardContent>
             </Card>
           </TabsContent>
+          )}
 
+          {activeTab === 'status' && (
           <TabsContent value="status" className="space-y-6">
             <Card>
               <CardHeader>
@@ -228,7 +262,9 @@ export default function Page() {
               </CardContent>
             </Card>
           </TabsContent>
+          )}
 
+          {activeTab === 'history' && (
           <TabsContent value="history" className="space-y-6">
             <Card>
               <CardHeader>
@@ -272,6 +308,7 @@ export default function Page() {
               </CardContent>
             </Card>
           </TabsContent>
+          )}
         </Tabs>
       </div>
     </Layout>
