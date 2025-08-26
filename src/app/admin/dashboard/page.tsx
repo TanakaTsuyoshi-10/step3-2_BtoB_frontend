@@ -11,18 +11,47 @@ import {
   BarChart,
   Shield,
   Download,
+  TrendingUp,
 } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 // Removed card import - using simple HTML instead
 import { isAuthenticated, getCurrentUser } from '@/lib/auth';
 import ja from '@/i18n/ja';
+import ElectricityChart from './ElectricityChart';
+import GasChart from './GasChart';
+import CO2Chart from './CO2Chart';
 
 const AdminPage: React.FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [selectedYear, setSelectedYear] = useState(2025);
+  const [mounted, setMounted] = useState(false);
+
+  const getStatsForYear = (year: number) => {
+    if (year === 2025) {
+      return {
+        co2Reduction: '1,247.5',
+        totalPoints: '12,475',
+        rewardExchanges: '68',
+        participationRate: '82.3'
+      };
+    } else {
+      return {
+        co2Reduction: '2,847.5',
+        totalPoints: '28,475',
+        rewardExchanges: '156',
+        participationRate: '78.5'
+      };
+    }
+  };
+
+  const defaultStats = getStatsForYear(2025);
+  const stats = mounted ? getStatsForYear(selectedYear) : defaultStats;
 
   useEffect(() => {
+    setMounted(true);
+    
     if (!isAuthenticated()) {
       router.push('/admin/login');
       return;
@@ -79,7 +108,7 @@ const AdminPage: React.FC = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
           <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
         </div>
       </Layout>
@@ -99,202 +128,103 @@ const AdminPage: React.FC = () => {
     );
   }
 
+  if (!mounted) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+          <span className="ml-4 text-lg text-gray-600">{ja.common.loading}</span>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className="space-y-6">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{ja.admin.title}</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{ja.admin.title}</h1>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">
               システム管理とレポート出力
             </p>
           </div>
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Settings className="w-4 h-4" />
-            <span>管理者モード</span>
-          </div>
-        </div>
-
-        {/* 管理機能カード */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* ポイントルール管理 */}
-          <div className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-shadow cursor-pointer p-6" onClick={() => router.push('/admin/points')}>
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Coins className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">ポイント管理</h3>
-                <p className="text-sm text-gray-600">CO₂削減ポイントの付与ルールと取引履歴</p>
-              </div>
+          <div className="flex items-center gap-4">
+            {/* 年度セレクター */}
+            <div className="flex items-center gap-2">
+              <label htmlFor="year-select" className="text-sm text-gray-600 whitespace-nowrap">年度:</label>
+              <select
+                id="year-select"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                className="px-3 py-1 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value={2025}>2025年</option>
+                <option value={2024}>2024年</option>
+              </select>
             </div>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">アクティブルール</span>
-                <span className="font-medium">3件</span>
-              </div>
-            </div>
-          </div>
-
-          {/* 景品管理 */}
-          <div className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-shadow cursor-pointer p-6" onClick={() => router.push('/admin/products')}>
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <Gift className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">商品管理</h3>
-                <p className="text-sm text-gray-600">交換可能な景品の追加・編集・人気度分析</p>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">登録商品数</span>
-                <span className="font-medium">15件</span>
-              </div>
-            </div>
-          </div>
-
-          {/* レポート生成 */}
-          <div className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-shadow cursor-pointer p-6" onClick={() => router.push('/admin/reports')}>
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <FileText className="w-6 h-6 text-purple-600" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-gray-900">レポート生成</h3>
-                <p className="text-sm text-gray-600">CSRレポートと各種実績レポートの生成</p>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t border-gray-200">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">今月生成数</span>
-                <span className="font-medium">12件</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* CSRレポート */}
-        <div className="bg-white rounded-lg border shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <FileText className="w-5 h-5" />
-            <h2 className="text-2xl font-semibold leading-none tracking-tight">CSRレポート出力</h2>
-          </div>
-          <div>
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    対象期間
-                  </label>
-                  <div className="space-y-2">
-                    <input
-                      type="date"
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      defaultValue="2025-01-01"
-                    />
-                    <input
-                      type="date"
-                      className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-                      defaultValue="2025-01-31"
-                    />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    粒度
-                  </label>
-                  <select className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
-                    <option value="monthly">月次</option>
-                    <option value="quarterly">四半期</option>
-                    <option value="yearly">年次</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    部門フィルタ
-                  </label>
-                  <select className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500">
-                    <option value="">全部門</option>
-                    <option value="営業部">営業部</option>
-                    <option value="開発部">開発部</option>
-                    <option value="人事部">人事部</option>
-                    <option value="企画部">企画部</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={handleExportReport}
-                  className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center space-x-2"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>CSVでエクスポート</span>
-                </button>
-                
-                <button
-                  onClick={() => router.push('/admin/reports')}
-                  className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2"
-                >
-                  <FileText className="w-4 h-4" />
-                  <span>レポート生成へ</span>
-                </button>
-              </div>
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <Settings className="w-4 h-4" />
+              <span>管理者モード</span>
             </div>
           </div>
         </div>
 
         {/* 統計情報 */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">総CO₂削減量</p>
-                <p className="text-2xl font-bold text-green-600">2,847.5 kg</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-600">{stats.co2Reduction} kg</p>
               </div>
-              <BarChart className="w-8 h-8 text-green-500" />
+              <BarChart className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">総付与ポイント</p>
-                <p className="text-2xl font-bold text-blue-600">28,475 pt</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-600">{stats.totalPoints} pt</p>
               </div>
-              <Coins className="w-8 h-8 text-blue-500" />
+              <Coins className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">景品交換回数</p>
-                <p className="text-2xl font-bold text-purple-600">156 回</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">{stats.rewardExchanges} 回</p>
               </div>
-              <Gift className="w-8 h-8 text-purple-500" />
+              <Gift className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">参加率</p>
-                <p className="text-2xl font-bold text-orange-600">78.5%</p>
+                <p className="text-xl sm:text-2xl font-bold text-orange-600">{stats.participationRate}%</p>
               </div>
-              <Users className="w-8 h-8 text-orange-500" />
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
             </div>
           </div>
         </div>
+
+        {/* グラフエリア */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <ElectricityChart selectedYear={selectedYear} />
+          <GasChart selectedYear={selectedYear} />
+        </div>
+
+        {/* CO₂削減量推移（折れ線グラフ） */}
+        <CO2Chart selectedYear={selectedYear} />
       </div>
     </Layout>
   );
 };
 
 export default AdminPage;
-
