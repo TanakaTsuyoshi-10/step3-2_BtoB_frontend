@@ -72,7 +72,8 @@ const nextConfig = {
   },
   
   env: {
-    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || 'https://app-002-gen10-step3-2-py-oshima2.azurewebsites.net/api/v1'
+    // デモモードの場合は環境変数を設定しない（undefinedのまま）
+    // NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE || undefined
   },
   
   typescript: {
