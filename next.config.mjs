@@ -3,7 +3,7 @@ import './env.validate.mjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // output: 'standalone', // 通常のNext.js起動に戻すため無効化
   
   async rewrites() {
     return [
