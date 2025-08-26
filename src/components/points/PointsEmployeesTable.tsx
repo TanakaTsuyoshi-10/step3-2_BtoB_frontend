@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -44,11 +44,7 @@ const PointsEmployeesTable: React.FC = () => {
 
   const departments = ['営業部', '開発部', '総務部', '経理部', '人事部', '企画部'];
 
-  useEffect(() => {
-    fetchEmployees();
-  }, [pagination.page, searchQuery, departmentFilter, sortBy, sortOrder]);
-
-  const fetchEmployees = async () => {
+  const fetchEmployees = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -151,7 +147,11 @@ const PointsEmployeesTable: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, departmentFilter, sortBy, sortOrder]);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
 
   const handleSort = (field: string) => {
     if (sortBy === field) {

@@ -283,6 +283,7 @@ export default function ProductsManagementPage() {
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center space-x-3">
                             <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                              {/* eslint-disable-next-line jsx-a11y/alt-text */}
                               <Image className="w-6 h-6 text-gray-400" />
                             </div>
                             <div className="flex-1">

@@ -1,3 +1,6 @@
+// 環境変数の検証
+import './env.validate.mjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
@@ -79,6 +82,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false
   },
+  
+  // デプロイ時のメモリ不足対策
+  compress: true,
+  poweredByHeader: false,
   
   experimental: {
     // optimizeCss: true, // ← critters モジュール要求により無効化
