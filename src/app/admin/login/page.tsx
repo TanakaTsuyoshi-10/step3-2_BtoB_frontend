@@ -51,6 +51,13 @@ export default function Page() {
     }));
   }
 
+  const fillDemoCredentials = () => {
+    setFormData({
+      username: 'admin@example.com',
+      password: 'admin123'
+    })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -164,7 +171,25 @@ export default function Page() {
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-4">
+            {/* Demo credentials info */}
+            <div className="text-sm bg-blue-50 rounded-lg py-3 px-4 border border-blue-200">
+              <p className="font-medium text-blue-800 mb-2">デモ用ログイン情報</p>
+              <div className="space-y-2">
+                <div className="space-y-1 text-blue-700">
+                  <p>メール: admin@example.com</p>
+                  <p>パスワード: admin123</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={fillDemoCredentials}
+                  className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-md transition-colors"
+                >
+                  自動入力
+                </button>
+              </div>
+            </div>
+            
             <p className="text-sm text-gray-600">
               アカウントをお持ちでない方は{' '}
               <Link href="/register" className="font-medium text-primary-600 hover:text-primary-500">
