@@ -20,119 +20,124 @@ const Progress = ({ value, className }: any) => <div className={`w-full bg-gray-
 const ReportPreview = () => {
   return (
     <div className="space-y-6">
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <h3 className="font-bold text-lg mb-3 text-blue-800 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5" /> 主要指標サマリー
+      <div className="bg-green-50 p-4 rounded-lg">
+        <h3 className="font-bold text-lg mb-3 text-green-800 flex items-center gap-2">
+          <BarChart3 className="w-5 h-5" /> 従業員家庭CO₂削減実績サマリー（ESG報告用）
         </h3>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">
-            <div className="text-2xl font-bold text-green-600">-15.3%</div>
-            <div className="text-sm text-gray-600">CO₂排出量削減</div>
+            <div className="text-2xl font-bold text-green-600">-22.5%</div>
+            <div className="text-sm text-gray-600">従業員家庭CO₂削減率</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600">1,234</div>
-            <div className="text-sm text-gray-600">省エネ量 (MWh)</div>
+            <div className="text-2xl font-bold text-blue-600">856</div>
+            <div className="text-sm text-gray-600">平均削減量 (kWh/世帯)</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-orange-600">¥248万</div>
-            <div className="text-sm text-gray-600">コスト削減額</div>
+            <div className="text-2xl font-bold text-orange-600">245</div>
+            <div className="text-sm text-gray-600">平均ガス削減量 (㎥/世帯)</div>
           </div>
         </div>
       </div>
 
       <div className="bg-white border rounded-lg p-4">
         <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5" /> 月別CO₂削減推移
+          <TrendingUp className="w-5 h-5" /> 従業員家庭の月別CO₂削減推移
         </h3>
         <div className="bg-gray-100 h-32 rounded flex items-center justify-center mb-2">
-          <span className="text-gray-500">[グラフエリア] 月別削減率の棒グラフが表示されます</span>
+          <span className="text-gray-500">[グラフエリア] 従業員家庭の月別電力・ガス使用量とCO₂削減量の推移</span>
         </div>
-        <p className="text-sm text-gray-600">※ 3月、8月に大幅な削減を達成。夏季の空調効率化が効果的でした。</p>
+        <p className="text-sm text-gray-600">※ 全従業員880世帯の平均値。5月・10月に大幅削減達成。企業のScope3削減目標に大きく貢献。</p>
       </div>
 
       <div className="bg-white border rounded-lg p-4">
         <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
-          <Clipboard className="w-5 h-5" /> 部門別削減実績
+          <Clipboard className="w-5 h-5" /> 従業員家庭の用途別エネルギー削減実績
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-3 py-2 text-left">部門</th>
+                <th className="px-3 py-2 text-left">用途</th>
                 <th className="px-3 py-2 text-center">削減率</th>
-                <th className="px-3 py-2 text-center">削減量(t-CO₂)</th>
-                <th className="px-3 py-2 text-center">評価</th>
+                <th className="px-3 py-2 text-center">削減量(kg-CO₂/世帯)</th>
+                <th className="px-3 py-2 text-center">全社貢献度</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               <tr>
-                <td className="px-3 py-2">本社オフィス</td>
-                <td className="px-3 py-2 text-center font-bold text-green-600">-20.2%</td>
-                <td className="px-3 py-2 text-center">45.6</td>
+                <td className="px-3 py-2">電力（照明・家電）</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-28.5%</td>
+                <td className="px-3 py-2 text-center">142.8</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4 text-green-500" /> 優秀
+                    <CheckCircle className="w-4 h-4 text-green-500" /> 高
                   </span>
                 </td>
               </tr>
               <tr className="bg-gray-50">
-                <td className="px-3 py-2">製造部門</td>
-                <td className="px-3 py-2 text-center font-bold text-green-600">-12.8%</td>
-                <td className="px-3 py-2 text-center">32.4</td>
+                <td className="px-3 py-2">電力（冷暖房）</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-18.2%</td>
+                <td className="px-3 py-2 text-center">89.3</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4 text-yellow-500" /> 良好
+                    <CheckCircle className="w-4 h-4 text-green-500" /> 高
                   </span>
                 </td>
               </tr>
               <tr>
-                <td className="px-3 py-2">倉庫・配送</td>
-                <td className="px-3 py-2 text-center font-bold text-green-600">-8.9%</td>
-                <td className="px-3 py-2 text-center">18.7</td>
+                <td className="px-3 py-2">ガス（給湯・調理）</td>
+                <td className="px-3 py-2 text-center font-bold text-green-600">-15.7%</td>
+                <td className="px-3 py-2 text-center">64.2</td>
                 <td className="px-3 py-2 text-center">
                   <span className="inline-flex items-center gap-1">
-                    <AlertCircle className="w-4 h-4 text-yellow-500" /> 良好
+                    <AlertCircle className="w-4 h-4 text-yellow-500" /> 中
                   </span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p className="text-sm text-gray-600 mt-2">※ 本社オフィスでは LED照明・高効率空調の導入が大きく寄与</p>
+        <p className="text-sm text-gray-600 mt-2">※ 全880世帯平均値。LED電球交換とエアコン最適化により企業のScope3削減に大きく寄与</p>
       </div>
 
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <h3 className="font-bold text-lg mb-2 text-yellow-800 flex items-center gap-2">
-          <Lightbulb className="w-5 h-5" /> 主な取り組みと成果
+          <Lightbulb className="w-5 h-5" /> 従業員家庭での主な削減活動と企業への貢献
         </h3>
         <ul className="space-y-2 text-sm">
           <li className="flex items-start space-x-2">
             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <span><strong>LED照明への全面切り替え:</strong> 電力消費量を35%削減、年間¥120万のコスト削減</span>
+            <span><strong>LED電球への交換（実施率78%）:</strong> 全社Scope3で年間125.6t-CO₂削減効果</span>
           </li>
           <li className="flex items-start space-x-2">
             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <span><strong>高効率空調システム導入:</strong> 冷暖房効率28%向上、快適性も改善</span>
+            <span><strong>エアコン温度設定最適化（実施率85%）:</strong> 全社で年間98.4t-CO₂削減に貢献</span>
           </li>
           <li className="flex items-start space-x-2">
             <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-            <span><strong>従業員エコ活動:</strong> Tech0ポイント制度により意識向上、節電行動が定着</span>
+            <span><strong>節水・省エネ給湯（実施率62%）:</strong> ガス使用量削減で年間56.5t-CO₂削減</span>
+          </li>
+          <li className="flex items-start space-x-2">
+            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+            <span><strong>待機電力削減活動（実施率91%）:</strong> 企業のESG目標達成に大きく貢献</span>
           </li>
         </ul>
       </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <h3 className="font-bold text-lg mb-2 text-blue-800 flex items-center gap-2">
-          <Target className="w-5 h-5" /> 来年度の目標と計画
+          <Target className="w-5 h-5" /> 2025年度の目標と企業ESG戦略への貢献計画
         </h3>
         <div className="space-y-2 text-sm">
-          <p><strong>目標:</strong> さらなる10%削減（2025年度）</p>
+          <p><strong>全社目標:</strong> 従業員家庭でのさらなる15%削減（企業Scope3削減目標達成）</p>
           <p><strong>重点施策:</strong></p>
           <ul className="list-disc list-inside ml-4 space-y-1">
-            <li>太陽光パネルの導入検討（本社屋上）</li>
-            <li>電気自動車への社用車切り替え</li>
-            <li>リモートワーク推進によるオフィス電力削減</li>
-            <li>AIによるエネルギー使用量最適化システム導入</li>
+            <li>従業員向け太陽光発電導入支援制度（補助金制度新設）</li>
+            <li>省エネ家電買替え支援プログラム（エコポイント制度拡充）</li>
+            <li>家庭エネルギー診断サービス提供（年2回実施）</li>
+            <li>ESG投資家向け報告書での従業員活動成果発信</li>
+            <li>カーボンニュートラル達成企業認定取得へ向けた取組み強化</li>
           </ul>
         </div>
       </div>
@@ -159,13 +164,13 @@ const generateReport = async (data: any) => ({ task_id: '123' });
 const getReportStatus = async (taskId: string) => ({ status: 'completed', progress: 100 });
 const downloadReport = async (taskId: string) => new Blob();
 const previewReport = async (data: any) => ({ 
-  title: 'CO₂削減実績レポート', 
+  title: '従業員家庭CO₂削減実績レポート（ESG報告書用）', 
   period: '2024年1月-12月', 
-  summary: '2024年度において、全社的なエネルギー削減施策により、前年比15.3%のCO₂削減を達成しました。特に本社オフィスビルでは省エネ設備の導入により20.2%の大幅削減を実現しています。', 
+  summary: '2024年度において、従業員家庭でのエネルギー削減活動を通じて、企業全体のScope3削減に大きく貢献。全従業員の家庭で合計22.5%のCO₂削減を達成し、企業のESG目標達成に寄与しました。', 
   key_metrics: {
-    co2_reduction: '15.3%',
-    energy_savings: '1,234 MWh',
-    cost_savings: '¥2,480,000'
+    co2_reduction: '22.5%',
+    energy_savings: '856 kWh（従業員1世帯平均）',
+    gas_savings: '245 ㎥（従業員1世帯平均）'
   }
 });
 

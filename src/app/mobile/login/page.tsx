@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Icon } from '@iconify/react'
-import { authAPI, setAuthToken, setCurrentUser } from '@/lib/api/mobile'
+import { setAuthToken, setCurrentUser } from '@/lib/api/mobile'
 
 export default function Login() {
   const router = useRouter()
@@ -14,10 +14,6 @@ export default function Login() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    companyCode: '',
-    employeeId: '',
-    userName: '',
-    department: '',
     customerNumber: ''
   })
 
@@ -28,30 +24,73 @@ export default function Login() {
     })
   }
 
+  const fillDemoCredentials = () => {
+    if (loginType === 'general') {
+      setFormData({
+        ...formData,
+        email: 'user@example.com',
+        password: 'user123'
+      })
+    } else {
+      setFormData({
+        ...formData,
+        customerNumber: '1234567890',
+        password: 'demo123'
+      })
+    }
+  }
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    try {
-      // For now, use email and password with existing backend
-      const credentials = {
-        email: formData.email,
-        password: formData.password
-      }
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 1000))
 
-      const response = await authAPI.login(credentials)
-      
-      if (response.access_token) {
-        setAuthToken(response.access_token)
-        
-        // Get user info and store it
-        const userInfo = await authAPI.getCurrentUser()
-        setCurrentUser(userInfo)
-        
-        router.push('/mobile/dashboard')
-      } else {
-        throw new Error('認証トークンが取得できませんでした')
+    try {
+      if (loginType === 'general') {
+        // Mock authentication for general login
+        if (formData.email === 'user@example.com' && formData.password === 'user123') {
+          // Mock successful login
+          const mockToken = 'mock_jwt_token_' + Date.now()
+          const mockUser = {
+            id: 1,
+            email: 'user@example.com',
+            full_name: 'テストユーザー',
+            department: '開発部',
+            employee_id: 'EMP001',
+            is_active: true
+          }
+          
+          setAuthToken(mockToken)
+          setCurrentUser(mockUser)
+          
+          router.push('/mobile/dashboard')
+        } else {
+          throw new Error('メールアドレスまたはパスワードが正しくありません')
+        }
+      } else if (loginType === 'tokyogas') {
+        // Mock Tokyo Gas login (for future implementation)
+        if (formData.customerNumber && formData.password) {
+          const mockToken = 'mock_jwt_token_tokyogas_' + Date.now()
+          const mockUser = {
+            id: 2,
+            email: 'tokyogas.user@example.com',
+            full_name: '東京ガスユーザー',
+            department: '営業部',
+            employee_id: 'TG001',
+            customer_number: formData.customerNumber,
+            is_active: true
+          }
+          
+          setAuthToken(mockToken)
+          setCurrentUser(mockUser)
+          
+          router.push('/mobile/dashboard')
+        } else {
+          throw new Error('お客さま番号またはパスワードが正しくありません')
+        }
       }
     } catch (err: any) {
       setError(err.message || 'ログインに失敗しました')
@@ -62,7 +101,7 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 relative overflow-hidden flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-100 relative overflow-hidden flex items-center justify-center px-4">
       {/* Floating Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-20 h-20 bg-primary-200/30 rounded-full animate-float"></div>
@@ -123,7 +162,7 @@ export default function Login() {
                     name="customerNumber"
                     placeholder="お客さま番号を入力"
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent focus:bg-white transition-all duration-300 shadow-sm hover:shadow-md" 
-                    value={formData.customerNumber || ''}
+                    value={formData.customerNumber}
                     onChange={handleInputChange}
                     required 
                   />
@@ -148,7 +187,7 @@ export default function Login() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="animate-spin rounded-full border-b-2 h-5 w-5"></span>
+                    <span className="animate-spin rounded-full border-b-2 h-5 w-5 border-white"></span>
                   ) : (
                     <>
                       <Icon icon="carbon:connect" className="text-lg mr-2" />
@@ -191,7 +230,7 @@ export default function Login() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="animate-spin rounded-full border-b-2 h-5 w-5"></span>
+                    <span className="animate-spin rounded-full border-b-2 h-5 w-5 border-white"></span>
                   ) : (
                     <>
                       <Icon icon="carbon:login" className="text-lg mr-2" />
@@ -202,7 +241,41 @@ export default function Login() {
               </>
             )}
 
-            <div className="text-center mt-8">
+            <div className="text-center mt-8 space-y-4">
+              {/* Demo credentials info */}
+              <div className="text-sm bg-blue-50/80 backdrop-blur-sm rounded-lg py-3 px-4 border border-blue-200/50">
+                <p className="font-medium text-blue-800 mb-2">デモ用ログイン情報</p>
+                {loginType === 'general' ? (
+                  <div className="space-y-2">
+                    <div className="space-y-1 text-blue-700">
+                      <p>メール: user@example.com</p>
+                      <p>パスワード: user123</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={fillDemoCredentials}
+                      className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-md transition-colors"
+                    >
+                      自動入力
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="space-y-1 text-blue-700">
+                      <p>お客さま番号: 任意の番号</p>
+                      <p>パスワード: 任意のパスワード</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={fillDemoCredentials}
+                      className="text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1 rounded-md transition-colors"
+                    >
+                      自動入力
+                    </button>
+                  </div>
+                )}
+              </div>
+              
               <p className="text-sm text-gray-600 bg-gray-50/80 backdrop-blur-sm rounded-lg py-3 px-4">
                 アカウントをお持ちでない方は管理者にお問い合わせください
               </p>

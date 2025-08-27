@@ -95,17 +95,17 @@ export default function PointsManagementPage() {
     <Layout>
       <div className="space-y-6">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">ポイント管理</h1>
-            <p className="text-gray-600 mt-1">ポイントルールの設定と取引履歴の管理</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">ポイント管理</h1>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">ポイントルールの設定と取引履歴の管理</p>
           </div>
-          <div className="flex space-x-3">
-            <button className="btn-secondary flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+            <button className="btn-secondary flex items-center justify-center space-x-2 text-sm">
               <Download className="w-4 h-4" />
               <span>CSVエクスポート</span>
             </button>
-            <button className="btn-primary flex items-center space-x-2">
+            <button className="btn-primary flex items-center justify-center space-x-2 text-sm">
               <Plus className="w-4 h-4" />
               <span>新規ルール作成</span>
             </button>
@@ -113,44 +113,44 @@ export default function PointsManagementPage() {
         </div>
 
         {/* 統計カード */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">総発行ポイント</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.totalPointsIssued.toLocaleString()}</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-600">{stats.totalPointsIssued.toLocaleString()}</p>
               </div>
-              <DollarSign className="w-8 h-8 text-blue-500" />
+              <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">総消費ポイント</p>
-                <p className="text-2xl font-bold text-green-600">{stats.totalPointsSpent.toLocaleString()}</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-600">{stats.totalPointsSpent.toLocaleString()}</p>
               </div>
-              <TrendingUp className="w-8 h-8 text-green-500" />
+              <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">アクティブユーザー</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.activeUsers}</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">{stats.activeUsers}</p>
               </div>
-              <Users className="w-8 h-8 text-purple-500" />
+              <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">平均保有ポイント</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.averagePoints}</p>
+                <p className="text-xl sm:text-2xl font-bold text-orange-600">{stats.averagePoints}</p>
               </div>
-              <BarChart3 className="w-8 h-8 text-orange-500" />
+              <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
             </div>
           </div>
         </div>
@@ -158,10 +158,10 @@ export default function PointsManagementPage() {
         {/* タブナビゲーション */}
         <div className="bg-white rounded-lg border shadow-sm">
           <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8 px-6">
+            <nav className="-mb-px flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-8 px-4 sm:px-6">
               <button
                 onClick={() => setSelectedTab('rules')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 sm:py-4 px-1 border-b-2 font-medium text-sm ${
                   selectedTab === 'rules'
                     ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -171,7 +171,7 @@ export default function PointsManagementPage() {
               </button>
               <button
                 onClick={() => setSelectedTab('transactions')}
-                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`py-2 sm:py-4 px-1 border-b-2 font-medium text-sm ${
                   selectedTab === 'transactions'
                     ? 'border-primary-500 text-primary-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -182,11 +182,11 @@ export default function PointsManagementPage() {
             </nav>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {selectedTab === 'rules' && (
               <div className="space-y-6">
                 {/* 検索・フィルター */}
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                   <div className="flex-1 max-w-md">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -195,18 +195,18 @@ export default function PointsManagementPage() {
                         placeholder="ルールを検索..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="input-field pl-10"
+                        className="input-field pl-10 w-full"
                       />
                     </div>
                   </div>
-                  <button className="btn-secondary flex items-center space-x-2">
+                  <button className="btn-secondary flex items-center justify-center space-x-2 text-sm">
                     <Filter className="w-4 h-4" />
                     <span>フィルター</span>
                   </button>
                 </div>
 
                 {/* ポイントルール一覧 */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>

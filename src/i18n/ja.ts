@@ -118,7 +118,7 @@ export const ja = {
   },
   
   admin: {
-    title: "CarbonMate 管理システム",
+    title: "CarbonMate 管理",
     pointsRulesLabel: "ポイントルール",
     rewardsManagement: "景品管理",
     reportsLabel: "レポート",

@@ -49,7 +49,7 @@ export default function GasChart({ selectedYear }: GasChartProps) {
   
   return (
     <div className="w-full bg-white rounded-lg border shadow-sm p-4 sm:p-6">
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
           <div className="w-5 h-5 bg-orange-600 rounded"></div>
         </div>
@@ -58,7 +58,7 @@ export default function GasChart({ selectedYear }: GasChartProps) {
           <p className="text-sm text-gray-600">過去12ヶ月のガス削減率</p>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={250}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis 

@@ -50,7 +50,7 @@ export default function CO2Chart({ selectedYear }: CO2ChartProps) {
   
   return (
     <div className="w-full bg-white rounded-lg border shadow-sm p-4 sm:p-6">
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center gap-3 mb-4">
         <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
           <TrendingUp className="w-5 h-5 text-green-600" />
         </div>
@@ -59,7 +59,7 @@ export default function CO2Chart({ selectedYear }: CO2ChartProps) {
           <p className="text-sm text-gray-600">累計削減量の推移</p>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={250}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
           <XAxis 
