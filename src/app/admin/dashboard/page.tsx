@@ -215,13 +215,15 @@ const AdminPage: React.FC = () => {
         </div>
 
         {/* グラフエリア */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <ElectricityChart selectedYear={selectedYear} />
           <GasChart selectedYear={selectedYear} />
         </div>
 
         {/* CO₂削減量推移（折れ線グラフ） */}
-        <CO2Chart selectedYear={selectedYear} />
+        <div className="mt-4 sm:mt-6">
+          <CO2Chart selectedYear={selectedYear} />
+        </div>
       </div>
     </Layout>
   );

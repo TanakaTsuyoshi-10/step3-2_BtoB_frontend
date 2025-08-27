@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import MobileNav from '@/components/mobile/MobileNav'
+import { isAuthenticated, getCurrentUser } from '@/lib/api/mobile'
 
 interface KPIData {
   totalKWh: number
@@ -22,6 +24,10 @@ interface Activity {
 }
 
 export default function MobileDashboard() {
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [mounted, setMounted] = useState(false)
   const [kpiData, setKpiData] = useState<KPIData>({
     totalKWh: 245,
     totalGasM3: 432,
@@ -35,7 +41,31 @@ export default function MobileDashboard() {
     ]
   })
 
+  useEffect(() => {
+    setMounted(true)
+    
+    // Check authentication only on client side
+    if (!isAuthenticated()) {
+      router.push('/mobile/login')
+      return
+    }
+
+    const currentUser = getCurrentUser()
+    if (currentUser) {
+      setUser(currentUser)
+    }
+    setIsLoading(false)
+  }, [router])
+
   const progressPercentage = (kpiData.currentPoints / kpiData.monthlyTarget) * 100
+
+  if (!mounted || isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-green-50 relative overflow-hidden">

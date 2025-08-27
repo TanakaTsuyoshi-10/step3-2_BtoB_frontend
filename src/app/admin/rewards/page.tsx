@@ -229,21 +229,21 @@ export default function Page() {
     <div>
       <div className="space-y-6">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{ja.rewards.title}</h1>
-            <p className="text-gray-600 mt-1">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{ja.rewards.title}</h1>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">
               ポイントを使って景品と交換
             </p>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-primary-50 px-4 py-2 rounded-lg">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:space-x-4">
+            <div className="flex items-center justify-center sm:justify-start space-x-2 bg-primary-50 px-4 py-2 rounded-lg">
               <Icon icon="heroicons:star" className="w-5 h-5 text-primary-600" />
               <span className="font-medium text-primary-900">{currentBalance.toLocaleString()} pt</span>
             </div>
             <button
               onClick={() => setShowHistory(!showHistory)}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm"
             >
               {showHistory ? '景品一覧' : '交換履歴'}
             </button>
@@ -253,9 +253,9 @@ export default function Page() {
         {!showHistory ? (
           <>
             {/* フィルター */}
-            <div>
-              <div className="p-4">
-                <div className="flex flex-wrap gap-4 items-center">
+            <div className="bg-white rounded-lg border shadow-sm">
+              <div className="p-4 sm:p-6">
+                <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center">
                   <div className="flex items-center space-x-2 flex-1 max-w-md">
                     <Icon icon="heroicons:magnifying-glass" className="w-4 h-4 text-gray-500" />
                     <input
@@ -263,17 +263,19 @@ export default function Page() {
                       placeholder="景品を検索..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="flex-1 border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                   </div>
                   
-                  <div className="flex items-center space-x-2">
-                    <Icon icon="heroicons:funnel" className="w-4 h-4 text-gray-500" />
-                    <span className="text-sm font-medium text-gray-700">カテゴリ:</span>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <div className="flex items-center space-x-2 whitespace-nowrap">
+                      <Icon icon="heroicons:funnel" className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-700">カテゴリ:</span>
+                    </div>
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 min-w-[120px]"
                     >
                       <option value="">すべて</option>
                       {categories.map(category => (
@@ -286,10 +288,10 @@ export default function Page() {
             </div>
 
             {/* 景品一覧 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {rewards.map((reward) => (
-                <div key={reward.id} className="hover:shadow-lg transition-shadow">
-                  <div className="p-6">
+                <div key={reward.id} className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="p-4 sm:p-6">
                     <div className="space-y-4">
                       <div className="flex items-start justify-between">
                         <div className="flex items-center space-x-2">
@@ -335,10 +337,11 @@ export default function Page() {
             </div>
 
             {rewards.length === 0 && (
-              <div>
-                <div className="p-8 text-center">
-                  <p className="text-gray-500">条件に一致する景品がありません</p>
+              <div className="bg-white rounded-lg border shadow-sm p-6 sm:p-8 text-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                  <Icon icon="heroicons:gift" className="w-8 h-8 text-gray-400" />
                 </div>
+                <p className="text-gray-500 text-sm sm:text-base">条件に一致する景品がありません</p>
               </div>
             )}
           </>

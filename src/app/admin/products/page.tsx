@@ -153,17 +153,17 @@ export default function ProductsManagementPage() {
     <Layout>
       <div className="space-y-6">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">商品管理</h1>
-            <p className="text-gray-600 mt-1">交換可能な商品・景品の管理と交換申請の処理</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">商品管理</h1>
+            <p className="text-gray-600 mt-1 text-sm sm:text-base">交換可能な商品・景品の管理と交換申請の処理</p>
           </div>
-          <div className="flex space-x-3">
-            <button className="btn-secondary flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+            <button className="btn-secondary flex items-center justify-center space-x-2 text-sm">
               <Download className="w-4 h-4" />
               <span>CSVエクスポート</span>
             </button>
-            <button className="btn-primary flex items-center space-x-2">
+            <button className="btn-primary flex items-center justify-center space-x-2 text-sm">
               <Plus className="w-4 h-4" />
               <span>新規商品追加</span>
             </button>
@@ -171,44 +171,44 @@ export default function ProductsManagementPage() {
         </div>
 
         {/* 統計カード */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">登録商品数</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.totalProducts}</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-600">{stats.totalProducts}</p>
               </div>
-              <Package className="w-8 h-8 text-blue-500" />
+              <Package className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">有効商品数</p>
-                <p className="text-2xl font-bold text-green-600">{stats.activeProducts}</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-600">{stats.activeProducts}</p>
               </div>
-              <CheckCircle className="w-8 h-8 text-green-500" />
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">今月の交換数</p>
-                <p className="text-2xl font-bold text-purple-600">{stats.totalExchanges}</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-600">{stats.totalExchanges}</p>
               </div>
-              <ShoppingCart className="w-8 h-8 text-purple-500" />
+              <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
             </div>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-6">
+          <div className="bg-white rounded-lg border shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">平均交換ポイント</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.avgPointsPerExchange}</p>
+                <p className="text-xl sm:text-2xl font-bold text-orange-600">{stats.avgPointsPerExchange}</p>
               </div>
-              <BarChart3 className="w-8 h-8 text-orange-500" />
+              <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" />
             </div>
           </div>
         </div>
@@ -240,12 +240,12 @@ export default function ProductsManagementPage() {
             </nav>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {selectedTab === 'products' && (
               <div className="space-y-6">
                 {/* 検索・フィルター */}
-                <div className="flex items-center space-x-4">
-                  <div className="flex-1 max-w-md">
+                <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
+                  <div className="flex-1 lg:max-w-md">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
@@ -257,29 +257,31 @@ export default function ProductsManagementPage() {
                       />
                     </div>
                   </div>
-                  <select className="input-field">
-                    <option value="">全カテゴリ</option>
-                    <option value="ギフトカード">ギフトカード</option>
-                    <option value="商品">商品</option>
-                    <option value="社内サービス">社内サービス</option>
-                    <option value="寄付">寄付</option>
-                  </select>
-                  <select className="input-field">
-                    <option value="">全ステータス</option>
-                    <option value="active">有効</option>
-                    <option value="inactive">無効</option>
-                  </select>
-                  <button className="btn-secondary flex items-center space-x-2">
-                    <Filter className="w-4 h-4" />
-                    <span>フィルター</span>
-                  </button>
+                  <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
+                    <select className="input-field text-sm">
+                      <option value="">全カテゴリ</option>
+                      <option value="ギフトカード">ギフトカード</option>
+                      <option value="商品">商品</option>
+                      <option value="社内サービス">社内サービス</option>
+                      <option value="寄付">寄付</option>
+                    </select>
+                    <select className="input-field text-sm">
+                      <option value="">全ステータス</option>
+                      <option value="active">有効</option>
+                      <option value="inactive">無効</option>
+                    </select>
+                    <button className="btn-secondary flex items-center justify-center space-x-2 text-sm">
+                      <Filter className="w-4 h-4" />
+                      <span className="hidden sm:inline">フィルター</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* 商品一覧 */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {products.map((product) => (
                     <div key={product.id} className="bg-white rounded-lg border shadow-sm hover:shadow-lg transition-shadow">
-                      <div className="p-6">
+                      <div className="p-4 sm:p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex items-center space-x-3">
                             <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
@@ -372,9 +374,9 @@ export default function ProductsManagementPage() {
             {selectedTab === 'exchanges' && (
               <div className="space-y-6">
                 {/* 検索・フィルター */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="relative">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
+                    <div className="relative flex-1 sm:flex-initial sm:min-w-[200px]">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="text"
@@ -384,20 +386,20 @@ export default function ProductsManagementPage() {
                         className="input-field pl-10"
                       />
                     </div>
-                    <select className="input-field">
+                    <select className="input-field text-sm">
                       <option value="">全ステータス</option>
                       <option value="pending">申請中</option>
                       <option value="approved">承認済み</option>
                       <option value="rejected">却下</option>
                       <option value="shipped">発送済み</option>
                     </select>
-                    <select className="input-field">
+                    <select className="input-field text-sm">
                       <option value="">全部門</option>
                       <option value="営業部">営業部</option>
                       <option value="開発部">開発部</option>
                     </select>
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-gray-500 text-center lg:text-right">
                     {exchanges.length}件の申請
                   </div>
                 </div>
