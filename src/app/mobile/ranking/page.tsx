@@ -36,7 +36,7 @@ export default function Ranking() {
   const [timeframe, setTimeframe] = useState('monthly')
   
   const [individualRanking] = useState<Person[]>([
-    { rank: 1, name: '田中 太郎', department: '営業部', reduction: 15.2, points: 1250, avatar: '田' },
+    { rank: 1, name: '田中 剛司', department: '営業部', reduction: 15.2, points: 1250, avatar: '田' },
     { rank: 2, name: '佐藤 花子', department: 'マーケティング部', reduction: 12.8, points: 1180, avatar: '佐' },
     { rank: 3, name: '鈴木 一郎', department: '開発部', reduction: 11.5, points: 1120, avatar: '鈴' },
     { rank: 4, name: '高橋 美咲', department: '人事部', reduction: 10.3, points: 980, avatar: '高' },
@@ -152,7 +152,7 @@ export default function Ranking() {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div>{getRankIcon(person.rank)}</div>
-                          <div className="rounded-full">
+                          <div className="rounded-full hidden sm:block">
                             <div className="w-14 h-14 rounded-full bg-white/80 backdrop-blur-sm border-2 border-primary-200 flex items-center justify-center shadow-lg">
                               <span className="text-primary-600 font-bold text-lg">{person.avatar}</span>
                             </div>
@@ -179,7 +179,7 @@ export default function Ranking() {
                           <div className={`${getRankBadge(person.rank)}`}>
                             {person.rank}位
                           </div>
-                          <div className="rounded-full">
+                          <div className="rounded-full hidden sm:block">
                             <div className="w-10 h-10 rounded-full bg-corporate-100 flex items-center justify-center">
                               <span className="text-corporate font-bold">{person.avatar}</span>
                             </div>
@@ -271,24 +271,42 @@ export default function Ranking() {
                   <div key={dept.rank} className={`rounded-lg bg-white shadow-lg ${
                     index < 3 ? 'ring-2 ring-yellow-300' : ''
                   }`}>
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <div>{getRankIcon(dept.rank)}</div>
-                        <div className={`badge badge-lg ${dept.color}`}>
-                          {dept.members}名
+                    <div className="p-3 sm:p-6">
+                      {/* モバイル版レイアウト */}
+                      <div className="sm:hidden">
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="text-xl">{getRankIcon(dept.rank)}</div>
+                            <h3 className="font-bold text-sm">{dept.name}</h3>
+                            <div className="text-xs text-gray-600">({dept.members}名)</div>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs text-gray-600">平均CO₂削減率:</span>
+                            <span className="font-bold text-green-600">{dept.reduction}%</span>
+                          </div>
                         </div>
                       </div>
-                      
-                      <h3 className="text-lg font-bold">{dept.name}</h3>
-                      
-                      <div className="grid gap-4 shadow-sm bg-gray-50 p-4 rounded-lg">
-                        <div className="py-2">
-                          <div className="text-xs text-gray-600">削減率</div>
-                          <div className="text-2xl font-bold text-green-600">{dept.reduction}%</div>
+
+                      {/* デスクトップ版レイアウト */}
+                      <div className="hidden sm:block">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="text-3xl">{getRankIcon(dept.rank)}</div>
+                          <div className={`badge badge-lg ${dept.color}`}>
+                            {dept.members}名
+                          </div>
                         </div>
-                        <div className="py-2">
-                          <div className="text-xs text-gray-600">総ポイント</div>
-                          <div className="text-lg font-bold text-corporate">{dept.totalPoints.toLocaleString()}</div>
+                        
+                        <h3 className="text-lg font-bold mb-3">{dept.name}</h3>
+                        
+                        <div className="grid grid-cols-2 gap-4 shadow-sm bg-gray-50 p-4 rounded-lg">
+                          <div className="py-2">
+                            <div className="text-xs text-gray-600">削減率</div>
+                            <div className="text-2xl font-bold text-green-600">{dept.reduction}%</div>
+                          </div>
+                          <div className="py-2">
+                            <div className="text-xs text-gray-600">総ポイント</div>
+                            <div className="text-lg font-bold text-corporate">{dept.totalPoints.toLocaleString()}</div>
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -54,41 +54,41 @@ export default function AIAnalysis() {
     recommendations: [
       {
         id: 1,
-        category: 'ガス',
-        title: '暖房設定温度の最適化',
-        description: 'エアコンの設定温度を1度下げることで、月間約8%のガス使用量削減が期待できます。',
+        category: '暖房・冷房',
+        title: 'エアコン設定温度の調整',
+        description: '冬は20℃、夏は28℃に設定することで、月間約10%のエネルギー削減が期待できます。',
         impact: 'high',
-        points: 50,
+        points: 0,
         difficulty: 'easy',
         icon: 'temperature'
       },
       {
         id: 2,
-        category: '電力',
-        title: 'LED照明への完全移行',
-        description: '残りの蛍光灯をLEDに交換することで、照明コストを40%削減できます。',
+        category: '照明',
+        title: '照明の使い分け',
+        description: '必要な部屋のみ点灯し、自然光を活用することで照明コストを30%削減できます。',
         impact: 'high',
-        points: 100,
-        difficulty: 'medium',
+        points: 0,
+        difficulty: 'easy',
         icon: 'idea'
       },
       {
         id: 3,
         category: '電力',
-        title: '待機電力の削減',
-        description: 'OA機器の待機電力を削減することで、月間約3%の電力削減が可能です。',
+        title: '家電製品の待機電力カット',
+        description: 'テレビ、パソコン等の待機電力をこまめに切ることで、月間約5%の電力削減が可能です。',
         impact: 'medium',
-        points: 30,
+        points: 0,
         difficulty: 'easy',
         icon: 'electricity'
       },
       {
         id: 4,
-        category: '水道',
-        title: '節水器具の導入',
-        description: '節水シャワーヘッドの導入で水道使用量を15%削減できます。',
+        category: '給湯',
+        title: 'お風呂の節約習慣',
+        description: 'シャワー時間の短縮や浴槽のお湯の量を調整することで、ガス代を15%削減できます。',
         impact: 'medium',
-        points: 40,
+        points: 0,
         difficulty: 'easy',
         icon: 'water'
       }
@@ -169,7 +169,7 @@ export default function AIAnalysis() {
   }
 
   const implementRecommendation = (recommendation: Recommendation) => {
-    alert(`「${recommendation.title}」を実行リストに追加しました！実行後は${recommendation.points}ポイントを獲得できます。`)
+    alert(`「${recommendation.title}」を実行リストに追加しました！家庭でできる省エネ取り組みを始めましょう。`)
   }
 
   return (
@@ -207,9 +207,9 @@ export default function AIAnalysis() {
             <p className="text-sm text-gray-600">エネルギー効率</p>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-lg border border-green-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div className="p-3 bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mb-4">
-              <Icon icon="carbon:trending-up" className="w-8 h-8 text-green-600" />
+          <div className="bg-white/70 backdrop-blur-lg border border-green-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center">
+            <div className="p-3 bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <Icon icon="carbon:chart-line" className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">予測削減率</h3>
             <div className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent mb-2">
@@ -222,8 +222,8 @@ export default function AIAnalysis() {
             </div>
           </div>
 
-          <div className="bg-white/70 backdrop-blur-lg border border-yellow-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <div className="p-3 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mb-4">
+          <div className="bg-white/70 backdrop-blur-lg border border-yellow-200/50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 text-center">
+            <div className="p-3 bg-gradient-to-r from-yellow-100 to-yellow-200 rounded-xl shadow-sm w-16 h-16 flex items-center justify-center mx-auto mb-4">
               <Icon icon="carbon:currency-yen" className="w-8 h-8 text-yellow-600" />
             </div>
             <h3 className="text-lg font-bold text-gray-900 mb-2">予測節約額</h3>
@@ -271,7 +271,6 @@ export default function AIAnalysis() {
                         <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getImpactColor(rec.impact)}`}>
                           {rec.impact === 'high' ? '高効果' : rec.impact === 'medium' ? '中効果' : '低効果'}
                         </div>
-                        <div className="text-sm text-green-600 font-bold mt-1">+{rec.points}pt</div>
                       </div>
                     </div>
                     
