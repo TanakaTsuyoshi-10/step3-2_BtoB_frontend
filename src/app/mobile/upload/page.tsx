@@ -28,8 +28,8 @@ export default function Upload() {
   const [uploadHistory, setUploadHistory] = useState<UploadHistoryItem[]>([
     { id: 1, filename: 'gas_bill_202412.pdf', uploadDate: '2025-01-10', status: '処理完了', points: 30 },
     { id: 2, filename: 'electricity_bill_202412.pdf', uploadDate: '2025-01-09', status: '処理完了', points: 25 },
-    { id: 3, filename: 'water_bill_202412.pdf', uploadDate: '2025-01-08', status: '処理完了', points: 20 },
     { id: 4, filename: 'gas_bill_202411.pdf', uploadDate: '2024-12-10', status: '処理完了', points: 30 },
+    { id: 5, filename: 'electricity_bill_202411.pdf', uploadDate: '2024-12-09', status: '処理完了', points: 28 },
   ])
 
   const handleDrag = useCallback((e: React.DragEvent) => {
@@ -181,7 +181,7 @@ export default function Upload() {
                     </svg>
                     <div>
                       <p className="font-bold text-primary-700">アップロード可能な明細書</p>
-                      <p className="text-sm text-gray-700 mt-1">ガス・電気・水道の利用明細書をアップロードできます。OCR技術により自動で使用量を読み取り、Tech0ポイントを獲得できます。</p>
+                      <p className="text-sm text-gray-700 mt-1">ガス・電気の利用明細書をアップロードできます。OCR技術により自動で使用量を読み取り、Tech0ポイントを獲得できます。</p>
                     </div>
                   </div>
                 </div>
@@ -241,7 +241,7 @@ export default function Upload() {
                   <Icon icon="ion:stats-chart" className="text-xl mr-3 text-green-600" />
                   アップロード統計
                 </h3>
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="p-5 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200/50 shadow-sm">
                     <div className="text-sm text-blue-600 font-medium">今月のアップロード</div>
                     <div className="text-3xl font-bold text-blue-700 mt-1">3</div>
@@ -252,12 +252,6 @@ export default function Upload() {
                     <div className="text-sm text-green-600 font-medium">獲得ポイント</div>
                     <div className="text-3xl font-bold text-green-700 mt-1">75</div>
                     <div className="text-sm text-green-600 mt-1">今月合計</div>
-                  </div>
-                  
-                  <div className="p-5 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl border border-purple-200/50 shadow-sm">
-                    <div className="text-sm text-purple-600 font-medium">処理精度</div>
-                    <div className="text-3xl font-bold text-purple-700 mt-1">98%</div>
-                    <div className="text-sm text-purple-600 mt-1">OCR読み取り精度</div>
                   </div>
                 </div>
               </div>
@@ -306,7 +300,32 @@ export default function Upload() {
               アップロード履歴
             </h3>
             
-            <div className="overflow-x-auto">
+            {/* モバイル版カード形式 */}
+            <div className="sm:hidden space-y-4">
+              {uploadHistory.map(item => (
+                <div key={item.id} className="bg-white/50 backdrop-blur-sm rounded-xl p-4 border border-gray-100/50 hover:bg-white/70 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <Icon icon="carbon:document" className="text-xl text-primary-600" />
+                      <div>
+                        <div className="font-medium text-gray-800 text-sm truncate max-w-[180px]">{item.filename}</div>
+                        <div className="text-xs text-gray-600">{item.uploadDate}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent text-sm">+{item.points}pt</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="bg-green-100/80 text-green-800 inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">{item.status}</div>
+                    <button className="text-gray-600 hover:text-primary-600 hover:bg-primary-50 px-3 py-1 text-xs rounded-lg font-medium transition-all duration-300">詳細</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* デスクトップ版テーブル */}
+            <div className="hidden sm:block overflow-x-auto">
               <table className="min-w-full border-collapse">
                 <thead className="bg-white/50 backdrop-blur-sm">
                   <tr className="border-b border-gray-200/50">

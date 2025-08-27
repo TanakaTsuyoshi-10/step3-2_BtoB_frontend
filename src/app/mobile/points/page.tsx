@@ -259,6 +259,8 @@ export default function PointsExchangePage() {
   const [redeeming, setRedeeming] = useState<number | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 6; // 1ページに表示する商品数
 
   useEffect(() => {
     loadData();
@@ -280,8 +282,6 @@ export default function PointsExchangePage() {
       
       // モック履歴データ
       const mockHistory: PointHistory[] = [
-        { id: 1, delta: 50, reason: 'エアコン設定最適化', balance_after: 1250, created_at: '2025-01-15T10:00:00Z', type: 'earn' },
-        { id: 2, delta: 100, reason: 'LED照明完全移行', balance_after: 1200, created_at: '2025-01-14T10:00:00Z', type: 'earn' },
         { id: 3, delta: 80, reason: '省エネ研修受講完了', balance_after: 1100, created_at: '2025-01-12T10:00:00Z', type: 'earn' },
         { id: 4, delta: 120, reason: 'ガス使用量10%削減達成', balance_after: 1020, created_at: '2025-01-11T10:00:00Z', type: 'earn' },
         { id: 5, delta: 40, reason: '待機電力削減実施', balance_after: 900, created_at: '2025-01-09T10:00:00Z', type: 'earn' },
@@ -474,7 +474,10 @@ export default function PointsExchangePage() {
             {['All', 'Cafe', 'Eco', 'Gift', 'Other'].map((category) => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setCurrentPage(1); // カテゴリ変更時はページを1に戻す
+                }}
                 className={`flex-shrink-0 py-2 px-4 rounded-lg font-medium transition-all duration-300 text-sm ${
                   activeCategory === category 
                     ? 'bg-white text-primary-600 shadow-lg transform scale-105' 
@@ -517,9 +520,18 @@ export default function PointsExchangePage() {
               );
             }
 
+            // ページネーション計算
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedProducts = activeCategory === 'All' 
+              ? filteredProducts.slice(startIndex, endIndex)
+              : filteredProducts; // 「全て」以外は全表示
+
             return (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-                {filteredProducts.map((product) => {
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                  {paginatedProducts.map((product) => {
                   const canAfford = currentBalance >= product.points_required;
                   const isInStock = product.stock > 0;
                   
@@ -599,8 +611,74 @@ export default function PointsExchangePage() {
                         </div>
                       </div>
                     </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+                
+                {/* ページネーション - 「全て」の場合のみ表示 */}
+                {activeCategory === 'All' && totalPages > 1 && (
+                  <div className="flex justify-center items-center space-x-4 pt-6">
+                    <button
+                      onClick={() => {
+                        if (currentPage > 1) {
+                          setCurrentPage(currentPage - 1);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      disabled={currentPage === 1}
+                      className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                        currentPage === 1
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'bg-white/70 text-primary-600 hover:bg-primary-50 shadow-md hover:shadow-lg'
+                      }`}
+                    >
+                      前へ
+                    </button>
+                    
+                    <div className="flex items-center space-x-2">
+                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => {
+                            setCurrentPage(page);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }}
+                          className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
+                            currentPage === page
+                              ? 'bg-primary-600 text-white shadow-lg'
+                              : 'bg-white/70 text-primary-600 hover:bg-primary-50 shadow-md hover:shadow-lg'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <button
+                      onClick={() => {
+                        if (currentPage < totalPages) {
+                          setCurrentPage(currentPage + 1);
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                      }}
+                      disabled={currentPage === totalPages}
+                      className={`px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
+                        currentPage === totalPages
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'bg-white/70 text-primary-600 hover:bg-primary-50 shadow-md hover:shadow-lg'
+                      }`}
+                    >
+                      次へ
+                    </button>
+                  </div>
+                )}
+                
+                {/* 商品数表示 */}
+                {activeCategory === 'All' && (
+                  <div className="text-center text-sm text-gray-600 pt-2">
+                    全{filteredProducts.length}件中 {startIndex + 1}-{Math.min(endIndex, filteredProducts.length)}件を表示
+                  </div>
+                )}
               </div>
             );
           })()}
@@ -657,46 +735,6 @@ export default function PointsExchangePage() {
           </div>
         </div>
 
-        {/* API履歴（既存のものを残す） */}
-        {history.length > 0 && (
-          <div className="space-y-6 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
-            <h2 className="text-xl font-bold flex items-center space-x-3 text-gray-800">
-              <History className="w-6 h-6 text-indigo-600" />
-              <span>API履歴データ</span>
-            </h2>
-            
-            <div className="bg-white/70 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg overflow-hidden">
-              <div className="divide-y divide-gray-100/50">
-                {history.map((record) => (
-                  <div key={record.id} className="p-5 flex items-center justify-between hover:bg-white/50 transition-colors duration-300">
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-gray-900 truncate">
-                        {record.reason}
-                      </div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        {new Date(record.created_at).toLocaleDateString('ja-JP', {
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <span className={`text-sm font-bold px-3 py-1 rounded-full ${
-                        record.type === 'earn' 
-                          ? 'bg-green-100/80 text-green-700' 
-                          : 'bg-red-100/80 text-red-700'
-                      }`}>
-                        {record.type === 'earn' ? '+' : ''}{record.delta.toLocaleString()}pt
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
